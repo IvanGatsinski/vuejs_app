@@ -1,13 +1,13 @@
 import { get, post } from './helpers'
 
 function registerUser(data) {
-    return post(`/user/kid_SJ6pGDOWH` ,data, 'Basic')
+    return post(`/user/${process.env.VUE_APP_KEY}` ,data, 'Basic')
 }
 function loginUser(data) {
-    return post(`/user/kid_SJ6pGDOWH/login`, data, 'Basic')
+    return post(`/user/${process.env.VUE_APP_KEY}/login`, data, 'Basic')
 }
 function logoutUser() {
-    return post(`/user/kid_SJ6pGDOWH/_logout`, {}, 'Kinvey')
+    return post(`/user/${process.env.VUE_APP_KEY}/_logout`, {}, 'Kinvey')
 }
 
 export {

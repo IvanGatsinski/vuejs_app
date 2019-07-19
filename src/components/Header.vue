@@ -10,8 +10,8 @@
       </div>
       <div v-if="userIsLogged" class="logged-user">
         <router-link to="/" tag="li">Welcome</router-link>
-        <li @click="logoutUser">Logout</li>
         <router-link to="/dashboard" tag="li">Dashboard</router-link>
+        <li @click="logoutUser">Logout</li>
       </div>
     </ul>
   </header>
