@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from '../store'
+import store from '../store/index'
 
 const APP_KEY = process.env.VUE_APP_KEY
 const APP_SECRET = process.env.VUE_APP_SECRET
@@ -7,20 +7,22 @@ const APP_SECRET = process.env.VUE_APP_SECRET
 const APP_CREDENTIALS = `${APP_KEY}:${APP_SECRET}`
 
 const BASIC_TOKEN = `${btoa(APP_CREDENTIALS)}`;
+const AUTH_TOKEN = () => store.state.auth.authToken
 
 function get(url) {
     return axios({
         method: 'GET',
         url: `${url}`,
         headers: {
-            'Authorization': `Kinvey ${AUTH_TOKEN}`
+            'Authorization': `Kinvey ${AUTH_TOKEN()}`
         }
     })
 }
 function post(url, data, auth) {
+    
     const AUTHORIZATION =
         auth === 'Basic' ?
-            `Basic ${BASIC_TOKEN}` : `Kinvey ${store.state.authToken}`
+            `Basic ${BASIC_TOKEN}` : `Kinvey ${AUTH_TOKEN()}`
 
     return axios({
         method: 'POST',
@@ -38,7 +40,7 @@ function put(url, data) {
         url: `${url}`,
         data,
         headers: {
-            'Authorization': `Kinvey ${store.state.authToken}`
+            'Authorization': `Kinvey ${AUTH_TOKEN()}`
         }
     })
 }
@@ -48,7 +50,7 @@ function remove(url) {
         method: 'DELETE',
         url: `${url}`,
         headers: {
-            'Authorization': `Kinvey ${store.state.authToken}`
+            'Authorization': `Kinvey ${AUTH_TOKEN()}`
         }
     })
 }

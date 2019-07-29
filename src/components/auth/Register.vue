@@ -30,13 +30,13 @@ import { registerUser } from '../../api_calls/auth'
 export default {
   name: 'Register',
   computed: {
-    ...mapFields([
+    ...mapFields('auth', [
       'registerForm.username',
       'registerForm.password'
     ])
   },
   methods: {
-    ...mapActions([
+    ...mapActions('auth',[
       'register'
     ]),
    registerUser() {

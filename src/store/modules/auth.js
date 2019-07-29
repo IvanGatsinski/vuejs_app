@@ -1,14 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import router from './router'
-import { loginUser, registerUser, logoutUser } from './api_calls/auth'
+import router from '../../router'
+import { loginUser, registerUser, logoutUser } from '../../api_calls/auth'
 import { getField, updateField } from 'vuex-map-fields'
 
-Vue.use(Vuex)
-
-const store = {
+const auth = {
+    namespaced: true,
     state: {
         username: '',
+        userId: null,
         authToken: null,
         loginForm: {
             username: '',
@@ -26,18 +24,27 @@ const store = {
         updateField,
         logout(state) {
             localStorage.removeItem('token')
+            localStorage.removeItem('username')
+            localStorage.removeItem('userId')
             state.authToken = null
+            state.userId = null
         },
         saveSession(state, response_data) {
-            localStorage.setItem('token', response_data._kmd.authtoken)
-            localStorage.setItem('username', response_data.username)
+            console.log(response_data)
+            const { username, _id, } = response_data
 
+            localStorage.setItem('token', response_data._kmd.authtoken)
+            localStorage.setItem('username', username)
+            localStorage.setItem('userId', _id)
+            
             state.authToken = response_data._kmd.authtoken
-            state.username = response_data.username
+            state.username = username
+            state.userId = _id
         },
         getToken(state) {
             state.authToken = localStorage.getItem('token')
             state.username = localStorage.getItem('username')
+            state.userId = localStorage.getItem('userId')
         }
     },
     actions: {
@@ -63,6 +70,7 @@ const store = {
         logout({ commit, state }) {
             logoutUser()
                 .then(res => {
+                    
                     commit('logout')
                     router.push("/logout");
                 })
@@ -77,4 +85,4 @@ const store = {
     }
 }
 
-export default new Vuex.Store(store)
+export default auth

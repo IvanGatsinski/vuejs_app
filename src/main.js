@@ -1,29 +1,31 @@
 import Vue from 'vue'
 import App from './App.vue'
+import NProgress from 'vue-nprogress'
 import router from './router'
-import store from './store'
+import store from './store/index'
 import axios from 'axios'
+import * as progress from 'nprogress'
 
 axios.defaults.baseURL = 'https://baas.kinvey.com';
-// router.beforeEach((to, from, next) => {
-//   store.dispatch('getToken')
+// before a request is made start the nprogress
+axios.interceptors.request.use(config => {
+  progress.start()
+  return config
+})
 
-//   if (to.fullPath === '/login' || to.fullPath === '/register') {
-//     if (store.state.authToken) {
-//       next('/');
-//     }
-//   }
-//   else {
-//     if (!store.state.authToken) {
-//       next('/login');
-//     }
-//   }
-//   next()
-// })
+// before a response is returned stop nprogress
+axios.interceptors.response.use(response => {
+  progress.done()
+  return response
+})
+
+Vue.use(NProgress)
+const nprogress = new NProgress()
 
 Vue.config.productionTip = false
 
 new Vue({
+  nprogress,
   router,
   store,
   render: h => h(App),

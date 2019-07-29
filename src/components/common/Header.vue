@@ -10,7 +10,7 @@
       </div>
       <div v-if="userIsLogged" class="logged-user">
         <router-link to="/" tag="li">Welcome</router-link>
-        <router-link to="/dashboard" tag="li">Dashboard</router-link>
+        <router-link to="/product/create" tag="li">Add Product</router-link>
         <li @click="logoutUser">Logout</li>
       </div>
     </ul>
@@ -23,9 +23,10 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'Header',
   computed: {
-    ...mapState([
+    ...mapState('auth',[
       'username',
-      'authToken'
+      'authToken',
+      'userId'
     ]),
     userGreeting() {
       return `Hello ${this.username}`;
@@ -35,7 +36,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('auth',[
         'logout'
     ]),
     logoutUser() {

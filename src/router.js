@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Welcome from './components/Welcome'
-import Dashboard from './components/Dashboard'
+import Home from './components/home/Home'
+import CreateProduct from './components/createProduct/Form'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
-import store from './store'
+import store from './store/index'
 
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/', component: Welcome },
+    { path: '/', component: Home },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
-    { path: '/dashboard', component: Dashboard },
+    { path: '/product/create', component: CreateProduct },
     { path: '*', redirect: '/login' }
 ]
 
@@ -22,15 +22,15 @@ const router = new VueRouter({
 }) 
 
 router.beforeEach((to, from, next) => {
-    store.dispatch('getToken')
+    store.dispatch('auth/getToken')
   
     if (to.fullPath === '/login' || to.fullPath === '/register') {
-      if (store.state.authToken) {
+      if (store.state.auth.authToken) {
         next('/');
       }
     }
     else {
-      if (!store.state.authToken) {
+      if (!store.state.auth.authToken) {
         next('/login');
       }
     }

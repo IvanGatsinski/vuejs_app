@@ -1,23 +1,33 @@
 <template>
   <div id="app">
+     <nprogress-container>
+       </nprogress-container>
     <Header/>
-    <router-view></router-view>
+    <transition 
+        name="fade"
+        mode="out-in">
+      <router-view></router-view>
+    </transition>
+    
   </div>
 </template>
 
 <script>
-import Header from './components/Header'
+import NprogressContainer from "vue-nprogress/src/NprogressContainer";
+import Header from './components/common/Header'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    Header
+    NprogressContainer,
+    Header,
   },
   methods: {
-    ...mapActions([
+    ...mapActions('auth',[
       'getToken'
-    ])
+    ]),
+
   },
   created() {
     this.getToken()
@@ -52,5 +62,16 @@ li {
 a {
   color: #208b5b;
   text-decoration: none;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
 }
 </style>

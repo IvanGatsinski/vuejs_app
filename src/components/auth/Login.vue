@@ -17,7 +17,7 @@
       </label>
       <input type="submit" value="LOG IN" />
     </form>
-    <p></p>
+    <p>{{ username }}</p>
   </div>
 </template>
 
@@ -27,14 +27,19 @@ import { mapFields } from 'vuex-map-fields'
 
 export default {
   name: 'Login',
+  data() {
+    return {
+      
+    }
+  },
   computed: {
-    ...mapFields([
+    ...mapFields('auth', [
       'loginForm.username',
       'loginForm.password'
     ])
   },
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions('auth',["login"]),
     loginUser() {
       const USER_INFO = {
         username: this.username,
@@ -42,7 +47,7 @@ export default {
       };
       this.login(USER_INFO);
     }
-  }
+  },
 };
 </script>
 
