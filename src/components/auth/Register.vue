@@ -15,6 +15,57 @@
           placeholder="enter password"
         />
       </label>
+
+            <label for="age">
+        Age
+        <input
+          id="age"
+          type="age"
+          v-model="age"
+          placeholder="enter age"
+        />
+      </label>
+
+            <label for="sex">
+        Sex
+        <input
+          id="sex"
+          type="sex"
+          v-model="sex"
+          placeholder="enter sex"
+        />
+      </label>
+
+            <label for="city">
+        City
+        <input
+          id="city"
+          type="city"
+          v-model="city"
+          placeholder="enter city"
+        />
+      </label>
+
+            <label for="county">
+        County
+        <input
+          id="county"
+          type="county"
+          v-model="county"
+          placeholder="enter county"
+        />
+      </label>
+
+            <label for="phone">
+        Phone number
+        <input
+          id="phone"
+          type="phone"
+          v-model="phone"
+          placeholder="enter phone"
+        />
+      </label>
+      
       <input type="submit"  value="REGISTER" />
     </form>
     <p>{{username}}</p>
@@ -32,7 +83,12 @@ export default {
   computed: {
     ...mapFields('auth', [
       'registerForm.username',
-      'registerForm.password'
+      'registerForm.password',
+      'registerForm.age',
+      'registerForm.sex',
+      'registerForm.city',
+      'registerForm.county',
+      'registerForm.phone'
     ])
   },
   methods: {
@@ -42,7 +98,12 @@ export default {
    registerUser() {
      const USER_DATA = {
        username: this.username,
-       password: this.password
+       password: this.password,
+       age: this.age,
+       sex: this.sex,
+       city: this.city,
+       county: this.county,
+       phone: this.phone,
      }
      this.register(USER_DATA)
    },

@@ -3,31 +3,40 @@
     <li>
         <div v-if="checkProductOwner">
         <button>Edit</button>
-
+        <button @click="deleteProduct(productId)">Remove</button>
         </div>
-        <p>name: {{ name }}</p>
-        <p>price: {{ Number(price) }}</p>
-        <p>description: {{ description }}</p>
-        <p>condition: {{ condition }}</p>
+        <p>Name: {{ name }}</p>
+        <p>Price: {{ Number(price) }}</p>
+        <p>Description: {{ description }}</p>
+        <p>Condition: {{ condition }}</p>
+        <p>Date created: {{ dateCreated }}</p>
     </li>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'Product',
     computed: {
         ...mapState('auth', [
-            'userId'
+            'loggedUserId'
         ]),
         checkProductOwner() {
-           return this.creatorId === this.userId ? true : false
+           return this.creatorId === this.loggedUserId ? true : false
         }
     },
     props: {
+        productId: {
+            type: String,
+            required: true,
+        },
         creatorId: {
+            type: String,
+            required: true,
+        },
+        dateCreated: {
             type: String,
             required: true,
         },
@@ -48,6 +57,14 @@ export default {
             required: true,
         },
     },
+    methods: {
+        ...mapActions('products', [
+            'removeProduct'
+        ]),
+        deleteProduct(productId) {
+            this.removeProduct(productId)
+        }
+    }
 }
 </script>
 

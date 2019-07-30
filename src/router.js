@@ -4,6 +4,7 @@ import Home from './components/home/Home'
 import CreateProduct from './components/createProduct/Form'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
+import MyProfile from './components/user/MyProfile'
 import store from './store/index'
 
 Vue.use(VueRouter)
@@ -12,6 +13,7 @@ const routes = [
     { path: '/', component: Home },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
+    { path: '/myProfile', component: MyProfile},
     { path: '/product/create', component: CreateProduct },
     { path: '*', redirect: '/login' }
 ]

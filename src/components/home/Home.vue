@@ -14,14 +14,6 @@ export default {
     components: {
         Products
     },
-    // methods: {
-    //   ...mapActions('products',[
-    //   'fetchAllProducts'
-    //     ])
-    // },
-    // created() {
-    //     this.fetchAllProducts()
-    // }
 }
 </script>
 

@@ -6,7 +6,7 @@ const auth = {
     namespaced: true,
     state: {
         username: '',
-        userId: null,
+        loggedUserId: null,
         authToken: null,
         loginForm: {
             username: '',
@@ -15,6 +15,11 @@ const auth = {
         registerForm: {
             username: '',
             password: '',
+            age: null,
+            phone: null,
+            sex: '',
+            city: '',
+            county: ''
         }
     },
     getters: {
@@ -25,9 +30,9 @@ const auth = {
         logout(state) {
             localStorage.removeItem('token')
             localStorage.removeItem('username')
-            localStorage.removeItem('userId')
+            localStorage.removeItem('loggedUserId')
             state.authToken = null
-            state.userId = null
+            state.loggedUserId = null
         },
         saveSession(state, response_data) {
             console.log(response_data)
@@ -35,16 +40,16 @@ const auth = {
 
             localStorage.setItem('token', response_data._kmd.authtoken)
             localStorage.setItem('username', username)
-            localStorage.setItem('userId', _id)
+            localStorage.setItem('loggedUserId', _id)
             
             state.authToken = response_data._kmd.authtoken
             state.username = username
-            state.userId = _id
+            state.loggedUserId = _id
         },
         getToken(state) {
             state.authToken = localStorage.getItem('token')
             state.username = localStorage.getItem('username')
-            state.userId = localStorage.getItem('userId')
+            state.loggedUserId = localStorage.getItem('loggedUserId')
         }
     },
     actions: {
@@ -57,7 +62,7 @@ const auth = {
                     router.push("/")
                 })
         },
-        login({ commit }, USER_DATA) {
+        login({ commit, dispatch }, USER_DATA) {
             loginUser(USER_DATA)
                 .then(res => {
                     const RESPONSE_DATA = res.data
@@ -72,7 +77,7 @@ const auth = {
                 .then(res => {
                     
                     commit('logout')
-                    router.push("/logout");
+                    router.push("/login");
                 })
                 .catch(err => { console.warn(err) })
         },
@@ -81,7 +86,7 @@ const auth = {
         },
         getToken({ commit }) {
             commit('getToken')
-        }
+        },
     }
 }
 

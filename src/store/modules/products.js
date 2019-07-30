@@ -1,4 +1,4 @@
-import { fetchAllProducts, addProduct } from '../../api_calls/products'
+import { fetchAllProducts, addProduct, removeProduct } from '../../api_calls/products'
 import { getField, updateField } from 'vuex-map-fields'
 import router from '../../router'
 
@@ -21,28 +21,31 @@ const products = {
         fetchAllProducts(state, payload) {
             state.allProducts = [...payload]
         },
-        // addProduct(state, productData) {
-        //     state.allProducts = [...state.allProducts, productData]
-        // }
     },
     actions: {
         fetchAllProducts({ commit }) {
             fetchAllProducts()
-            .then(res => {
-                console.log(res);
-                commit('fetchAllProducts', res.data)
-            })
-            .catch(err => {
-                console.log(err);  
-            })
+                .then(res => {
+                    commit('fetchAllProducts', res.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         },
         createProduct({ dispatch }, productData) {
             addProduct(productData)
-            .then(() => {
-                dispatch('fetchAllProducts')
-                router.push('/')
-            })
-            .catch()
+                .then(() => {
+                    dispatch('fetchAllProducts')
+                    router.push('/')
+                })
+                .catch()
+        },
+        removeProduct({ dispatch }, id) {
+            removeProduct(id)
+                .then(res => {
+                    dispatch('fetchAllProducts')
+                })
+                .catch(err => console.log(err))
         }
     },
 }

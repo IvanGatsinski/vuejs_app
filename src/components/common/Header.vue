@@ -10,6 +10,7 @@
       </div>
       <div v-if="userIsLogged" class="logged-user">
         <router-link to="/" tag="li">Welcome</router-link>
+        <router-link to="/myProfile" tag="li">My Profile</router-link>
         <router-link to="/product/create" tag="li">Add Product</router-link>
         <li @click="logoutUser">Logout</li>
       </div>
@@ -26,7 +27,7 @@ export default {
     ...mapState('auth',[
       'username',
       'authToken',
-      'userId'
+      'loggedUserId'
     ]),
     userGreeting() {
       return `Hello ${this.username}`;

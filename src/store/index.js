@@ -1,5 +1,6 @@
 import auth from './modules/auth'
 import products from './modules/products'
+import user from './modules/user'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
@@ -9,6 +10,7 @@ const store = {
     modules: {
         auth,
         products,
+        user,
     }
 }
 

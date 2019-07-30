@@ -5,6 +5,7 @@ import router from './router'
 import store from './store/index'
 import axios from 'axios'
 import * as progress from 'nprogress'
+import vuetify from './plugins/vuetify';
 
 axios.defaults.baseURL = 'https://baas.kinvey.com';
 // before a request is made start the nprogress
@@ -19,6 +20,8 @@ axios.interceptors.response.use(response => {
   return response
 })
 
+
+
 Vue.use(NProgress)
 const nprogress = new NProgress()
 
@@ -28,5 +31,6 @@ new Vue({
   nprogress,
   router,
   store,
-  render: h => h(App),
+  vuetify,
+  render: h => h(App)
 }).$mount('#app')

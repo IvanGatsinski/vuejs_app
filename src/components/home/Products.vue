@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <transition-group name="list-products"  tag="ul">
         <Product 
         v-for="product in allProducts"
         :key="product._id"
@@ -8,8 +8,10 @@
         :price="Number(product.price)"
         :description="product.description"
         :condition="product.condition"
+        :productId="product._id"
+        :dateCreated="product._kmd.ect"
         ></Product>
-    </div>
+    </transition-group>
 </template>
 
 <script>
@@ -29,7 +31,7 @@ export default {
     methods: {
         ...mapActions('products',[
             'fetchAllProducts'
-        ])
+        ]),
     },
     created() {
         this.fetchAllProducts()
@@ -38,5 +40,11 @@ export default {
 </script>
 
 <style>
-
+.list-products-enter-active, .list-products-leave-active {
+  transition: all 1s;
+}
+.list-products-enter, .list-products-leave-to {
+  opacity: 0;
+  transform: translateY(60px);
+}
 </style>
