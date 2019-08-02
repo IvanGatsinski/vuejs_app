@@ -1,17 +1,19 @@
 <template>
-    <transition-group name="list-products"  tag="ul">
-        <Product 
-        v-for="product in allProducts"
-        :key="product._id"
-        :creatorId="product._acl.creator"
-        :name="product.name"
-        :price="Number(product.price)"
-        :description="product.description"
-        :condition="product.condition"
-        :productId="product._id"
-        :dateCreated="product._kmd.ect"
-        ></Product>
-    </transition-group>
+    <v-container grid-list-lg class="pa-5">
+         <transition-group name="list-products" tag="div" class="layout row wrap">
+            <v-flex
+                v-for="product in allProducts"
+                :key="product._id" xs12 sm6 md4 lg3 xl2>
+                    <Product 
+                        :creatorId="product._acl.creator"
+                        :name="product.name"
+                        :price="Number(product.price)"
+                        :productId="product._id"
+                        :dateCreated="product._kmd.ect">
+                    </Product>
+            </v-flex>
+       </transition-group>
+    </v-container>
 </template>
 
 <script>
@@ -45,6 +47,6 @@ export default {
 }
 .list-products-enter, .list-products-leave-to {
   opacity: 0;
-  transform: translateY(60px);
+  /* transform: translateY(60px); */
 }
 </style>

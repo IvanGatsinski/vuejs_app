@@ -1,24 +1,43 @@
 <template>
-  <div>
-    <h3>Login Form</h3>
-    <form @submit.prevent="loginUser">
-      <label for="username">
-        Username
-        <input id="username" type="text" v-model="username" placeholder="enter username" />
-      </label>
-      <label for="password">
-        Password
-        <input
-          id="password"
-          type="password"
-          v-model="password"
-          placeholder="enter password"
-        />
-      </label>
-      <input type="submit" value="LOG IN" />
-    </form>
-    <p>{{ username }}</p>
-  </div>
+    <v-container grid-list-xl>
+        <v-layout row justify-center align-center>
+            <v-flex xs11 sm4 md4 lg4 xl8>
+    <v-form
+    ref="form"
+  >
+    <v-text-field
+      v-model="username"
+      :counter="10"
+      :rules="nameRules"
+      label="Name"
+      required
+      clearable
+      prepend-inner-icon="mdi-account"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="password"
+      :rules="passwordRules"
+      label="Password"
+      required
+      validate-on-blur
+      clearable
+      prepend-inner-icon="mdi-lock"
+      
+    ></v-text-field>
+
+    <v-btn
+     
+      color="success"
+      class="mr-4"
+      @click="submitLogin"
+    >
+      Login
+    </v-btn>
+  </v-form>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -27,11 +46,20 @@ import { mapFields } from 'vuex-map-fields'
 
 export default {
   name: 'Login',
-  data() {
-    return {
-      
-    }
-  },
+    data() {
+      return {
+      // valid: false,
+      // name: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v.length >= 2 && v.length <= 10) || 'Name length must be between 2 and 10 characters',
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => v.length >= 4 || 'Password length must be at least 5 characters',
+      ],
+      }
+    },
   computed: {
     ...mapFields('auth', [
       'loginForm.username',
@@ -40,7 +68,10 @@ export default {
   },
   methods: {
     ...mapActions('auth',["login"]),
-    loginUser() {
+    submitLogin() {
+        //       if (this.$refs.form.validate()) {
+        //   this.snackbar = true
+        // }
       const USER_INFO = {
         username: this.username,
         password: this.password
@@ -51,5 +82,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.v-btn:not(.v-btn--round).v-size--default {
+  margin-top: 10px;
+}
 </style>

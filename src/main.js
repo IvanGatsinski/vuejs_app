@@ -6,10 +6,12 @@ import store from './store/index'
 import axios from 'axios'
 import * as progress from 'nprogress'
 import vuetify from './plugins/vuetify';
+import VTooltip from 'v-tooltip'
 
 axios.defaults.baseURL = 'https://baas.kinvey.com';
 // before a request is made start the nprogress
 axios.interceptors.request.use(config => {
+
   progress.start()
   return config
 })
@@ -23,6 +25,7 @@ axios.interceptors.response.use(response => {
 
 
 Vue.use(NProgress)
+Vue.use(VTooltip)
 const nprogress = new NProgress()
 
 Vue.config.productionTip = false

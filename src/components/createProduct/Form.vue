@@ -44,7 +44,7 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields'
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'CreateProduct',
@@ -54,7 +54,8 @@ export default {
             'createProduct.price', 
             'createProduct.description', 
             'createProduct.condition'
-        ])
+        ]),
+        
     },
     methods: {
         ...mapActions('products', [
@@ -65,7 +66,8 @@ export default {
                 name: this.name,
                 price: this.price,
                 description: this.description,
-                condition: this.condition
+                condition: this.condition,
+                //favouritedBy: []
             }
             this.createProduct(PRODUCT_DATA)
         }

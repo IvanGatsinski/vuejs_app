@@ -13,6 +13,7 @@ const routes = [
     { path: '/', component: Home },
     { path: '/register', component: Register },
     { path: '/login', component: Login },
+    { path: '/logout', redirect: '/login' },
     { path: '/myProfile', component: MyProfile},
     { path: '/product/create', component: CreateProduct },
     { path: '*', redirect: '/login' }
@@ -24,15 +25,16 @@ const router = new VueRouter({
 }) 
 
 router.beforeEach((to, from, next) => {
-    store.dispatch('auth/getToken')
-  
+    store.dispatch('user/getSession')
+    const authtoken = store.state.user.authtoken
+
     if (to.fullPath === '/login' || to.fullPath === '/register') {
-      if (store.state.auth.authToken) {
+      if (authtoken) {
         next('/');
       }
     }
     else {
-      if (!store.state.auth.authToken) {
+      if (!authtoken) {
         next('/login');
       }
     }

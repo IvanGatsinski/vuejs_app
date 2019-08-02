@@ -1,9 +1,13 @@
-import { get } from './helpers'
+import { get, put } from './helpers'
 
-function fetchMyProducts(loggedUserId) {
-    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"_acl.creator":"${loggedUserId}"}`)
+function fetchUserInfo(id) {
+    return get(`/user/${process.env.VUE_APP_KEY}/${id}`)
+}
+function updateUserInfo(id, data) {
+    return put(`/user/${process.env.VUE_APP_KEY}/${id}`, data)
 }
 
 export {
-    fetchMyProducts,
+    fetchUserInfo,
+    updateUserInfo,
 }
