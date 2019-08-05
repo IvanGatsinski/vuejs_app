@@ -1,7 +1,5 @@
 <template>
-    <div>
-    <h3>Create your product!</h3>
-    <v-container grid-list-xl>
+       <v-container grid-list-xl>
         <v-layout row justify-space-around align-center class="mt-5">
           <v-flex xs12 sm4 md4 lg4 xl4>
     <v-form
@@ -51,43 +49,29 @@
     </v-radio-group>
 
     <v-btn
-      :color="isFormValid"
       class="mr-4"
-      @click="submitProduct">
-      Create
+      @click="submitEdit">
+      Save
+    </v-btn>
+        <v-btn to="/"
+      class="mr-4">
+      Cancel
     </v-btn>
   </v-form>
-            </v-flex>
-            <v-flex xs12 sm4 md4 lg4 xl4>
-                  <v-card class="gallery__card">
-      <v-img
-        class="white--text"
-        height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      >
-      <v-card-title class="align-end fill-height">{{ productPrice }}</v-card-title>
-      </v-img>
-
-      <v-card-text multi-line class="black--text grey lighten-1">{{ productName }}</v-card-text>
-
-        <v-card-text>
-            Date Published
-        </v-card-text>
-    </v-card>
-            </v-flex>
+          </v-flex>
         </v-layout>
     </v-container>
-  </div>
 </template>
 
 <script>
 import { mapFields } from 'vuex-map-fields'
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
-    name: 'CreateProduct',
+    name: 'EditProduct',
     data() {
       return {
+        productId: this.$router.history.current.params.id,
         valid: true,
         productNameRules: [
           v => !!v || 'Product must have name',
@@ -105,10 +89,10 @@ export default {
     },
     computed: {
         ...mapFields('products', [
-            'createProduct.productName', 
-            'createProduct.productPrice', 
-            'createProduct.productDescription', 
-            'createProduct.productCondition'
+            'editProduct.productName', 
+            'editProduct.productPrice', 
+            'editProduct.productDescription', 
+            'editProduct.productCondition'
         ]),
         isFormValid() {
           console.log(this.$refs)
@@ -122,26 +106,23 @@ export default {
     },
     methods: {
         ...mapActions('products', [
-            'createProduct'
+            //'fetchProduct',
+             'editProduct',
+             'clearEditProductFields'
         ]),
-        submitProduct() {
-            const PRODUCT_DATA = {
-                name: this.productName,
-                price: this.productPrice,
-                description: this.productDescription,
-                condition: this.productCondition,
-            }
-            console.log(this.$refs.productForm.validate())
-            if (this.$refs.productForm.validate()) {
-              this.createProduct(PRODUCT_DATA)
-            }
+        submitEdit() {
+            this.editProduct(this.productId)
         }
+    },
+    created() {
+        //this.fetchProduct(this.productId)
+    },
+    beforeDestroy() {
+        this.clearEditProductFields()
     }
 }
 </script>
 
-<style scoped>
-  .v-card__text {
-    word-wrap: break-word;
-  }
+<style>
+
 </style>

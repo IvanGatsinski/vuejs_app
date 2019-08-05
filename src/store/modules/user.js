@@ -26,6 +26,7 @@ const user = {
             localStorage.removeItem('userData')
             state.userProfile = {}
             state.authtoken = ''
+            router.push('/login')
         }
     },
     actions: {

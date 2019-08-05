@@ -3,7 +3,7 @@
         <v-layout row justify-center align-center>
             <v-flex xs11 sm4 md4 lg4 xl8>
     <v-form
-    ref="form"
+    ref="loginForm"
   >
     <v-text-field
       v-model="username"
@@ -11,7 +11,6 @@
       :rules="nameRules"
       label="Name"
       required
-      clearable
       prepend-inner-icon="mdi-account"
     ></v-text-field>
 
@@ -20,14 +19,13 @@
       :rules="passwordRules"
       label="Password"
       required
-      validate-on-blur
-      clearable
+     
       prepend-inner-icon="mdi-lock"
       
     ></v-text-field>
-
+    
     <v-btn
-     
+      :disabled="isFormValid"
       color="success"
       class="mr-4"
       @click="submitLogin"
@@ -48,8 +46,6 @@ export default {
   name: 'Login',
     data() {
       return {
-      // valid: false,
-      // name: '',
       nameRules: [
         v => !!v || 'Name is required',
         v => (v.length >= 2 && v.length <= 10) || 'Name length must be between 2 and 10 characters',
@@ -64,19 +60,20 @@ export default {
     ...mapFields('auth', [
       'loginForm.username',
       'loginForm.password'
-    ])
+    ]),
+    isFormValid() {
+      return this.username && this.password && this.$refs.loginForm.validate() ? false : true
+    }
   },
   methods: {
-    ...mapActions('auth',["login"]),
+    ...mapActions('auth',["authenticate"]),
     submitLogin() {
-        //       if (this.$refs.form.validate()) {
-        //   this.snackbar = true
-        // }
-      const USER_INFO = {
+      let user_info = {
         username: this.username,
-        password: this.password
+        password: this.password,
+        authType: 'login'
       };
-      this.login(USER_INFO);
+      this.authenticate(user_info);
     }
   },
 };

@@ -12,12 +12,12 @@
 
     <template v-if="!userIsLogged">
         <router-link to="/register">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-3">
+            <v-btn rounded class="ma-1 py-1" tile color="#0277BD">
             Register
             </v-btn>
         </router-link>
         <router-link to="/login">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-3">
+            <v-btn rounded class="ma-1 py-1" tile color="#0277BD">
             Login
             </v-btn>
         </router-link>
@@ -25,23 +25,23 @@
 
     <template v-if="userIsLogged">
         <v-btn icon class="fav__items-btn">
-            <v-icon :class="colorIfListNotEmpty" large>mdi-heart </v-icon><span class="fav__items-count">{{ favouriteProductsCount }}</span>
+            <v-icon  color="" large>mdi-cart-outline </v-icon><span class="fav__items-count">0</span>
         </v-btn>
-        <router-link to="/">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-3">
-                <v-icon left color="light-green accent-3">mdi-home</v-icon> Home
+        <router-link exact to="/">
+            <v-btn small class="ma-1" color="#0277BD">
+                <v-icon left color="green accent-2">mdi-home</v-icon> Home
             </v-btn>
         </router-link>  
         <router-link to="/myProfile">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-3">
-                <v-icon left color="light-green accent-3">mdi-account-circle</v-icon> Profile
+            <v-btn small class="ma-1" color="#0277BD">
+                <v-icon left color="green accent-2">mdi-account-circle</v-icon> Profile
             </v-btn>
         </router-link>
-        <router-link to="/logout">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-3" @click="logoutUser">
-                <v-icon left color="light-green accent-3">mdi-logout</v-icon> Logout
+        
+            <v-btn small class="ma-1" color="#0277BD" @click="logoutUser">
+                <v-icon left color="green accent-2">mdi-logout</v-icon> Logout
             </v-btn>
-        </router-link>
+        
     </template>
 
   </v-app-bar>
@@ -70,12 +70,6 @@ export default {
     userGreeting() {
       return `Hello ${this.userProfile.username}`;
     },
-    favouriteProductsCount() {
-      return this.userProfile.favouriteProducts.length;
-    },
-    colorIfListNotEmpty() {
-      return this.userProfile.favouriteProducts.length ? 'fav__items-icon--color' : ''
-    },
     userIsLogged() {
       return this.authtoken
     }
@@ -93,6 +87,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .router-link-active {
+      border-radius: 6px;
+      background-color: rgb(130, 229, 253);
+    }
+    
+    /* Remove the leftover opacity on click */
+    .v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
+      opacity: 0;
+    }
     .fav__items-btn:hover {
         background: transparent;
     }
@@ -106,31 +109,4 @@ export default {
     .v-btn__content {
         margin-left: -30px;
     }
-/* div.logged-user {
-  color: rgb(2, 165, 43);
-}
-div.unlogged-user {
-  color: rgb(173, 147, 0);
-}
-h3 {
-  margin: 40px 0 0;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  cursor: pointer;
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-} */
 </style>

@@ -1,9 +1,11 @@
 <template>
     <v-container grid-list-lg class="pa-5">
-         <transition-group name="list-products" tag="div" class="layout row wrap">
-            <v-flex
+        <v-layout row>
+            <transition-group name="list-products" tag="div" class="layout row wrap">
+                <v-flex 
+                xs12 sm6 md4 lg3 xl2
                 v-for="product in allProducts"
-                :key="product._id" xs12 sm6 md4 lg3 xl2>
+                :key="product._id">
                     <Product 
                         :creatorId="product._acl.creator"
                         :name="product.name"
@@ -11,8 +13,9 @@
                         :productId="product._id"
                         :dateCreated="product._kmd.ect">
                     </Product>
-            </v-flex>
-       </transition-group>
+                </v-flex>
+            </transition-group>
+        </v-layout>
     </v-container>
 </template>
 

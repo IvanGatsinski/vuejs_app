@@ -14,15 +14,21 @@ axios.interceptors.request.use(config => {
 
   progress.start()
   return config
+}, error => {
+  progress.done()
+  return Promise.reject(error);
 })
 
 // before a response is returned stop nprogress
 axios.interceptors.response.use(response => {
   progress.done()
   return response
+}, error => {
+  console.log(error);
+  
+  progress.done()
+  return Promise.reject(error);
 })
-
-
 
 Vue.use(NProgress)
 Vue.use(VTooltip)

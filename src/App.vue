@@ -24,14 +24,6 @@ export default {
     NprogressContainer,
     Header,
   },
-  methods: {
-    ...mapActions('user',[
-      'getSession'
-    ]),
-  },
-  created() {
-    this.getSession()
-  }
 };
 </script>
 

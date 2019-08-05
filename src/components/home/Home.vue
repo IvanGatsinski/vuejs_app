@@ -1,7 +1,18 @@
 <template>
     <div>
-        <h1>Welcome to my page</h1>
-            <Products></Products>
+        <h1 class="text-center">Welcome to my page</h1>
+        <v-container grid-list-xl>
+            <v-layout row>
+                <v-flex class="text-right">
+                    <router-link to="/product/create">
+                    <v-btn small class="ma-1" color="white--text light-blue darken-4">
+                    <v-icon left color="green accent-2">mdi-plus</v-icon> Add product
+                    </v-btn>
+                    </router-link>
+                </v-flex>
+            </v-layout>
+        </v-container>
+      <Products></Products>
     </div>
 </template>
 

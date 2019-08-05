@@ -1,57 +1,60 @@
 <template>
-    <v-card>
+    <v-card class="gallery__card">
       <v-img
         class="white--text"
         height="200px"
         src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
       >
-      <v-card-title class="align-end fill-height">{{ fixedProductPrice }}</v-card-title>
+      <v-card-title class="align-end fill-height">{{ formattedPrice }}</v-card-title>
       </v-img>
 
       <v-card-text class="black--text grey lighten-1">{{ name }}  
       </v-card-text>
-
-      <v-card-actions class="grey lighten-2">
-        <v-btn icon :disabled="isProductOwner" @click="addOrRemoveFromFavs(productId)">
-          <v-icon large :color="productIsInFavs">mdi-heart</v-icon>
-        </v-btn>
-            <v-spacer></v-spacer>
-        <div v-if="isProductOwner">
-          <v-btn class="light-blue darken-1 pa-0">Edit</v-btn>
-          <v-btn @click="deleteProduct(productId)">Remove</v-btn>
+        <div class="owner-rights" v-if="isOwner">
+        
+          <v-btn @click="fetchEditProductData(productId)" icon large class="owner-rights__item mx-1 py-1">
+             <v-hover v-slot:default="{ hover }">
+                <v-icon :title="'Edit Product'" :color="!hover ? 'cyan' : 'amber lighten-2'">mdi-square-edit-outline</v-icon>
+             </v-hover>
+          </v-btn>
+        <dialog-product-delete :productId="productId">
+            <v-hover v-slot:default="{ hover }">
+                <v-icon :title="'Delete Product'" :color="!hover ? 'cyan' : 'red lighten-2'">mdi-delete</v-icon> 
+            </v-hover>
+        </dialog-product-delete>
         </div>
-      </v-card-actions>
 
         <v-card-text>
             {{ datePublished }}
         </v-card-text>
     </v-card>
-<!-- 
-        <p>Description: {{ description }}</p>
-        <p>Condition: {{ condition }}</p>
-        <p>Date created: {{ dateCreated }}</p> -->
-
+    
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-
+import DialogProductDelete from './DialogProductDelete'
 export default {
     name: 'Product',
+    components: {
+        DialogProductDelete
+    },
+    methods: {
+        ...mapActions('products', [
+            'fetchProduct'
+        ]),
+        fetchEditProductData(productId) {
+            this.fetchProduct(productId)
+        }
+    },
     computed: {
         ...mapState('user', [
             'userProfile',
         ]),
-        productIsInFavs() {
-            const FAVOURITE_PRODUCTS = this.userProfile.favouriteProducts
-
-            return FAVOURITE_PRODUCTS && FAVOURITE_PRODUCTS.includes(this.productId) ?
-            'red lighten-1' : ''
-        },
-        isProductOwner() {
+        isOwner() {
             return this.creatorId === this.userProfile._id ? true : false
         },
-        fixedProductPrice() {
+        formattedPrice() {
             return `${Number(this.price).toFixed(2)} лв.`
         },
         datePublished() {
@@ -65,15 +68,6 @@ export default {
         
             return `Публикувано на ${day}-${month}-${year} г.`
         }
-    },
-    methods: {
-        ...mapActions('products', ['removeProduct', 'addOrRemoveProductInFavs']),
-        deleteProduct(productId) {
-            this.removeProduct(productId)
-        },
-        addOrRemoveFromFavs(productId) {
-            this.addOrRemoveProductInFavs(productId)
-        },
     },
     props: {
         productId: {
@@ -101,6 +95,21 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+    .gallery__card {
+        position: relative;
+    }
+    .gallery__card > .owner-rights {
+        background-color: rgba(0, 0, 0, 0.75);
+        position: absolute;
+        transform: translate(0em, -15.9em);
+        border-radius: 4px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .gallery__card > .owner-rights > .owner-rights__item {
+        width: auto;
+        height: 44px;
+    }
 </style>

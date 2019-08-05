@@ -10,8 +10,6 @@ const BASIC_TOKEN = `${btoa(APP_CREDENTIALS)}`;
 const AUTH_TOKEN = () => store.state.user.userProfile._kmd.authtoken
 
 function get(url) {
-    console.log(store.state.user.userProfile)
-    console.log(AUTH_TOKEN())
     return axios({
         method: 'GET',
         url: `${url}`,
