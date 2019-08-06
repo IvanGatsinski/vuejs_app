@@ -66,6 +66,7 @@
 <script>
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapMutations } from 'vuex'
+import store from '../../store/index'
 
 export default {
     name: 'EditProduct',
@@ -113,6 +114,10 @@ export default {
         submitEdit() {
             this.editProduct(this.productId)
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        store.dispatch('products/setProductForEdit', to.params.id)
+        next()
     },
     created() {
         //this.fetchProduct(this.productId)

@@ -9,7 +9,6 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-// import { fetchAllProducts } from "../../api_calls/products";
 
 export default {
   name: "MyProfile",
@@ -23,9 +22,6 @@ export default {
   created() {
     this.fetchMyProducts(this.userProfile._id);
   },
-  mounted() {
-    console.log(this.myProducts);
-  }
 };
 </script>
 

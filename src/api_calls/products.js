@@ -9,7 +9,7 @@ function fetchMyProducts(loggedUserId) {
 function fetchProduct(productId) {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products/${productId}`)
 }
-function editProduct(productId, data) {
+function updateProduct(productId, data) {
     return put(`/appdata/${process.env.VUE_APP_KEY}/products/${productId}`, data)
 }
 function addProduct(data) {
@@ -18,13 +18,16 @@ function addProduct(data) {
 function removeProduct(id) {
     return remove(`/appdata/${process.env.VUE_APP_KEY}/products/${id}`)
 }
-
+function fetchMyCartProducts(id) {
+    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"sellerId":"[${id}]"}`)
+}
 
 export {
     fetchAllProducts,
     fetchMyProducts,
+    fetchMyCartProducts,
     fetchProduct,
-    editProduct,
+    updateProduct,
     addProduct,
     removeProduct,
 }

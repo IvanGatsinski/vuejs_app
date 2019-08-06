@@ -11,7 +11,10 @@
                         :name="product.name"
                         :price="Number(product.price)"
                         :productId="product._id"
-                        :dateCreated="product._kmd.ect">
+                        :dateCreated="product._kmd.ect"
+                        :description="product.description"
+                        :condition="product.condition"
+                        >
                     </Product>
                 </v-flex>
             </transition-group>

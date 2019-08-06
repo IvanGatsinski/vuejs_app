@@ -1,9 +1,11 @@
-import { fetchAllProducts,
-         fetchMyProducts,
-         fetchProduct,
-         editProduct, 
-         addProduct, 
-         removeProduct } from '../../api_calls/products'
+import {
+    fetchAllProducts,
+    fetchMyProducts,
+    fetchProduct,
+    updateProduct,
+    addProduct,
+    removeProduct
+} from '../../api_calls/products'
 import { getField, updateField } from 'vuex-map-fields'
 import router from '../../router'
 
@@ -12,6 +14,7 @@ const products = {
     state: {
         allProducts: [],
         myProducts: [],
+        productDetails: null,
         createProduct: {
             valid: false,
             productName: '',
@@ -39,7 +42,7 @@ const products = {
             state.createProduct.productCondition = ''
         },
         fetchAllProducts(state, payload) {
-            state.allProducts = [...payload].reverse()
+            state.allProducts = [...payload].reverse()//TODO CHANGE IT LATER WITH QUERY
         },
         fetchMyProducts(state, payload) {
             state.myProducts = [...payload]
@@ -49,6 +52,12 @@ const products = {
             state.editProduct.productPrice = payload.price
             state.editProduct.productDescription = payload.description
             state.editProduct.productCondition = payload.condition
+        },
+        setProductDetails(state, payload) {
+
+
+            state.productDetails = payload
+            console.log(state.productDetails);
         },
         clearEditProductFields(state) {
             state.editProduct.productName = ''
@@ -87,27 +96,31 @@ const products = {
                 .catch()
         },
         editProduct({ state }, productId) {
-           let productData = {
-            name : state.editProduct.productName,
-            price : state.editProduct.productPrice,
-            description : state.editProduct.productDescription,
-            condition : state.editProduct.productCondition
-           }
-           editProduct(productId, productData)
-            .then(res => {
-                router.push('/')
-            })
-            .catch(err => {
-                console.warn(err);
-            })
+            let productData = {
+                name: state.editProduct.productName,
+                price: state.editProduct.productPrice,
+                description: state.editProduct.productDescription,
+                condition: state.editProduct.productCondition
+            }
+            updateProduct(productId, productData)
+                .then(res => {
+                    router.push('/')
+                })
+                .catch(err => {
+                    console.warn(err);
+                })
         },
-        fetchProduct({ commit }, productId) {
+        setProductForEdit({ commit }, productId) {
             fetchProduct(productId)
                 .then(res => {
-                    const ID = res.data._id;
-                    
                     commit('setEditProductFields', res.data)
-                    router.push(`/product/edit/${ID}`)
+                })
+                .catch(err => console.warn('EBASI'));
+        },
+        setProductDetails({ commit }, productId) {
+            fetchProduct(productId)
+                .then(res => {
+                    commit('setProductDetails', res.data)
                 })
                 .catch(err => console.warn('EBASI'));
         },

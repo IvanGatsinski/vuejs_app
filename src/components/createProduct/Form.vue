@@ -68,11 +68,39 @@
       <v-card-title class="align-end fill-height">{{ productPrice }}</v-card-title>
       </v-img>
 
-      <v-card-text multi-line class="black--text grey lighten-1">{{ productName }}</v-card-text>
+      <v-card-text>   
+        Име: {{ productName }} 
+        <br/>
+        Състояние: {{ formatProductCondition }}
+        
+      </v-card-text>
 
         <v-card-text>
-            Date Published
+            Публикувано на: {{ new Date(Date.now()).toLocaleDateString() }}
         </v-card-text>
+
+            <v-card-actions class="cyan lighten-5">
+      <v-btn disabled
+        text
+        >
+        {{ show ? 'hide details' : 'show details' }}
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn disabled icon>
+        <v-icon>
+            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <div v-show="show">
+        <v-card-text class="cyan lighten-4">
+         Пълно описание: {{ productDescription }}
+        </v-card-text>
+      </div>
+    </v-expand-transition>
+
     </v-card>
             </v-flex>
         </v-layout>
@@ -88,6 +116,8 @@ export default {
     name: 'CreateProduct',
     data() {
       return {
+        author: this.authorName,
+        show: true,
         valid: true,
         productNameRules: [
           v => !!v || 'Product must have name',
@@ -104,12 +134,16 @@ export default {
       }
     },
     computed: {
+        ...mapState('user', ['userProfile']),
         ...mapFields('products', [
             'createProduct.productName', 
             'createProduct.productPrice', 
             'createProduct.productDescription', 
             'createProduct.productCondition'
         ]),
+        authorName() {
+          return this.userProfile.username
+        },
         isFormValid() {
           console.log(this.$refs)
           return this.productName && 
@@ -118,6 +152,17 @@ export default {
                  this.productCondition &&
                  this.$refs.productForm.validate() ? 
                  'success' : 'warning'
+        },
+        formatProductCondition() {
+          if (this.productCondition === 'New') {
+            return 'Ново'
+          }
+          else if (this.productCondition === 'Old') {
+            return 'Употребявано'
+          }
+          else {
+            return ''
+          }
         }
     },
     methods: {
@@ -125,18 +170,19 @@ export default {
             'createProduct'
         ]),
         submitProduct() {
-            const PRODUCT_DATA = {
+            let product_data = {
                 name: this.productName,
+                author: this.authorName,
                 price: this.productPrice,
                 description: this.productDescription,
                 condition: this.productCondition,
             }
             console.log(this.$refs.productForm.validate())
             if (this.$refs.productForm.validate()) {
-              this.createProduct(PRODUCT_DATA)
+              this.createProduct(product_data)
             }
         }
-    }
+    },
 }
 </script>
 

@@ -1,18 +1,28 @@
 <template>
-    <v-card class="gallery__card">
-      <v-img
-        class="white--text"
-        height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      >
-      <v-card-title class="align-end fill-height">{{ formattedPrice }}</v-card-title>
-      </v-img>
+    <v-card class="cyan lighten-5 gallery__card">
 
-      <v-card-text class="black--text grey lighten-1">{{ name }}  
+     <dialog-product-image
+        :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
+
+       <v-card>
+          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+      </v-card>
+      
+     </dialog-product-image>
+
+      <v-card-text class="py-0">
+        Име на продукта: {{ name }} 
+        <br/>
+        Състояние: {{ condition === 'Old' ? 'Използвано' : 'Ново' }}
+        <br/>
+        {{ datePublished }}
+        <br/>
+        <v-btn text :to="`/product/details/${productId}`">Виж Повече</v-btn>
       </v-card-text>
+      
         <div class="owner-rights" v-if="isOwner">
         
-          <v-btn @click="fetchEditProductData(productId)" icon large class="owner-rights__item mx-1 py-1">
+          <v-btn :to="`/product/edit/${productId}`" icon large class="owner-rights__item mx-1 py-1">
              <v-hover v-slot:default="{ hover }">
                 <v-icon :title="'Edit Product'" :color="!hover ? 'cyan' : 'amber lighten-2'">mdi-square-edit-outline</v-icon>
              </v-hover>
@@ -24,35 +34,53 @@
         </dialog-product-delete>
         </div>
 
+    <v-card-actions @click="show = !show" class="cyan lighten-5 py-0">
+      <v-btn
+        text
+        >
+        {{ show ? 'hide details' : 'show details' }}
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>
+            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <v-card v-show="show">
         <v-card-text>
-            {{ datePublished }}
+          Пълно описание: {{ description }}
         </v-card-text>
+      </v-card>
+    </v-expand-transition>
+
     </v-card>
     
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import DialogProductDelete from './DialogProductDelete'
+import DialogProductImage from './DialogProductImage'
+
 export default {
     name: 'Product',
     components: {
-        DialogProductDelete
+        DialogProductDelete,
+        DialogProductImage,
     },
-    methods: {
-        ...mapActions('products', [
-            'fetchProduct'
-        ]),
-        fetchEditProductData(productId) {
-            this.fetchProduct(productId)
+    data() {
+        return {
+            show: false,
         }
     },
     computed: {
-        ...mapState('user', [
-            'userProfile',
-        ]),
+        ...mapState('user', ['userProfile']),
+        ...mapGetters('user', ['isAuthor']),
         isOwner() {
-            return this.creatorId === this.userProfile._id ? true : false
+            return this.isAuthor(this.creatorId)
         },
         formattedPrice() {
             return `${Number(this.price).toFixed(2)} лв.`
@@ -90,6 +118,14 @@ export default {
             type: Number,
             required: true,
         },
+        description: {
+            type: String,
+            required: true,
+        },
+        condition: {
+            type: String,
+            required: true,
+        },
     },
 
 }
@@ -102,7 +138,7 @@ export default {
     .gallery__card > .owner-rights {
         background-color: rgba(0, 0, 0, 0.75);
         position: absolute;
-        transform: translate(0em, -15.9em);
+        top: 0;
         border-radius: 4px;
         width: 100%;
         display: flex;
@@ -111,5 +147,8 @@ export default {
     .gallery__card > .owner-rights > .owner-rights__item {
         width: auto;
         height: 44px;
+    }
+    .v-responsive__content {
+        cursor: zoom-in;
     }
 </style>

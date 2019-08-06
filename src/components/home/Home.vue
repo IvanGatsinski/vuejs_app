@@ -6,7 +6,7 @@
                 <v-flex class="text-right">
                     <router-link to="/product/create">
                     <v-btn small class="ma-1" color="white--text light-blue darken-4">
-                    <v-icon left color="green accent-2">mdi-plus</v-icon> Add product
+                    <v-icon left color="yellow lighten-2">mdi-plus-circle-outline</v-icon> Add product
                     </v-btn>
                     </router-link>
                 </v-flex>

@@ -130,6 +130,7 @@ export default {
        city: this.city,
        county: this.county,
        phone: this.phone,
+       cart: [],
        authType: 'register'
      }
      this.authenticate(user_data)
