@@ -7,14 +7,7 @@
                 v-for="product in allProducts"
                 :key="product._id">
                     <Product 
-                        :creatorId="product._acl.creator"
-                        :name="product.name"
-                        :price="Number(product.price)"
-                        :productId="product._id"
-                        :dateCreated="product._kmd.ect"
-                        :description="product.description"
-                        :condition="product.condition"
-                        >
+                        :product="product">
                     </Product>
                 </v-flex>
             </transition-group>
@@ -36,14 +29,14 @@ export default {
             'allProducts',
         ])
     },
-    methods: {
-        ...mapActions('products',[
-            'fetchAllProducts'
-        ]),
-    },
-    created() {
-        this.fetchAllProducts()
-    }
+    // methods: {
+    //     ...mapActions('products',[
+    //         'fetchAllProducts'
+    //     ]),
+    // },
+    // created() {
+    //     this.fetchAllProducts()
+    // }
 }
 </script>
 

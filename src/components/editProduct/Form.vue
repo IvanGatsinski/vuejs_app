@@ -53,7 +53,7 @@
       @click="submitEdit">
       Save
     </v-btn>
-        <v-btn to="/"
+        <v-btn @click="cancelEdit()"
       class="mr-4">
       Cancel
     </v-btn>
@@ -107,10 +107,12 @@ export default {
     },
     methods: {
         ...mapActions('products', [
-            //'fetchProduct',
              'editProduct',
              'clearEditProductFields'
         ]),
+        cancelEdit() {
+            this.$router.back(-1)
+        },
         submitEdit() {
             this.editProduct(this.productId)
         }
@@ -118,9 +120,6 @@ export default {
     beforeRouteEnter(to, from, next) {
         store.dispatch('products/setProductForEdit', to.params.id)
         next()
-    },
-    created() {
-        //this.fetchProduct(this.productId)
     },
     beforeDestroy() {
         this.clearEditProductFields()

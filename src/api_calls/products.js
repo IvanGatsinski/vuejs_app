@@ -18,8 +18,8 @@ function addProduct(data) {
 function removeProduct(id) {
     return remove(`/appdata/${process.env.VUE_APP_KEY}/products/${id}`)
 }
-function fetchMyCartProducts(id) {
-    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"sellerId":"[${id}]"}`)
+function fetchMyCartProducts(ids) {
+    return get(`/appdata/${process.env.VUE_APP_KEY}/products/?query={"_id":{"$in":${JSON.stringify(ids)}}}`)
 }
 
 export {

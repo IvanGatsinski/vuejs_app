@@ -117,13 +117,13 @@ const products = {
                 })
                 .catch(err => console.warn('EBASI'));
         },
-        setProductDetails({ commit }, productId) {
-            fetchProduct(productId)
-                .then(res => {
-                    commit('setProductDetails', res.data)
-                })
-                .catch(err => console.warn('EBASI'));
-        },
+        // setProductDetails({ commit }, productId) {
+        //     fetchProduct(productId)
+        //         .then(res => {
+        //             commit('setProductDetails', res.data)
+        //         })
+        //         .catch(err => console.warn('EBASI'));
+        // },
         removeProduct({ dispatch }, id) {
             removeProduct(id)
                 .then(res => {

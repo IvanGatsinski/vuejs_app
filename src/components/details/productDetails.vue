@@ -10,9 +10,9 @@
       height="200px"
       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
     >
-      <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title>
+      
     </v-img>
-
+  <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title>
     <v-card-text>
       <span>Number 10</span><br>
       <span class="text--primary">
@@ -49,26 +49,19 @@
       </v-card>
           </v-flex>
       </v-layout>
-              
-    <template>
-      <v-text-field v-model="quantity" :value="quantity">
-        <v-icon @click="increment()" slot="append" color="red">mdi-plus</v-icon>
-        <v-icon @click="decrement()" slot="prepend" color="green">mdi-minus</v-icon>
-      </v-text-field>
-    </template>
-     {{ quantity }}
    </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import { fetchProduct } from '../../api_calls/products'
 import store from '../../store/index'
 export default {
     name: 'ProductDetails',
     data() {
       return {
-        quantity: 0,
         productId: this.$route.params.id,
+        product: () => this.allProducts.filter(p => p._id === this.productId)[0]
       }
     },
     methods: {
@@ -93,23 +86,33 @@ export default {
       }
     },
     computed: {
-      ...mapState('products', ['productDetails']),
+      ...mapState('products', ['productDetails', 'allProducts']),
       ...mapGetters('user',['isItemInCart','isAuthor']),
                   
       itemIsInCart() {
         return this.isItemInCart(this.productId)
       },
       isNotAuthor() {
-        if (this.productDetails) {
-
-          let authorId = this.productDetails._acl.creator
+          let authorId = this.product()._acl.creator
           return !this.isAuthor(authorId)
-        }
       }
     },
+    created() {
+      console.log(this.product())
+    },
     beforeRouteEnter(to, from, next) {
-      store.dispatch('products/setProductDetails', to.params.id)
-      next()
+            fetchProduct(to.params.id)
+                .then(res => {
+                  console.log(store);
+                  
+                  store.commit('products/setProductDetails', res.data)
+                    //commit('setProductDetails', res.data)
+                    next()
+                })
+                .catch(err => console.log(err));
+
+      //store.dispatch('products/setProductDetails', to.params.id)
+     // next()
     }
 }
 </script>

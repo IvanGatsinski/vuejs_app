@@ -76,7 +76,7 @@
       </v-card-text>
 
         <v-card-text>
-            Публикувано на: {{ new Date(Date.now()).toLocaleDateString() }}
+            {{ datePublished }}
         </v-card-text>
 
             <v-card-actions class="cyan lighten-5">
@@ -163,6 +163,17 @@ export default {
           else {
             return ''
           }
+        },
+        datePublished() {
+          let date = new Date(new Date()),
+            year = date.getFullYear(),
+            month = date.getMonth() + 1,
+            day = date.getDate();
+
+          month < 10 ? month = `0${month}` : false
+          day < 10 ? day = `0${day}` : false
+    
+        return `Публикувано на ${day}-${month}-${year} г.`
         }
     },
     methods: {

@@ -5,11 +5,11 @@
         :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
 
        <v-card>
-          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+          <v-img class="product__img" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
       </v-card>
       
      </dialog-product-image>
-
+        
       <v-card-text class="py-0">
         Име на продукта: {{ name }} 
         <br/>
@@ -17,9 +17,15 @@
         <br/>
         {{ datePublished }}
         <br/>
-        <v-btn text :to="`/product/details/${productId}`">Виж Повече</v-btn>
+        <v-btn text :to="`/product/details/${productId}`">Детайли</v-btn>
       </v-card-text>
-      
+
+        <v-icon 
+        class="icon__item--in-cart" 
+        :title="'Item is already in cart'" 
+        color="yellow" 
+        large v-show="isItemInCart">mdi-check-decagram</v-icon>
+
         <div class="owner-rights" v-if="isOwner">
         
           <v-btn :to="`/product/edit/${productId}`" icon large class="owner-rights__item mx-1 py-1">
@@ -33,31 +39,7 @@
             </v-hover>
         </dialog-product-delete>
         </div>
-
-    <v-card-actions @click="show = !show" class="cyan lighten-5 py-0">
-      <v-btn
-        text
-        >
-        {{ show ? 'hide details' : 'show details' }}
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>
-            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
-        </v-icon>
-      </v-btn>
-    </v-card-actions>
-
-    <v-expand-transition>
-      <v-card v-show="show">
-        <v-card-text>
-          Пълно описание: {{ description }}
-        </v-card-text>
-      </v-card>
-    </v-expand-transition>
-
     </v-card>
-    
 </template>
 
 <script>
@@ -73,7 +55,13 @@ export default {
     },
     data() {
         return {
-            show: false,
+            productId: this.product._id,
+            name: this.product.name,
+            price: this.product.price,
+            description: this.product.description,
+            condition: this.product.condition,
+            creatorId: this.product._acl.creator,
+            dateCreated: this.product._kmd.ect,
         }
     },
     computed: {
@@ -81,6 +69,9 @@ export default {
         ...mapGetters('user', ['isAuthor']),
         isOwner() {
             return this.isAuthor(this.creatorId)
+        },
+        isItemInCart() {
+            return this.userProfile.cart.find(id => id === this.productId)
         },
         formattedPrice() {
             return `${Number(this.price).toFixed(2)} лв.`
@@ -98,40 +89,20 @@ export default {
         }
     },
     props: {
-        productId: {
-            type: String,
+        product: {
             required: true,
-        },
-        creatorId: {
-            type: String,
-            required: true,
-        },
-        dateCreated: {
-            type: String,
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        condition: {
-            type: String,
-            required: true,
-        },
+            type: Object,
+        }
     },
-
 }
 </script>
 
 <style>
+    .icon__item--in-cart {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
     .gallery__card {
         position: relative;
     }
@@ -148,7 +119,7 @@ export default {
         width: auto;
         height: 44px;
     }
-    .v-responsive__content {
+    .product__img {
         cursor: zoom-in;
     }
 </style>

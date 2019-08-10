@@ -16,8 +16,6 @@
 <script>
 import NprogressContainer from "vue-nprogress/src/NprogressContainer";
 import Header from './components/common/Header'
-import { mapActions } from 'vuex'
-import { fetchMyCartProducts } from './api_calls/products'
 
 export default {
   name: 'App',
@@ -25,16 +23,15 @@ export default {
     NprogressContainer,
     Header,
   },
-  created() {
-//     fetchMyCartProducts('5d2c76c15e24b02eee365e82')
-// .then(res => console.log(res))
-// .catch(err => console.log(err))
-
-  }
 };
 </script>
 
 <style>
+
+    /* Remove the leftover opacity on click */
+.v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
+  opacity: 0;
+}
 .v-text-field .v-label {
   top: 0 !important;
 }

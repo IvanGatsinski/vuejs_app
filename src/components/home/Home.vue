@@ -25,9 +25,25 @@ export default {
     components: {
         Products
     },
+    methods: {
+    ...mapActions('products',[
+        'fetchAllProducts'
+        ]),
+    ...mapActions('user',[
+        'wasCartProductDeleted'
+        ]),
+    },
+    created() {
+        console.log(1);
+        this.wasCartProductDeleted()
+        this.fetchAllProducts()
+    },
+    //     beforeCreate() {
+    //    store.dispatch('user/wasCartProductDeleted')
+    // },
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

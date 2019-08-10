@@ -7,8 +7,10 @@ import ProductDetails from './components/details/productDetails'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import MyProfile from './components/user/MyProfile'
+import Cart from './components/cart/Cart'
 import store from './store/index'
 
+import Test from '../Test'
 Vue.use(VueRouter)
 
 const routes = [
@@ -16,6 +18,8 @@ const routes = [
     { path: '/register', component: Register },
     { path: '/login', component: Login },
     { path: '/myProfile', component: MyProfile},
+    { path: '/cart', component: Cart},
+    { path: '/test', component: Test},
     { path: '/product/create', component: CreateProduct },
     { path: '/product/edit/:id', component: EditProduct },
     { path: '/product/details/:id', component: ProductDetails },
