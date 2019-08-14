@@ -1,5 +1,8 @@
 <template>
-    <v-card class="mb-3" :class="slideBackground" color="rgba(31, 77, 107, .5)" dark @mouseleave="leaveBackground" @mouseenter="enterBackground">
+    <v-card 
+      class="mb-3"
+      color="rgba(31, 77, 107, .5)" dark 
+      >
       <v-list-item three-line>
         <v-list-item-avatar size="125" tile>
           <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
@@ -10,12 +13,18 @@
                 </v-list-item-title>
               <v-list-item-subtitle>Author: {{ author }}</v-list-item-subtitle>
                <v-list-item-subtitle>Price: {{ price }}</v-list-item-subtitle>
+               <v-list-item-subtitle> </v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn @click="removeFromCart(id)" color="rgb(31, 107, 36)">Remove</v-btn>
+            <v-list-item-content>
+              <v-layout column>
+                <v-btn class="details__btn mb-2" :to="`/product/details/${id}`" color="primary">Details</v-btn>
+                <v-btn class="details__btn" @click="removeFromCart(id)" color="rgb(31, 107, 36)">Remove</v-btn>
+              </v-layout>
+            </v-list-item-content>
           </v-list-item>
         
-        <v-btn class="ml-5" outlined="" text :to="`/product/details/${id}`">Детайли</v-btn>
-        <v-card-actions @click="show = !show" class="rgba(31, 77, 107, 0.5) py-0">
+       
+        <!-- <v-card-actions @click="show = !show" class="rgba(31, 77, 107, 0.5) py-0">
       <v-btn
         text
         >
@@ -35,7 +44,7 @@
           {{ description }}
         </v-card-text>
       </v-card>
-    </v-expand-transition>
+    </v-expand-transition> -->
 
         </v-card>
 </template>
@@ -50,8 +59,7 @@ export default {
     },
     data() {
       return {
-          slideBackground: '',
-          show: false,
+          //show: false,
           id: this.product._id,
           name: this.product.name,
           price: this.product.price,
@@ -68,21 +76,18 @@ export default {
     },
     methods: {
       ...mapActions('user', ['removeFromCart']),
-      enterBackground() {
-        this.slideBackground = 'slideEnter'
-      },
-      leaveBackground() {
-        this.slideBackground = 'slideLeave'
-      }
     }
 }
 </script>
 
 <style scoped>
+  .details__btn {
+    border-radius: 50px !important;
+  }
   .v-sheet.theme--dark {
     background: rgba(31, 77, 107, 0.5);
   }
-  .v-card {
+  /* .v-card {
     position: relative;
   }
   .v-card > * {
@@ -129,5 +134,5 @@ export default {
     width: 100%;
 
     }
-  }
+  } */
 </style>

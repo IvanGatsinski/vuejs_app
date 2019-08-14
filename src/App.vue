@@ -3,12 +3,13 @@
         <nprogress-container>
        </nprogress-container>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     <v-app>      
-            <Header/>
+          <Header/>
         <v-content>
                <transition name="fade" mode="out-in">
                     <router-view></router-view>
                </transition>
         </v-content>
+          <Footer/>
     </v-app>
   </div>
 </template>
@@ -16,18 +17,19 @@
 <script>
 import NprogressContainer from "vue-nprogress/src/NprogressContainer";
 import Header from './components/common/Header'
+import Footer from './components/common/Footer'
 
 export default {
   name: 'App',
   components: {
     NprogressContainer,
     Header,
+    Footer
   },
 };
 </script>
 
 <style>
-
     /* Remove the leftover opacity on click */
 .v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
   opacity: 0;
@@ -42,8 +44,8 @@ export default {
   text-decoration: none;
 }
 #app {
-  background-color: #0a406d;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%2364edff' stroke-width='0' stroke-opacity='0.45' %3E%3Ccircle fill='%230a406d' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%23004774' cx='0' cy='0' r='1700'/%3E%3Ccircle fill='%23004e7b' cx='0' cy='0' r='1600'/%3E%3Ccircle fill='%23005582' cx='0' cy='0' r='1500'/%3E%3Ccircle fill='%23005d88' cx='0' cy='0' r='1400'/%3E%3Ccircle fill='%2300648d' cx='0' cy='0' r='1300'/%3E%3Ccircle fill='%23006b92' cx='0' cy='0' r='1200'/%3E%3Ccircle fill='%23007296' cx='0' cy='0' r='1100'/%3E%3Ccircle fill='%23007a99' cx='0' cy='0' r='1000'/%3E%3Ccircle fill='%2300819b' cx='0' cy='0' r='900'/%3E%3Ccircle fill='%2300889d' cx='0' cy='0' r='800'/%3E%3Ccircle fill='%23008f9f' cx='0' cy='0' r='700'/%3E%3Ccircle fill='%2300979f' cx='0' cy='0' r='600'/%3E%3Ccircle fill='%23009e9f' cx='0' cy='0' r='500'/%3E%3Ccircle fill='%2300a59f' cx='0' cy='0' r='400'/%3E%3Ccircle fill='%2300ac9d' cx='0' cy='0' r='300'/%3E%3Ccircle fill='%2300b29c' cx='0' cy='0' r='200'/%3E%3Ccircle fill='%231eb99a' cx='0' cy='0' r='100'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #3363b0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%23ffffff' stroke-width='0' stroke-opacity='0.08' %3E%3Ccircle fill='%233363b0' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%23446bb5' cx='0' cy='0' r='1700'/%3E%3Ccircle fill='%235374b9' cx='0' cy='0' r='1600'/%3E%3Ccircle fill='%23607cbe' cx='0' cy='0' r='1500'/%3E%3Ccircle fill='%236d85c3' cx='0' cy='0' r='1400'/%3E%3Ccircle fill='%23798ec7' cx='0' cy='0' r='1300'/%3E%3Ccircle fill='%238496cc' cx='0' cy='0' r='1200'/%3E%3Ccircle fill='%23909fd1' cx='0' cy='0' r='1100'/%3E%3Ccircle fill='%239ba9d5' cx='0' cy='0' r='1000'/%3E%3Ccircle fill='%23a7b2da' cx='0' cy='0' r='900'/%3E%3Ccircle fill='%23b2bbdf' cx='0' cy='0' r='800'/%3E%3Ccircle fill='%23bdc5e3' cx='0' cy='0' r='700'/%3E%3Ccircle fill='%23c8cee8' cx='0' cy='0' r='600'/%3E%3Ccircle fill='%23d3d8ed' cx='0' cy='0' r='500'/%3E%3Ccircle fill='%23dee1f1' cx='0' cy='0' r='400'/%3E%3Ccircle fill='%23e9ebf6' cx='0' cy='0' r='300'/%3E%3Ccircle fill='%23f4f5fa' cx='0' cy='0' r='200'/%3E%3Ccircle fill='%23ffffff' cx='0' cy='0' r='100'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
   background-size: cover;
   font-family: "Avenir", Helvetica, Arial, sans-serif;

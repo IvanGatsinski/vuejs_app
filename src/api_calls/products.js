@@ -3,8 +3,8 @@ import { get, put, post, remove } from './helpers'
 function fetchAllProducts() {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products`)
 }
-function fetchMyProducts(loggedUserId) {
-    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"_acl.creator":"${loggedUserId}"}`)
+function fetchProducts(creatorId) {
+    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"_acl.creator":"${creatorId}"}`)
 }
 function fetchProduct(productId) {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products/${productId}`)
@@ -18,14 +18,14 @@ function addProduct(data) {
 function removeProduct(id) {
     return remove(`/appdata/${process.env.VUE_APP_KEY}/products/${id}`)
 }
-function fetchMyCartProducts(ids) {
+function fetchCartProducts(ids) {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products/?query={"_id":{"$in":${JSON.stringify(ids)}}}`)
 }
 
 export {
     fetchAllProducts,
-    fetchMyProducts,
-    fetchMyCartProducts,
+    fetchProducts,
+    fetchCartProducts,
     fetchProduct,
     updateProduct,
     addProduct,

@@ -1,15 +1,25 @@
 import router from '../../router'
-import { updateUserInfo } from '../../api_calls/user'
-import { fetchMyCartProducts } from '../../api_calls/products'
+import { updateUserInfo, fetchUserInfo } from '../../api_calls/user'
+import { fetchCartProducts } from '../../api_calls/products'
+import { getField, updateField } from 'vuex-map-fields'
 
 const user = {
     namespaced: true,
     state: {
         userProfile: {},
+        userDetails: null,
         cartProducts: [],
+        editUserInfo: {
+            valid: false,
+            email: '',
+            gender: '',
+            city: '',
+            phone: '',
+        },
         authtoken: '',
     },
     getters: {
+        getField,
         isAuthor: (state) => (authorId) => {
             return state.userProfile._id === authorId
         },
@@ -24,13 +34,27 @@ const user = {
         }
     },
     mutations: {
+        updateField,
+        setUserDetails(state, payload) {
+            state.userDetails = payload;
+        },
+        clearUserDetails(state) {
+            state.userDetails = null
+        },
+        editUserInfo(state, updatedUserProfile) {
+            state.userProfile = updatedUserProfile
+        }, 
         updateCartProducts(state, productId) {
-            console.log(state.cartProducts);
-            console.log(productId);
             state.cartProducts = state.cartProducts.filter(p => p._id !== productId)
         },
         saveCartProducts(state, products) {
             state.cartProducts = products
+        },
+        setEditUserInfoFields(state) {
+            state.editUserInfo.email = state.userProfile.email
+            state.editUserInfo.gender = state.userProfile.gender
+            state.editUserInfo.city = state.userProfile.city
+            state.editUserInfo.phone = state.userProfile.phone
         },
         saveSession(state, response_data) {
             state.userProfile = response_data
@@ -54,6 +78,18 @@ const user = {
         },
     },
     actions: {
+        editUserInfo({ commit, state }, payload) {
+            let userId = state.userProfile._id
+            
+            updateUserInfo(userId, payload)
+                .then(res => {
+                    console.log(res);
+                    commit('saveSession', res.data)
+                    commit('editUserInfo', res.data)
+                    router.push('/myProfile')
+                })     
+                .catch(err => console.log(err))  
+        },
         fetchCartProducts({ commit }, payload) {
             commit('saveCartProducts', payload)
         },
@@ -62,8 +98,8 @@ const user = {
             let userId = state.userProfile._id
             let cartIds = state.userProfile.cart
             let storeUpdatedIds;
-            
-            fetchMyCartProducts(cartIds)
+            console.log('await')
+            fetchCartProducts(cartIds)
                 .then(res => {
                     // Check if some user has deleted his product by comparing both array lengths
                     if (cartIds.length !== res.data.length) {
@@ -118,6 +154,18 @@ const user = {
             })
             .catch(err => console.log(err))
         },
+        getUserDetails({ commit }, userId) {
+            fetchUserInfo(userId)
+                .then(res => {
+                    commit('setUserDetails', res.data)
+                    console.log(res)
+                    
+                })
+                .catch(err => console.log(err))
+        },
+        clearUserDetails({ commit }) {
+            commit('clearUserDetails')
+        },
         saveSession({ commit }, response_data) {
             commit('saveSession', response_data)
             router.push("/");
@@ -127,7 +175,7 @@ const user = {
         },
         clearSession({ commit }) {
             commit('clearSession')
-        }
+        },
     }
 }
 

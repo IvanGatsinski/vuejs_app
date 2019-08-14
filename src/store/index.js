@@ -11,7 +11,7 @@ const store = {
         auth,
         products,
         user,
-    }
+    },
 }
 
 export default new Vuex.Store(store)

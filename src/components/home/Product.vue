@@ -1,5 +1,5 @@
 <template>
-    <v-card class="cyan lighten-5 gallery__card">
+    <v-card class="gallery__card">
 
      <dialog-product-image
         :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
@@ -9,26 +9,52 @@
       </v-card>
       
      </dialog-product-image>
-        
+
       <v-card-text class="py-0">
-        Име на продукта: {{ name }} 
+        <p class="mb-2 product__name">{{ name }}</p> 
+
+        <v-btn 
+            height="auto"
+            class="mb-2 py-1"
+            color="primary"
+            :to="{ name: 'productDetails', params: { id: productId} }">
+            Details
+        </v-btn>
         <br/>
-        Състояние: {{ condition === 'Old' ? 'Използвано' : 'Ново' }}
-        <br/>
-        {{ datePublished }}
-        <br/>
-        <v-btn text :to="`/product/details/${productId}`">Детайли</v-btn>
+        <v-layout column>
+            <v-flex>
+                    Price: 
+                    <span class="gallery__card-content">&euro; {{ price }}</span>
+                    <br>
+                    Condition: 
+                    <span class="gallery__card-content">{{ condition }}</span>
+                    <br>
+                    Author: 
+                    <router-link  class="gallery__card-content"
+                    :to="{ name: 'userDetails', params: { id: creatorId } }"
+                    v-if="!isOwner"
+                    >
+                    {{ author }}
+                    </router-link>
+                    <span class="gallery__card-content" v-else>{{ author }}</span>
+                    
+
+            </v-flex>
+        </v-layout>
+        
       </v-card-text>
 
         <v-icon 
-        class="icon__item--in-cart" 
-        :title="'Item is already in cart'" 
-        color="yellow" 
-        large v-show="isItemInCart">mdi-check-decagram</v-icon>
+            class="icon__item--in-cart" 
+            :title="'Item is already in cart'" 
+            color="light-green accent-2" 
+            large v-show="isItemInCart">
+            mdi-check-circle
+        </v-icon>
 
         <div class="owner-rights" v-if="isOwner">
         
-          <v-btn :to="`/product/edit/${productId}`" icon large class="owner-rights__item mx-1 py-1">
+          <v-btn :to="{ name: 'editProduct', params: { id: productId } }" icon large class="owner-rights__item mx-1 py-1">
              <v-hover v-slot:default="{ hover }">
                 <v-icon :title="'Edit Product'" :color="!hover ? 'cyan' : 'amber lighten-2'">mdi-square-edit-outline</v-icon>
              </v-hover>
@@ -58,10 +84,10 @@ export default {
             productId: this.product._id,
             name: this.product.name,
             price: this.product.price,
+            author: this.product.author,
             description: this.product.description,
             condition: this.product.condition,
             creatorId: this.product._acl.creator,
-            dateCreated: this.product._kmd.ect,
         }
     },
     computed: {
@@ -76,17 +102,6 @@ export default {
         formattedPrice() {
             return `${Number(this.price).toFixed(2)} лв.`
         },
-        datePublished() {
-            let date = new Date(this.dateCreated),
-                year = date.getFullYear(),
-                month = date.getMonth() + 1,
-                day = date.getDate();
-
-            month < 10 ? month = `0${month}` : false
-            day < 10 ? day = `0${day}` : false
-        
-            return `Публикувано на ${day}-${month}-${year} г.`
-        }
     },
     props: {
         product: {
@@ -105,9 +120,14 @@ export default {
     }
     .gallery__card {
         position: relative;
+        background-color: rgba(255, 255, 255, 0.45) !important;
+    }
+    .gallery__card-content {
+        font-size: 17px;
+        font-weight: bold;
     }
     .gallery__card > .owner-rights {
-        background-color: rgba(0, 0, 0, 0.75);
+        background-color: rgba(0, 0, 0, 0.45);
         position: absolute;
         top: 0;
         border-radius: 4px;
@@ -121,5 +141,12 @@ export default {
     }
     .product__img {
         cursor: zoom-in;
+    }
+    .product__name {
+        font-size: 18px;
+        font-style: italic;
+        text-transform: capitalize;
+        color: rgba(0, 0, 0, 0.753);
+        margin: 0;
     }
 </style>

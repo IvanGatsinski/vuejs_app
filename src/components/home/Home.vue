@@ -4,11 +4,9 @@
         <v-container grid-list-xl>
             <v-layout row>
                 <v-flex class="text-right">
-                    <router-link to="/product/create">
-                    <v-btn small class="ma-1" color="white--text light-blue darken-4">
+                    <v-btn :to="{ name: 'createProduct' }" small class="ma-1" color="white--text light-blue darken-4">
                     <v-icon left color="yellow lighten-2">mdi-plus-circle-outline</v-icon> Add product
                     </v-btn>
-                    </router-link>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -17,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Products from './Products'
 
 export default {
@@ -33,14 +31,13 @@ export default {
         'wasCartProductDeleted'
         ]),
     },
+    computed: {
+    ...mapState('products', ['allProducts'])
+    },
     created() {
-        console.log(1);
         this.wasCartProductDeleted()
         this.fetchAllProducts()
     },
-    //     beforeCreate() {
-    //    store.dispatch('user/wasCartProductDeleted')
-    // },
 }
 </script>
 

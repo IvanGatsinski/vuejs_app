@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <h2>Register Form {{ city }} {{ gender }} {{ username }}</h2>
       <v-container grid-list-xl>
         <v-layout row justify-center align-center>
           <v-flex xs11 sm4 md4 lg4 xl8>
     <v-form
+    v-model="valid"
     ref="registerForm"
   >
     <v-text-field
@@ -22,21 +21,27 @@
       :rules="passwordRules"
       label="Password"
       required
-      validate-on-blur
       clearable
       prepend-inner-icon="mdi-lock"
       
     ></v-text-field>
 
     <v-text-field
-       v-model="repeatPassword"
-      :rules="repeatPasswordRules"
-      label="repeatPassword"
+       v-model="confirmPassword"
+      :rules="confirmPasswordRules"
+      label="Confirm Password"
       required
-      validate-on-blur
       clearable
-      prepend-inner-icon="mdi-lock"
-      
+      prepend-inner-icon="mdi-lock"   
+    ></v-text-field>
+
+    <v-text-field
+       v-model="email"
+      :rules="emailRules"
+      label="email"
+      required
+      clearable
+      prepend-inner-icon="mdi-email"   
     ></v-text-field>
 
     <v-text-field
@@ -44,21 +49,32 @@
       :rules="ageRules"
       label="Age"
       required
-      validate-on-blur
       clearable
-      prepend-inner-icon="mdi-lock"
-      
+      prepend-inner-icon="mdi-update"
     ></v-text-field>
 
-    <v-radio-group v-model="gender" row>
+        <v-select
+          v-model="birthdayYears"
+          :rules="birthdayRules"
+          :items="years()"
+          label="Select"
+          required
+        ></v-select>
+
+    <v-radio-group 
+        required
+        v-model="gender" 
+        :rules="genderRules" 
+        prepend-icon="mdi-gender-male-female" row>
       <v-radio label="Female" color="pink" value="Female"></v-radio>
       <v-radio label="Male" color="primary" value="Male"></v-radio>
     </v-radio-group>
 
       <v-select
+        prepend-inner-icon="mdi-city-variant"
         v-model="city"
         :items="cities"
-        :rules="[v => !!v || 'City is required']"
+        :rules="cityRules"
         label="City"
         required
       ></v-select>
@@ -66,30 +82,25 @@
     <v-text-field
       v-model="phone"
       :rules="phoneRules"
-      label="Phone"
+      label="+359 "
       required
-      validate-on-blur
       clearable
-      prepend-inner-icon="mdi-lock"
-      
+      prepend-inner-icon="mdi-cellphone-basic"
     ></v-text-field>
-
-    <v-btn
-     
+    <v-btn 
+      :disabled="!valid"
       color="success"
       class="mr-4"
-      @click="submitRegister">
-      Login
+      @click="submitRegister()">
+      Register
     </v-btn>
   </v-form>
             </v-flex>
         </v-layout>
     </v-container>
-  </div>
 </template>
 
 <script>
-import axios from 'axios'
 import { mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import { registerUser } from '../../api_calls/auth'
@@ -98,24 +109,56 @@ export default {
   name: 'Register',
   data() {
     return {
-      nameRules: [v => !!v || 'Name is required'],
-      passwordRules: [v => !!v || 'Password is required'],
-      repeatPasswordRules: [v => !!v || 'Repeat pass is required'],
-      ageRules: [v => !!v || 'Age is required'],
-      phoneRules: [v => !!v || 'Phone is required'],
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => /^[a-zA-Z]{3,12}$/.test(v) || 'Username must contain letters only and be between 3 and 12 characters long'
+        ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/.test(v) || 'Password must be between 4 and 12 characters and contain at least one letter and one number',
+        ],
+      confirmPasswordRules: [
+        v => !!v || 'Confirm password is required',
+        v => (this.confirmPassword === this.password) || 'Passwords must match'
+        ],
+      emailRules: [
+        v => !!v || 'E-mail is required'
+        ],
+      cityRules: [v => !!v || 'City is required!'],
+      genderRules: [v => !!v || 'Gender is required!'],
+      birthdayRules: [v => !!v || 'Birthday Years are required!'],
+      ageRules: [
+        v => !!v || 'Age is required'
+        ],
+      phoneRules: [
+        v => !!v || 'Phone is required'
+        ],
       cities: ['Pleven', 'Plovdiv', 'Sofia'],
+      years: () => {
+        let date = new Date()
+        let getThisYear = date.getFullYear()
+        let maxAge = 105
+        let earliestYear = getThisYear - maxAge
+        let yearsCollection = []
+
+        for (let i = 1; i <= maxAge; i++) { yearsCollection.push(earliestYear + i) }
+        return yearsCollection
+      },
     }
   },
   computed: {
     ...mapFields('auth', [
+      'registerForm.valid',
       'registerForm.username',
       'registerForm.password',
-      'registerForm.repeatPassword',
+      'registerForm.confirmPassword',
+      'registerForm.email',
+      'registerForm.birthdayYears',
       'registerForm.age',
       'registerForm.gender',
       'registerForm.city',
       'registerForm.phone'
-    ])
+    ]),
   },
   methods: {
     ...mapActions('auth',[
@@ -125,21 +168,26 @@ export default {
      let user_data = {
        username: this.username,
        password: this.password,
+       email: this.email,
        age: this.age,
-       sex: this.sex,
+       gender: this.gender,
        city: this.city,
-       county: this.county,
        phone: this.phone,
        cart: [],
        authType: 'register'
      }
-     this.authenticate(user_data)
+     if (this.$refs.registerForm.validate()) {
+      this.authenticate(user_data)
+     }
    },
+  },
+  beforeDestroy() {
+    this.$refs.registerForm.reset()
   }
 };
 </script>
 
-<style scope>
+<style>
 label {
   display: block;
   margin: 10px;

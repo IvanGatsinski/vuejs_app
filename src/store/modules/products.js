@@ -1,6 +1,6 @@
 import {
     fetchAllProducts,
-    fetchMyProducts,
+    fetchProducts,
     fetchProduct,
     updateProduct,
     addProduct,
@@ -14,6 +14,7 @@ const products = {
     state: {
         allProducts: [],
         myProducts: [],
+        randomUserProducts: null,
         productDetails: null,
         createProduct: {
             valid: false,
@@ -31,21 +32,68 @@ const products = {
         }
     },
     getters: {
-        getField
+        getField,
+        productPublishedDate: state  => published => {
+            let date = new Date(published),
+            year = date.getFullYear(),
+            month = date.getMonth() + 1,
+            day = date.getDate(),
+            hours = date.getHours(),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds(),
+            dayOrNight = hours >= 0 && hours <= 12 ? 'AM' : 'PM'
+
+            month < 10 ? month = `0${month}` : false
+            day < 10 ? day = `0${day}` : false
+            hours < 10 ? hours = `0${hours}` : false
+            minutes < 10 ? minutes = `0${minutes}` : false
+            seconds < 10 ? seconds = `0${seconds}` : false
+        
+            return `Published on ${day}-${month}-${year} at ${hours}:${minutes}:${seconds} ${dayOrNight}.`
+        },
+        productLastEdittedDate: state => lastEdit => {
+            let date = new Date(lastEdit),
+            year = date.getFullYear(),
+            month = date.getMonth() + 1,
+            day = date.getDate(),
+            hours = date.getHours(),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds(),
+            dayOrNight = hours >= 0 && hours <= 12 ? 'AM' : 'PM'
+
+            month < 10 ? month = `0${month}` : false
+            day < 10 ? day = `0${day}` : false
+            hours < 10 ? hours = `0${hours}` : false
+            minutes < 10 ? minutes = `0${minutes}` : false
+            seconds < 10 ? seconds = `0${seconds}` : false
+
+            return `Last modified on ${day}-${month}-${year} at ${hours}:${minutes}:${seconds} ${dayOrNight}.`
+        }
     },
     mutations: {
         updateField,
-        clearCreateProductFields(state) {
-            state.createProduct.productName = ''
-            state.createProduct.productPrice = null
-            state.createProduct.productDescription = ''
-            state.createProduct.productCondition = ''
+        updateProduct(state, payload) {
+            let newArr = []
+            state.allProducts.forEach((val, i) => {
+                if (val._id === payload._id) {
+                    newArr.push(payload)
+                }
+                else {
+                    newArr.push(val)
+                }
+            })
+            console.log(newArr);
+            
+            state.allProducts = newArr
         },
         fetchAllProducts(state, payload) {
-            state.allProducts = [...payload].reverse()//TODO CHANGE IT LATER WITH QUERY
+            state.allProducts = payload.reverse()//TODO CHANGE IT LATER WITH QUERY
         },
-        fetchMyProducts(state, payload) {
-            state.myProducts = [...payload]
+        updateMyProducts(state, payload) {
+            state.myProducts = payload
+        },
+        updateRandomUserProducts(state, payload) {
+            state.randomUserProducts = payload
         },
         setEditProductFields(state, payload) {
             state.editProduct.productName = payload.name
@@ -54,17 +102,11 @@ const products = {
             state.editProduct.productCondition = payload.condition
         },
         setProductDetails(state, payload) {
-
-
             state.productDetails = payload
-            console.log(state.productDetails);
         },
-        clearEditProductFields(state) {
-            state.editProduct.productName = ''
-            state.editProduct.productPrice = ''
-            state.editProduct.productDescription = ''
-            state.editProduct.productCondition = ''
-        },
+        clearRandomUserProducts(state) {
+            state.randomUserProducts = null
+        }
     },
     actions: {
         fetchAllProducts({ commit }) {
@@ -76,11 +118,20 @@ const products = {
                     console.log(err);
                 })
         },
-        fetchMyProducts({ commit }, loggedUserId) {
-            fetchMyProducts(loggedUserId)
+        getRandomUserProducts({ commit }, id) {
+            fetchProducts(id)
                 .then(res => {
-                    commit('fetchMyProducts', res.data)
+                    commit('updateRandomUserProducts', res.data)
                 })
+                .catch(err => {
+                    console.warn(err);
+                })
+        },
+        getMyProducts({ commit }, id) { 
+            fetchProducts(id)
+                .then(res => {
+                    commit('updateMyProducts', res.data)
+                }) // TODO => Refactor this func and getRandomUser...into one
                 .catch(err => {
                     console.warn(err);
                 })
@@ -91,11 +142,11 @@ const products = {
                     dispatch('fetchAllProducts')
                     router.push('/')
 
-                    commit('clearCreateProductFields')
+                    // commit('clearCreateProductFields')
                 })
                 .catch()
         },
-        editProduct({ state }, productId) {
+        editProduct({ commit, state }, productId) {
             let productData = {
                 name: state.editProduct.productName,
                 price: state.editProduct.productPrice,
@@ -104,6 +155,7 @@ const products = {
             }
             updateProduct(productId, productData)
                 .then(res => {
+                    commit('updateProduct', res.data)
                     router.push('/')
                 })
                 .catch(err => {
@@ -121,8 +173,7 @@ const products = {
         //     fetchProduct(productId)
         //         .then(res => {
         //             commit('setProductDetails', res.data)
-        //         })
-        //         .catch(err => console.warn('EBASI'));
+
         // },
         removeProduct({ dispatch }, id) {
             removeProduct(id)
@@ -131,8 +182,8 @@ const products = {
                 })
                 .catch(err => console.log(err))
         },
-        clearEditProductFields({ commit }) {
-            commit('clearEditProductFields')
+        clearRandomUserProducts({ commit }) {
+            commit('clearRandomUserProducts')
         }
     },
 }

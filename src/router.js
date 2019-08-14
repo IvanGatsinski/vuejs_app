@@ -7,23 +7,33 @@ import ProductDetails from './components/details/productDetails'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import MyProfile from './components/user/MyProfile'
+import EditUserInfo from './components/user/editUserInfo/Form'
+import MyProductsList from "./components/user/myProducts/MyProductsList"
+import UserDetails from './components/userDetails/UserDetails'
+import UserProductsList from './components/userDetails/UserProductsList'
 import Cart from './components/cart/Cart'
 import store from './store/index'
 
-import Test from '../Test'
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/', component: Home },
-    { path: '/register', component: Register },
-    { path: '/login', component: Login },
-    { path: '/myProfile', component: MyProfile},
-    { path: '/cart', component: Cart},
-    { path: '/test', component: Test},
-    { path: '/product/create', component: CreateProduct },
-    { path: '/product/edit/:id', component: EditProduct },
-    { path: '/product/details/:id', component: ProductDetails },
-    { path: '*', redirect: '/login' }
+    { path: '/', name: 'home', component: Home },
+    { path: '/register', name: 'register', component: Register },
+    { path: '/login', name: 'login', component: Login },
+    { path: '/cart', name: 'cart', component: Cart},
+    { path: '/myprofile', name: 'myProfile', component: MyProfile, 
+      children: [
+      { path: 'edit', name: 'editMyProfile', component: EditUserInfo },
+      { path: 'products', name: 'myProducts', component: MyProductsList },
+    ]},
+    { path: '/user/details/:id', name: 'userDetails', component: UserDetails, 
+      children: [
+      { path: 'products', name: 'userProducts', component: UserProductsList },
+    ]},
+    { path: '/product/create', name: 'createProduct', component: CreateProduct },
+    { path: '/product/edit/:id', name: 'editProduct', component: EditProduct },
+    { path: '/product/details/:id', name: 'productDetails', component: ProductDetails },
+    { path: '*', redirect: '/' }
 ]
 
 const router = new VueRouter({

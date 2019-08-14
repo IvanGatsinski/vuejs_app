@@ -12,14 +12,48 @@
     >
       
     </v-img>
-  <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title>
+  <v-card-title class="align-end fill-height">{{ productDetails.name }}</v-card-title>
     <v-card-text>
-      <span>Number 10</span><br>
+    
       <span class="text--primary">
-        <span>Whitehaven Beach</span><br>
-        <span>Whitsunday Island, Whitsunday Islands</span>
+        <span v-if="!isAuthor(productDetails._acl.creator)"
+        >
+        Author: <router-link 
+        :to="{ name: 'userDetails', params: { id:productDetails._acl.creator } }"
+        >{{ productDetails.author }}
+        </router-link>
+        </span>
+
+        <span v-else>Author: {{ productDetails.author }}</span><br>
+        <span>Price: {{ productDetails.price }}</span><br>
+        <span>Condition: {{ productDetails.condition }}</span><br>
+       
       </span>
+    <span>{{ publishedDate }}</span><br>
+    <span>{{ lastEdittedDate }}</span><br>
     </v-card-text>
+
+    <v-card-actions @click="show = !show" class="rgba(31, 77, 107, 0.5) py-0">
+      <v-btn
+        text
+        >
+        {{ show ? 'Hide description' : 'Show description' }}
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>
+            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <v-card v-show="show">
+        <v-card-text class="card-description__text">
+          {{ productDetails.description }}
+        </v-card-text>
+      </v-card>
+    </v-expand-transition>
 
     <v-card-actions>
       <v-btn @click="backOnePage()"
@@ -60,8 +94,7 @@ export default {
     name: 'ProductDetails',
     data() {
       return {
-        productId: this.$route.params.id,
-        product: () => this.allProducts.filter(p => p._id === this.productId)[0]
+        show: false
       }
     },
     methods: {
@@ -73,50 +106,56 @@ export default {
         this.$router.back(-1)
       },
       addItemToCart() {
-        this.addToCart(this.productId)
+        this.addToCart(this.productDetails._id)
       },
       removeItemFromCart() {
-        this.removeFromCart(this.productId)
+        this.removeFromCart(this.productDetails._id)
       },
-      increment() {
-        this.quantity++
-      },
-      decrement() {
-        this.quantity--
-      }
     },
     computed: {
-      ...mapState('products', ['productDetails', 'allProducts']),
-      ...mapGetters('user',['isItemInCart','isAuthor']),
-                  
-      itemIsInCart() {
-        return this.isItemInCart(this.productId)
+      ...mapState('products', [
+        'productDetails', 
+        'allProducts'
+        ]),
+      ...mapGetters('user',[
+        'isItemInCart',
+        'isAuthor'
+        ]),
+      ...mapGetters('products', [
+        'productPublishedDate', 
+        'productLastEdittedDate'
+        ]),
+      publishedDate() {
+        return this.productPublishedDate(this.productDetails._kmd.ect)
       },
-      isNotAuthor() {
-          let authorId = this.product()._acl.creator
-          return !this.isAuthor(authorId)
+      lastEdittedDate() {
+        return this.productLastEdittedDate(this.productDetails._kmd.lmt)
+      },
+      itemIsInCart() {
+        return this.isItemInCart(this.productDetails._id)
+      },
+      isNotAuthor() {         
+        let authorId = this.productDetails._acl.creator
+        return !this.isAuthor(authorId)
       }
     },
-    created() {
-      console.log(this.product())
-    },
     beforeRouteEnter(to, from, next) {
-            fetchProduct(to.params.id)
-                .then(res => {
-                  console.log(store);
-                  
-                  store.commit('products/setProductDetails', res.data)
-                    //commit('setProductDetails', res.data)
-                    next()
-                })
-                .catch(err => console.log(err));
-
-      //store.dispatch('products/setProductDetails', to.params.id)
-     // next()
+      fetchProduct(to.params.id)
+        .then(res => {
+          
+          store.commit('products/setProductDetails', res.data)
+          next()
+        })
+        .catch(err => console.log(err));
     }
 }
 </script>
 
 <style scoped>
-
+  .v-card.v-sheet.theme--light {
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .card-description__text {
+    background: rgba(255, 255, 255, 0.35);
+  }
 </style>

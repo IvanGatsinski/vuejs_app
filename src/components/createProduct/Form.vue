@@ -10,10 +10,11 @@
   >
     <v-text-field
       v-model="productName"
-      :counter="10"
+      :counter="15"
       :rules="productNameRules"
       label="Name"
       required
+      validate-on-blur
       clearable
       prepend-inner-icon="mdi-account"
     ></v-text-field>
@@ -37,7 +38,9 @@
       no-resize
       rows="5"
       required
-      :value="'Your product description'"
+      validate-on-blur
+      clearable
+      :placeholder="'Your product description'"
       prepend-inner-icon="mdi-text"
     ></v-textarea>
 
@@ -56,10 +59,16 @@
       @click="submitProduct">
       Create
     </v-btn>
+        <v-btn
+      class="mr-4"
+      @click="$router.back(-1)">
+      Cancel
+    </v-btn>
   </v-form>
-            </v-flex>
-            <v-flex xs12 sm4 md4 lg4 xl4>
-                  <v-card class="gallery__card">
+
+  </v-flex>
+    <v-flex xs12 sm7 md7 lg10 xl10>
+      <v-card class="gallery__card">
       <v-img
         class="white--text"
         height="200px"
@@ -72,14 +81,13 @@
         Име: {{ productName }} 
         <br/>
         Състояние: {{ formatProductCondition }}
-        
       </v-card-text>
 
         <v-card-text>
             {{ datePublished }}
         </v-card-text>
 
-            <v-card-actions class="cyan lighten-5">
+      <v-card-actions class="cyan lighten-5">
       <v-btn disabled
         text
         >
@@ -118,15 +126,20 @@ export default {
       return {
         author: this.authorName,
         show: true,
-        valid: true,
         productNameRules: [
-          v => !!v || 'Product must have name',
+          v => !!v || 'Product must have a name',
+          v => v && v.length >= 3 && v.length <= 15 || 'Product name must be between 3 and 15 characters long',
+          v => v && /^(([a-zA-Z]{3,})(\s?))+[^\s]$/.test(v) || 'Product name must contain latin letters only separated by a single space.',
+          
         ],
         productPriceRules: [
           v => !!v || 'Product must have price.',
+          v => /^([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
         ],
         productDescriptionRules: [
           v => !!v || 'Product must have description.',
+          v => v && v.length >= 10 && v.length <= 250 || 'Product description must be between 10 and 250 characters long',
+          v => /^(([a-zA-Z0-9]+)(\s?))+[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
         ],
         productConditionRules: [
           v => !!v || 'Product must have condition.'
@@ -136,6 +149,7 @@ export default {
     computed: {
         ...mapState('user', ['userProfile']),
         ...mapFields('products', [
+            'createProduct.valid',
             'createProduct.productName', 
             'createProduct.productPrice', 
             'createProduct.productDescription', 
@@ -145,20 +159,14 @@ export default {
           return this.userProfile.username
         },
         isFormValid() {
-          console.log(this.$refs)
-          return this.productName && 
-                 this.productPrice && 
-                 this.productDescription &&
-                 this.productCondition &&
-                 this.$refs.productForm.validate() ? 
-                 'success' : 'warning'
+          return this.valid ? 'success' : 'warning'
         },
         formatProductCondition() {
           if (this.productCondition === 'New') {
-            return 'Ново'
+            return 'New'
           }
           else if (this.productCondition === 'Old') {
-            return 'Употребявано'
+            return 'Used'
           }
           else {
             return ''
@@ -178,7 +186,7 @@ export default {
     },
     methods: {
         ...mapActions('products', [
-            'createProduct'
+            'createProduct',
         ]),
         submitProduct() {
             let product_data = {
@@ -188,12 +196,14 @@ export default {
                 description: this.productDescription,
                 condition: this.productCondition,
             }
-            console.log(this.$refs.productForm.validate())
             if (this.$refs.productForm.validate()) {
               this.createProduct(product_data)
             }
         }
     },
+    beforeDestroy() {
+      this.$refs.productForm.reset()
+    }
 }
 </script>
 

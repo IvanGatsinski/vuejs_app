@@ -2,7 +2,7 @@
     <div>
         <h2>Cart List</h2>
             <v-container grid-list-xl>
-                <v-layout wrap row>
+                <v-layout wrap row justify-center>
                         <v-flex xs12 v-show="!cartProducts.length">
                             <v-alert 
                                 class="text-center black--text"
@@ -16,7 +16,7 @@
                                 Your cart is empty. Your need to add products to your cart.
                             </v-alert>
                         </v-flex>
-                        <v-flex xs12 sm8 md8 lg8 xl8>
+                        <v-flex xs12 sm8 md6 lg5 xl4>
                             <cart-product v-for="product in cartProducts" 
                             :product="product"
                             :key="product._id">
@@ -31,7 +31,7 @@
 <script>
 import CartProduct from './CartProduct'
 import CartCheckout from './CartCheckout'
-import { fetchMyCartProducts } from '../../api_calls/products'
+import { fetchCartProducts } from '../../api_calls/products'
 import store from '../../store/index'
 import { mapState } from 'vuex';
 
@@ -47,7 +47,7 @@ export default {
     beforeRouteEnter(to, from, next) {
         let cartIds = store.state.user.userProfile.cart
 
-        fetchMyCartProducts(cartIds)
+        fetchCartProducts(cartIds)
             .then(res => {
                 store.dispatch('user/fetchCartProducts', res.data)
                 next()

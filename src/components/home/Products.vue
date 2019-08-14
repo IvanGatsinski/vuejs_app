@@ -1,16 +1,30 @@
 <template>
     <v-container grid-list-lg class="pa-5">
         <v-layout row>
-            <transition-group name="list-products" tag="div" class="layout row wrap">
+
+                <v-flex class="ma-auto" xs8 v-show="!allProducts.length">
+                    <v-alert 
+                        class="text-center black--text"
+                        text
+                        prominent
+                        elevation="12"
+                        color="#fff"
+                        icon="mdi-information-outline"
+                        border="top"
+                        >
+                        There aren't any products for sale
+                    </v-alert>
+                </v-flex>
+
                 <v-flex 
-                xs12 sm6 md4 lg3 xl2
+                xs12 sm6 md4 lg3 xl3
                 v-for="product in allProducts"
                 :key="product._id">
                     <Product 
                         :product="product">
                     </Product>
                 </v-flex>
-            </transition-group>
+
         </v-layout>
     </v-container>
 </template>
@@ -21,7 +35,7 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'Products',
-        components: {
+    components: {
         Product
     },
     computed: {
@@ -29,14 +43,6 @@ export default {
             'allProducts',
         ])
     },
-    // methods: {
-    //     ...mapActions('products',[
-    //         'fetchAllProducts'
-    //     ]),
-    // },
-    // created() {
-    //     this.fetchAllProducts()
-    // }
 }
 </script>
 

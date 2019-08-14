@@ -3,6 +3,7 @@
         <v-layout row justify-center align-center>
             <v-flex xs11 sm4 md4 lg4 xl8>
     <v-form
+    v-model="valid"
     ref="loginForm"
   >
     <v-text-field
@@ -15,20 +16,20 @@
     ></v-text-field>
 
     <v-text-field
+      
       v-model="password"
       :rules="passwordRules"
       label="Password"
       required
-     
       prepend-inner-icon="mdi-lock"
       
     ></v-text-field>
     
     <v-btn
-      :disabled="isFormValid"
+      :disabled="!valid"
       color="success"
       class="mr-4"
-      @click="submitLogin"
+      @click="submitLogin()"
     >
       Login
     </v-btn>
@@ -47,23 +48,21 @@ export default {
     data() {
       return {
       nameRules: [
-        v => !!v || 'Name is required',
-        v => (v.length >= 2 && v.length <= 10) || 'Name length must be between 2 and 10 characters',
+        v => !!v || 'Username is required',
+        v => /^.{3,12}$/.test(v) || 'Username must be between 3 and 12 characters'
       ],
       passwordRules: [
         v => !!v || 'Password is required',
-        v => v.length >= 4 || 'Password length must be at least 5 characters',
+        v => /^.{5,12}$/.test(v) || 'Password must be between 5 and 12 characters'
       ],
       }
     },
   computed: {
     ...mapFields('auth', [
+      'loginForm.valid',
       'loginForm.username',
       'loginForm.password'
     ]),
-    isFormValid() {
-      return this.username && this.password && this.$refs.loginForm.validate() ? false : true
-    }
   },
   methods: {
     ...mapActions('auth',["authenticate"]),
@@ -73,9 +72,14 @@ export default {
         password: this.password,
         authType: 'login'
       };
-      this.authenticate(user_info);
+      if (this.$refs.loginForm.validate()) {
+        this.authenticate(user_info);
+      }
     }
   },
+  beforeDestroy() {
+    this.$refs.loginForm.reset()
+  }
 };
 </script>
 

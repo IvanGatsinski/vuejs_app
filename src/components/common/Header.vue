@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="light-blue" dark> 
+  <v-app-bar app color="#3363b0a8" dark> 
     <v-app-bar-nav-icon class="hidden-sm-and-up"></v-app-bar-nav-icon>
 
     <v-toolbar-title v-show="userIsLogged">{{ userGreeting }}</v-toolbar-title>
@@ -7,41 +7,37 @@
     <v-spacer></v-spacer>
 
     <template v-if="!userIsLogged">
-        <router-link to="/register">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-4">
-            Register
+            <v-btn 
+            :to="{ name: 'register' }" 
+            class="ma-1 py-1" 
+            color="light-blue darken-4">
+              Register
             </v-btn>
-        </router-link>
-        <router-link to="/login">
-            <v-btn rounded class="ma-1 py-1" tile color="light-blue darken-4">
-            Login
+            <v-btn :to="{ name: 'login' }" class="ma-1 py-1" color="light-blue darken-4">
+              Login
             </v-btn>
-        </router-link>
     </template>
 
     <template v-if="userIsLogged">
 
-        <v-btn to="/cart" :title="'View Cart'" :color="nonEmptyCartColour" icon class="fav__items-btn">
-            <v-icon medium>mdi-cart-outline</v-icon>
-            <span class="fav__items-count">
-              {{ productsInCart }}
-            </span>
-        </v-btn>
-        
-        <router-link exact to="/">
-            <v-btn small class="ma-1" color="light-blue darken-4">
-                <v-icon left color="yellow lighten-2">mdi-home</v-icon> Home
-            </v-btn>
-        </router-link>  
-        <router-link to="/myProfile">
-            <v-btn small class="ma-1" color="light-blue darken-4">
-                <v-icon left color="yellow lighten-2">mdi-account-circle</v-icon> Profile
-            </v-btn>
-        </router-link>
-        
-            <v-btn small class="ma-1" color="light-blue darken-4" @click="logoutUser">
-                <v-icon left color="yellow lighten-2">mdi-logout</v-icon> Logout
-            </v-btn>
+      <v-btn :to="{ name: 'cart' }" :title="'View Cart'" :color="nonEmptyCartColour" icon class="fav__items-btn">
+          <v-icon medium>mdi-cart-outline</v-icon>
+          <span class="fav__items-count">
+            {{ productsInCart }}
+          </span>
+      </v-btn>
+    
+      <v-btn :to="{ name: 'home' }" small class="ma-1" color="light-blue darken-4">
+          <v-icon left color="yellow lighten-2">mdi-home</v-icon> Home
+      </v-btn>
+
+      <v-btn :to="{ name: 'myProfile' }" small class="ma-1" color="light-blue darken-4">
+          <v-icon left color="yellow lighten-2">mdi-account-circle</v-icon> Profile
+      </v-btn>
+  
+      <v-btn small class="ma-1" color="light-blue darken-4" @click="logoutUser">
+          <v-icon left color="yellow lighten-2">mdi-logout</v-icon> Logout
+      </v-btn>
         
     </template>
 
@@ -76,10 +72,10 @@ export default {
       return this.authtoken
     },
     nonEmptyCartColour() {
-    return this.userProfile.cart.length ? 'rgba(0, 0, 0, 0.75)' : ''
+      return this.userProfile.cart.length ? 'light-green accent-2' : ''
     },
     productsInCart() {
-        return this.userProfile.cart.length
+      return this.userProfile.cart.length
     },
   },
   methods: {
@@ -90,24 +86,22 @@ export default {
       this.logout()
     }
   },
-
+  created() {
+    console.log(this.$route)
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    
     .v-btn:not(.v-btn--text):not(.v-btn--outlined).v-btn--active:before {
       opacity: 0;
     }
     .v-application .light-blue {
           background-color: #03a8f4ab !important;
     }
-    .router-link-active {
-      border-radius: 6px;
-      background-color: rgb(130, 229, 253);
-    }
-    
-
+  
     .fav__items-btn:hover {
         background: transparent;
     }

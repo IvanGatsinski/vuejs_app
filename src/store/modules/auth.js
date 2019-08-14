@@ -1,18 +1,21 @@
-import router from '../../router'
-import { authenticateUser, logoutUser } from '../../api_calls/auth'
+import { authenticateUser } from '../../api_calls/auth'
 import { getField, updateField } from 'vuex-map-fields'
 
 const auth = {
     namespaced: true,
     state: {
         loginForm: {
+            valid: false,
             username: '',
             password: '',
         },
         registerForm: {
+            valid: false,
             username: '',
             password: '',
-            repeatPassword: '',
+            confirmPassword: '',
+            birthdayYears: null,
+            email: '',
             city: '',
             age: null,
             phone: null,
@@ -24,19 +27,6 @@ const auth = {
     },
     mutations: {
         updateField,
-        clearLoginFields(state) {
-            state.loginForm.username = ''
-            state.loginForm.password = ''
-        },
-        clearRegisterFields(state) {
-            state.registerForm.username = ''
-            state.registerForm.password = ''
-            state.registerForm.repeatPassword = ''
-            state.registerForm.city = ''
-            state.registerForm.age = null
-            state.registerForm.phone = null
-            state.registerForm.gender = ''
-        },
     },
     actions: {
         authenticate({ dispatch, commit }, user_data) {
@@ -46,8 +36,6 @@ const auth = {
                     console.log(user_data);
                     
                     dispatch('user/saveSession', RESPONSE_DATA, { root : true })
-                    user_data.authType === 'login' ?
-                    commit('clearLoginFields') : commit('clearRegisterFields')
                 })
         },
         logout({ dispatch }) {

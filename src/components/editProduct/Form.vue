@@ -8,10 +8,11 @@
   >
     <v-text-field
       v-model="productName"
-      :counter="10"
+      :counter="15"
       :rules="productNameRules"
       label="Name"
       required
+      validate-on-blur=""
       clearable
       prepend-inner-icon="mdi-account"
     ></v-text-field>
@@ -35,7 +36,9 @@
       no-resize
       rows="5"
       required
-      :value="'Your product description'"
+      validate-on-blur
+      clearable
+      :placeholder="'Your product description'"
       prepend-inner-icon="mdi-text"
     ></v-textarea>
 
@@ -53,7 +56,9 @@
       @click="submitEdit">
       Save
     </v-btn>
-        <v-btn @click="cancelEdit()"
+    
+    <v-btn 
+      @click="$router.back(-1)"
       class="mr-4">
       Cancel
     </v-btn>
@@ -75,13 +80,19 @@ export default {
         productId: this.$router.history.current.params.id,
         valid: true,
         productNameRules: [
-          v => !!v || 'Product must have name',
+          v => !!v || 'Product must have a name',
+          v => v && v.length >= 3 && v.length <= 15 || 'Product name must be between 3 and 15 characters long',
+          v => v && /^(([a-zA-Z]{3,})(\s?))+[^\s]$/.test(v) || 'Product name must contain latin letters only separated by a single space.',
+          
         ],
         productPriceRules: [
           v => !!v || 'Product must have price.',
+          v => /^([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
         ],
         productDescriptionRules: [
           v => !!v || 'Product must have description.',
+          v => v && v.length >= 10 && v.length <= 250 || 'Product description must be between 10 and 250 characters long',
+          v => /^(([a-zA-Z0-9]+)(\s?))+[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
         ],
         productConditionRules: [
           v => !!v || 'Product must have condition.'
@@ -90,31 +101,31 @@ export default {
     },
     computed: {
         ...mapFields('products', [
+            'editProduct.valid',
             'editProduct.productName', 
             'editProduct.productPrice', 
             'editProduct.productDescription', 
             'editProduct.productCondition'
         ]),
-        isFormValid() {
-          console.log(this.$refs)
-          return this.productName && 
-                 this.productPrice && 
-                 this.productDescription &&
-                 this.productCondition &&
-                 this.$refs.productForm.validate() ? 
-                 'success' : 'warning'
-        }
+        // formIsValid() {
+        //   return this.productName && 
+        //          this.productPrice && 
+        //          this.productDescription &&
+        //          this.productCondition &&
+        //          this.$refs.productForm.validate() ? 
+        //          true : false
+        // }
     },
     methods: {
         ...mapActions('products', [
              'editProduct',
              'clearEditProductFields'
         ]),
-        cancelEdit() {
-            this.$router.back(-1)
-        },
         submitEdit() {
-            this.editProduct(this.productId)
+          if (this.$refs.editProduct.validate()) {
+              this.editProduct(this.productId)
+          }
+           //this.formIsValid ?  : false
         }
     },
     beforeRouteEnter(to, from, next) {
@@ -122,7 +133,7 @@ export default {
         next()
     },
     beforeDestroy() {
-        this.clearEditProductFields()
+        this.$refs.editProduct.reset()
     }
 }
 </script>
