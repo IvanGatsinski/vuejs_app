@@ -56,7 +56,7 @@
     </v-expand-transition>
 
     <v-card-actions>
-      <v-btn @click="backOnePage()"
+      <v-btn @click="$router.back(-1)"
         color="orange"
       >
         back
@@ -102,9 +102,6 @@ export default {
         'addToCart',
         'removeFromCart'
       ]),
-      backOnePage() {
-        this.$router.back(-1)
-      },
       addItemToCart() {
         this.addToCart(this.productDetails._id)
       },

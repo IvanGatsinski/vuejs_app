@@ -14,10 +14,9 @@ const auth = {
             username: '',
             password: '',
             confirmPassword: '',
-            birthdayYears: null,
+            dateOfBirth: null,
             email: '',
             city: '',
-            age: null,
             phone: null,
             gender: '',
         }

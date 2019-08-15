@@ -17,7 +17,7 @@
                            {{ userDetails.username }}'s profile
                         </v-list-item-title>
                          <v-list-item-subtitle>Username: {{ userDetails.username }}</v-list-item-subtitle>
-                      <v-list-item-subtitle>Age: {{ userDetails.age }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>Age: {{ getAge(userDetails.dateOfBirth) }}</v-list-item-subtitle>
                     <v-list-item-subtitle>City: {{ userDetails.city }}</v-list-item-subtitle>
                     <v-list-item-subtitle>Gender:
                        <v-icon color="#01579b" :title="'Male'" v-show="userDetails.gender === 'Male'">mdi-gender-male</v-icon>
@@ -49,13 +49,14 @@
 
 <script>
 import { fetchUserInfo } from '../../api_calls/user'
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { setTimeout } from 'timers';
 
 export default {
     name: 'UserDetails',
     computed: {
-        ...mapState('user', ['userDetails'])
+        ...mapState('user', ['userDetails']),
+        ...mapGetters('user', ['getAge'])
     },
     methods: {
         ...mapActions('user', ['getUserDetails', 'clearUserDetails'])
@@ -66,14 +67,6 @@ export default {
     beforeDestroy() {
         this.clearUserDetails()
     }
-    // beforeRouteEnter(to, from, next) {
-    //     fetchUserInfo(to.params.id)
-    //       .then(res => {
-    //           next()
-    //         console.log(res)
-    //       })
-    //       .catch(err => console.log(err))
-    // }
 }
 </script>
 

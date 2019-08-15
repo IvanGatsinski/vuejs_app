@@ -130,6 +130,7 @@ const products = {
         getMyProducts({ commit }, id) { 
             fetchProducts(id)
                 .then(res => {
+                    console.log(res)
                     commit('updateMyProducts', res.data)
                 }) // TODO => Refactor this func and getRandomUser...into one
                 .catch(err => {

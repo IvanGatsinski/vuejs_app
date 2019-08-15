@@ -78,13 +78,13 @@
       </v-img>
 
       <v-card-text>   
-        Име: {{ productName }} 
+        <v-card-title>{{ productName }} </v-card-title>
         <br/>
-        Състояние: {{ formatProductCondition }}
+        Condition: {{ productCondition }}
       </v-card-text>
 
         <v-card-text>
-            {{ datePublished }}
+            {{ productPublishedDate(Date.now()) }}
         </v-card-text>
 
       <v-card-actions class="cyan lighten-5">
@@ -104,7 +104,7 @@
     <v-expand-transition>
       <div v-show="show">
         <v-card-text class="cyan lighten-4">
-         Пълно описание: {{ productDescription }}
+         Description: {{ productDescription }}
         </v-card-text>
       </div>
     </v-expand-transition>
@@ -117,37 +117,21 @@
 </template>
 
 <script>
+import { product_validation_mixin } from '../../mixins/validation_mixins'
 import { mapFields } from 'vuex-map-fields'
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 export default {
     name: 'CreateProduct',
+    mixins: [ product_validation_mixin ],
     data() {
       return {
-        author: this.authorName,
         show: true,
-        productNameRules: [
-          v => !!v || 'Product must have a name',
-          v => v && v.length >= 3 && v.length <= 15 || 'Product name must be between 3 and 15 characters long',
-          v => v && /^(([a-zA-Z]{3,})(\s?))+[^\s]$/.test(v) || 'Product name must contain latin letters only separated by a single space.',
-          
-        ],
-        productPriceRules: [
-          v => !!v || 'Product must have price.',
-          v => /^([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
-        ],
-        productDescriptionRules: [
-          v => !!v || 'Product must have description.',
-          v => v && v.length >= 10 && v.length <= 250 || 'Product description must be between 10 and 250 characters long',
-          v => /^(([a-zA-Z0-9]+)(\s?))+[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
-        ],
-        productConditionRules: [
-          v => !!v || 'Product must have condition.'
-        ]
       }
     },
     computed: {
         ...mapState('user', ['userProfile']),
+        ...mapGetters('products', ['productPublishedDate']),
         ...mapFields('products', [
             'createProduct.valid',
             'createProduct.productName', 
@@ -155,34 +139,9 @@ export default {
             'createProduct.productDescription', 
             'createProduct.productCondition'
         ]),
-        authorName() {
-          return this.userProfile.username
-        },
         isFormValid() {
           return this.valid ? 'success' : 'warning'
         },
-        formatProductCondition() {
-          if (this.productCondition === 'New') {
-            return 'New'
-          }
-          else if (this.productCondition === 'Old') {
-            return 'Used'
-          }
-          else {
-            return ''
-          }
-        },
-        datePublished() {
-          let date = new Date(new Date()),
-            year = date.getFullYear(),
-            month = date.getMonth() + 1,
-            day = date.getDate();
-
-          month < 10 ? month = `0${month}` : false
-          day < 10 ? day = `0${day}` : false
-    
-        return `Публикувано на ${day}-${month}-${year} г.`
-        }
     },
     methods: {
         ...mapActions('products', [
@@ -191,7 +150,7 @@ export default {
         submitProduct() {
             let product_data = {
                 name: this.productName,
-                author: this.authorName,
+                author: this.userProfile.username,
                 price: this.productPrice,
                 description: this.productDescription,
                 condition: this.productCondition,

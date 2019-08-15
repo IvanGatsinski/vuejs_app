@@ -31,7 +31,7 @@
                     <br>
                     Author: 
                     <router-link  class="gallery__card-content"
-                    :to="{ name: 'userDetails', params: { id: creatorId } }"
+                    :to="{ name: 'userDetails', params: { id: productCreator } }"
                     v-if="!isOwner"
                     >
                     {{ author }}
@@ -69,32 +69,26 @@
 </template>
 
 <script>
+import { product_data_mixin, product_props_mixin } from '../../mixins/product_mixins'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import DialogProductDelete from './DialogProductDelete'
 import DialogProductImage from './DialogProductImage'
 
 export default {
     name: 'Product',
+    mixins: [ 
+        product_data_mixin,
+        product_props_mixin,
+    ],
     components: {
         DialogProductDelete,
         DialogProductImage,
-    },
-    data() {
-        return {
-            productId: this.product._id,
-            name: this.product.name,
-            price: this.product.price,
-            author: this.product.author,
-            description: this.product.description,
-            condition: this.product.condition,
-            creatorId: this.product._acl.creator,
-        }
     },
     computed: {
         ...mapState('user', ['userProfile']),
         ...mapGetters('user', ['isAuthor']),
         isOwner() {
-            return this.isAuthor(this.creatorId)
+            return this.isAuthor(this.productCreator)
         },
         isItemInCart() {
             return this.userProfile.cart.find(id => id === this.productId)
@@ -102,12 +96,6 @@ export default {
         formattedPrice() {
             return `${Number(this.price).toFixed(2)} лв.`
         },
-    },
-    props: {
-        product: {
-            required: true,
-            type: Object,
-        }
     },
 }
 </script>

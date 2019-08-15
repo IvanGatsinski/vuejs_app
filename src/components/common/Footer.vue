@@ -1,17 +1,16 @@
 <template>
     <v-container>
        <v-layout>
-           <v-flex xs12>FOOTER</v-flex>
+           <v-flex xs12>####### TODO ######</v-flex>
        </v-layout>
     </v-container>
 </template>
 
 <script>
+import axios from 'axios'
+import { setTimeout } from 'timers';
 export default {
     name: 'Footer',
-    created() {
-        console.log('footer')
-    }
 }
 </script>
 

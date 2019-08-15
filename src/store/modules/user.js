@@ -31,7 +31,26 @@ const user = {
                    .map(product => Number(product.price))
                    .reduce((numX, numY) => numX + numY, 0)
                    .toString() + ' $'
-        }
+        },
+        getAge: state => birthDate => {
+
+            let todayDate = new Date().toISOString().substr(0, 10);
+            let splitTodayDate = todayDate.split('-')
+            console.log(birthDate)
+            let splitBirthDate = birthDate.split('-')
+        
+            let todayYear = splitTodayDate[0]
+            let todayMonth = splitTodayDate[1]
+            let birthDateYear = splitBirthDate[0]
+            let birthDateMonth = splitBirthDate[1]
+        
+            let age = todayYear - birthDateYear;
+            let month = todayMonth - birthDateMonth;
+            if (month < 0 || (month === 0 && todayDate < birthDate)) {
+                age--;
+            }
+            return age;
+        },
     },
     mutations: {
         updateField,

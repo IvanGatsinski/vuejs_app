@@ -86,15 +86,11 @@ export default {
       this.logout()
     }
   },
-  created() {
-    console.log(this.$route)
-  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    
     .v-btn:not(.v-btn--text):not(.v-btn--outlined).v-btn--active:before {
       opacity: 0;
     }

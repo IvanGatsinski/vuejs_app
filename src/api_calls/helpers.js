@@ -15,7 +15,12 @@ function get(url) {
         url: `${url}`,
         headers: {
             'Authorization': `Kinvey ${AUTH_TOKEN()}`
-        }
+        },
+        onDownloadProgress: function (progressEvent) {
+            let currentProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      
+            this.percentCompleted = currentProgress;
+          }
     })
 }
 function post(url, data, auth) {

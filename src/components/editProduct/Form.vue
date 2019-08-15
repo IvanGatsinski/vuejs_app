@@ -69,34 +69,17 @@
 </template>
 
 <script>
+import { product_validation_mixin } from '../../mixins/validation_mixins'
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapMutations } from 'vuex'
 import store from '../../store/index'
 
 export default {
     name: 'EditProduct',
+    mixins: [ product_validation_mixin ],
     data() {
       return {
         productId: this.$router.history.current.params.id,
-        valid: true,
-        productNameRules: [
-          v => !!v || 'Product must have a name',
-          v => v && v.length >= 3 && v.length <= 15 || 'Product name must be between 3 and 15 characters long',
-          v => v && /^(([a-zA-Z]{3,})(\s?))+[^\s]$/.test(v) || 'Product name must contain latin letters only separated by a single space.',
-          
-        ],
-        productPriceRules: [
-          v => !!v || 'Product must have price.',
-          v => /^([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
-        ],
-        productDescriptionRules: [
-          v => !!v || 'Product must have description.',
-          v => v && v.length >= 10 && v.length <= 250 || 'Product description must be between 10 and 250 characters long',
-          v => /^(([a-zA-Z0-9]+)(\s?))+[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
-        ],
-        productConditionRules: [
-          v => !!v || 'Product must have condition.'
-        ]
       }
     },
     computed: {
@@ -107,34 +90,21 @@ export default {
             'editProduct.productDescription', 
             'editProduct.productCondition'
         ]),
-        // formIsValid() {
-        //   return this.productName && 
-        //          this.productPrice && 
-        //          this.productDescription &&
-        //          this.productCondition &&
-        //          this.$refs.productForm.validate() ? 
-        //          true : false
-        // }
     },
     methods: {
         ...mapActions('products', [
              'editProduct',
-             'clearEditProductFields'
         ]),
         submitEdit() {
           if (this.$refs.editProduct.validate()) {
               this.editProduct(this.productId)
           }
-           //this.formIsValid ?  : false
         }
     },
     beforeRouteEnter(to, from, next) {
         store.dispatch('products/setProductForEdit', to.params.id)
         next()
     },
-    beforeDestroy() {
-        this.$refs.editProduct.reset()
-    }
 }
 </script>
 

@@ -16,7 +16,7 @@
                           My profile
                         </v-list-item-title>
                          <v-list-item-subtitle>Username: {{ userProfile.username }}</v-list-item-subtitle>
-                      <v-list-item-subtitle>Age: {{ userProfile.age }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>Age: {{ getAge(userProfile.dateOfBirth) }}</v-list-item-subtitle>
                     <v-list-item-subtitle>City: {{ userProfile.city }}</v-list-item-subtitle>
                      <v-list-item-subtitle>E-mail: {{ userProfile.email }}</v-list-item-subtitle>
                     <v-list-item-subtitle>Phone: {{ userProfile.phone }}</v-list-item-subtitle>
@@ -40,12 +40,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "MyProfile",
   computed: {
     ...mapState("user", ["userProfile"]),
+    ...mapGetters('user', ['getAge']),
     ...mapState("products", ["myProducts"]),
   },
 };

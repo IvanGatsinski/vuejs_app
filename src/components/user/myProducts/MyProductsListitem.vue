@@ -19,26 +19,18 @@
 </template>
 
 <script>
+import { product_data_mixin, product_props_mixin } from '../../../mixins/product_mixins'
 import { mapGetters } from 'vuex';
 export default {
     name: 'MyProductsListitem',
-    data() {
-        return {
-            name: this.product.name,
-            author: this.product.author,
-            productCreator: this.product._acl.creator,
-            dateCreated: this.product._kmd.ect
-        }
-    },
+    mixins: [ 
+      product_data_mixin, 
+      product_props_mixin 
+    ],
     computed: {
       ...mapGetters('products', ['productPublishedDate'])
     },
-    props: {
-        product: {
-            type: Object,
-            required: true,
-        }
-    },
+
 }
 </script>
 

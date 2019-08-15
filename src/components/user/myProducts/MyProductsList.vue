@@ -27,7 +27,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import MyProductListItem from './MyProductsListitem'
-// import { fetchMyProducts } from '../../../api_calls/products';
 
 import store from '../../../store';
 
@@ -46,18 +45,6 @@ export default {
     created() {
         this.getMyProducts(this.userProfile._id)
     },
-    // beforeRouteEnter(to, from, next) {
-    //     console.log(store.state.user.userProfile._id);
-        
-    //    if (!store.state.products.allProducts) {
-    //         store.dispatch('products/fetchMyProducts', store.state.user.userProfile._id)
-    //         next()
-    //    }
-    //    else {
-    //         next()
-    //    }
-    // },
-
 }
 </script>
 

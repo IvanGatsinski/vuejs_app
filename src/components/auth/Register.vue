@@ -44,22 +44,32 @@
       prepend-inner-icon="mdi-email"   
     ></v-text-field>
 
-    <v-text-field
-      v-model="age"
-      :rules="ageRules"
-      label="Age"
-      required
-      clearable
-      prepend-inner-icon="mdi-update"
-    ></v-text-field>
-
-        <v-select
-          v-model="birthdayYears"
-          :rules="birthdayRules"
-          :items="years()"
-          label="Select"
-          required
-        ></v-select>
+    <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="dateOfBirth"
+            label="Birthday date"
+            prepend-icon="mdi-calendar-range"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          ref="picker"
+          v-model="dateOfBirth"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1930-01-01"
+          @change="save"
+        ></v-date-picker>
+      </v-menu>
 
     <v-radio-group 
         required
@@ -126,7 +136,7 @@ export default {
         ],
       cityRules: [v => !!v || 'City is required!'],
       genderRules: [v => !!v || 'Gender is required!'],
-      birthdayRules: [v => !!v || 'Birthday Years are required!'],
+      birthdayRules: [v => !!v || 'Date of birth is required!'],
       ageRules: [
         v => !!v || 'Age is required'
         ],
@@ -134,16 +144,17 @@ export default {
         v => !!v || 'Phone is required'
         ],
       cities: ['Pleven', 'Plovdiv', 'Sofia'],
-      years: () => {
-        let date = new Date()
-        let getThisYear = date.getFullYear()
-        let maxAge = 105
-        let earliestYear = getThisYear - maxAge
-        let yearsCollection = []
+      menu: false,
+      // years: () => {
+      //   let date = new Date()
+      //   let getThisYear = date.getFullYear()
+      //   let maxAge = 105
+      //   let earliestYear = getThisYear - maxAge
+      //   let yearsCollection = []
 
-        for (let i = 1; i <= maxAge; i++) { yearsCollection.push(earliestYear + i) }
-        return yearsCollection
-      },
+      //   for (let i = 1; i <= maxAge; i++) { yearsCollection.push(earliestYear + i) }
+      //   return yearsCollection
+      // },
     }
   },
   computed: {
@@ -153,8 +164,7 @@ export default {
       'registerForm.password',
       'registerForm.confirmPassword',
       'registerForm.email',
-      'registerForm.birthdayYears',
-      'registerForm.age',
+      'registerForm.dateOfBirth',
       'registerForm.gender',
       'registerForm.city',
       'registerForm.phone'
@@ -164,12 +174,16 @@ export default {
     ...mapActions('auth',[
       'authenticate'
     ]),
-   submitRegister() {
+    save (date) {
+      this.$refs.menu.save(date)
+    },
+    submitRegister() {
      let user_data = {
        username: this.username,
        password: this.password,
        email: this.email,
-       age: this.age,
+       age: null,
+       dateOfBirth: this.dateOfBirth,
        gender: this.gender,
        city: this.city,
        phone: this.phone,
@@ -180,6 +194,11 @@ export default {
       this.authenticate(user_data)
      }
    },
+  },
+  watch: {
+  menu (val) {
+    val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+  },
   },
   beforeDestroy() {
     this.$refs.registerForm.reset()
