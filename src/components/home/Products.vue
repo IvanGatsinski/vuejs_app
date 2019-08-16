@@ -1,8 +1,10 @@
 <template>
     <v-container grid-list-lg class="pa-5">
-        <v-layout row>
-
-                <v-flex class="ma-auto" xs8 v-show="!allProducts.length">
+        <global-loader v-if="!allProducts"></global-loader>
+        <v-layout row v-else>
+                <v-flex 
+                    class="ma-auto" xs8 
+                    v-if="!allProducts.length">
                     <v-alert 
                         class="text-center black--text"
                         text
@@ -15,16 +17,15 @@
                         There aren't any products for sale
                     </v-alert>
                 </v-flex>
-
                 <v-flex 
-                xs12 sm6 md4 lg3 xl3
-                v-for="product in allProducts"
-                :key="product._id">
+                    v-else
+                    xs12 sm6 md4 lg3 xl3
+                    v-for="product in allProducts"
+                    :key="product._id">
                     <Product 
                         :product="product">
                     </Product>
                 </v-flex>
-
         </v-layout>
     </v-container>
 </template>

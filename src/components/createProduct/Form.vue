@@ -3,7 +3,7 @@
     <h3>Create your product!</h3>
     <v-container grid-list-xl>
         <v-layout row justify-space-around align-center class="mt-5">
-          <v-flex xs12 sm4 md4 lg4 xl4>
+          <v-flex xs12 sm4 md4 lg4 xl6>
     <v-form
     v-model="valid"
     ref="productForm"
@@ -67,7 +67,7 @@
   </v-form>
 
   </v-flex>
-    <v-flex xs12 sm7 md7 lg10 xl10>
+    <v-flex xs12 sm7 md7 lg6 xl6>
       <v-card class="gallery__card">
       <v-img
         class="white--text"

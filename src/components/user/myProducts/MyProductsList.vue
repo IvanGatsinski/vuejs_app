@@ -1,20 +1,19 @@
 <template>
     <v-container grid-list-xl>
-        <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg6 xl6>
-                <v-alert 
-                    class="text-center black--text"
-                    v-show="!myProducts.length"
-                    text
-                    prominent
-                    elevation="12"
-                    color="#fff"
-                    icon="mdi-information-outline"
-                    border="top"
-                    >
-                    You don't have any products for sale
-                </v-alert>
+        <global-loader
+         v-if="!myProducts">
+         </global-loader>
+        <v-layout 
+        v-else
+        row justify-center>
+            <v-flex 
+            xs12 sm12 md8 lg6 xl6>
+                <global-empty-message
+                v-if="!myProducts.length">
+                You don't have any products for sale
+                </global-empty-message>
                 <my-product
+                    v-else
                     v-for="product in myProducts"
                     :product="product"
                     :key="product._id">

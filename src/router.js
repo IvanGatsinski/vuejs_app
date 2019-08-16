@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from './store/index'
+import * as progress from 'nprogress'
 import Home from './components/home/Home'
 import CreateProduct from './components/createProduct/Form'
 import EditProduct from './components/editProduct/Form'
@@ -12,7 +14,7 @@ import MyProductsList from "./components/user/myProducts/MyProductsList"
 import UserDetails from './components/userDetails/UserDetails'
 import UserProductsList from './components/userDetails/UserProductsList'
 import Cart from './components/cart/Cart'
-import store from './store/index'
+
 
 Vue.use(VueRouter)
 
@@ -56,6 +58,16 @@ router.beforeEach((to, from, next) => {
       }
     }
     next()
-  })
-  
+})
+
+router.beforeResolve((to, from, next) => {
+  if (to.name) {
+    progress.start()
+  }
+  next()
+})
+
+router.afterEach((to, from) => {
+  progress.done()
+})
 export default router

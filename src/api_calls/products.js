@@ -1,7 +1,7 @@
 import { get, put, post, remove } from './helpers'
 
 function fetchAllProducts() {
-    return get(`/appdata/${process.env.VUE_APP_KEY}/products`)
+    return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={}&sort={"_kmd.ect": -1}`)
 }
 function fetchProducts(creatorId) {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={"_acl.creator":"${creatorId}"}`)

@@ -1,6 +1,8 @@
 <template>
   <div>
-      <p v-if="!userDetails">LOADING...</p>
+    <global-loader v-if="!userDetails">
+    </global-loader>
+    
     <v-container grid-list-xl v-else>
       <v-layout row wrap justify-space-around>
 

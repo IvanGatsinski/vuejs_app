@@ -12,8 +12,8 @@ import router from '../../router'
 const products = {
     namespaced: true,
     state: {
-        allProducts: [],
-        myProducts: [],
+        allProducts: null,
+        myProducts: null,
         randomUserProducts: null,
         productDetails: null,
         createProduct: {
@@ -87,7 +87,7 @@ const products = {
             state.allProducts = newArr
         },
         fetchAllProducts(state, payload) {
-            state.allProducts = payload.reverse()//TODO CHANGE IT LATER WITH QUERY
+            state.allProducts = payload
         },
         updateMyProducts(state, payload) {
             state.myProducts = payload
@@ -106,6 +106,9 @@ const products = {
         },
         clearRandomUserProducts(state) {
             state.randomUserProducts = null
+        },
+        clearProductDetails(state) {
+            state.productDetails = null
         }
     },
     actions: {
@@ -170,12 +173,15 @@ const products = {
                 })
                 .catch(err => console.warn('EBASI'));
         },
-        // setProductDetails({ commit }, productId) {
-        //     fetchProduct(productId)
-        //         .then(res => {
-        //             commit('setProductDetails', res.data)
-
-        // },
+        getProductDetails({ commit }, productId) {
+            fetchProduct(productId)
+                .then(res => {
+                    commit('setProductDetails', res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         removeProduct({ dispatch }, id) {
             removeProduct(id)
                 .then(res => {
@@ -185,6 +191,9 @@ const products = {
         },
         clearRandomUserProducts({ commit }) {
             commit('clearRandomUserProducts')
+        },
+        clearProductDetails({ commit }) {
+            commit('clearProductDetails')
         }
     },
 }

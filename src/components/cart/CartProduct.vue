@@ -22,30 +22,6 @@
               </v-layout>
             </v-list-item-content>
           </v-list-item>
-        
-       
-        <!-- <v-card-actions @click="show = !show" class="rgba(31, 77, 107, 0.5) py-0">
-      <v-btn
-        text
-        >
-        {{ show ? 'Скрии описание' : 'Покажи описание' }}
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>
-            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
-        </v-icon>
-      </v-btn>
-    </v-card-actions>
-
-    <v-expand-transition>
-      <v-card dark v-show="show">
-        <v-card-text>
-          {{ description }}
-        </v-card-text>
-      </v-card>
-    </v-expand-transition> -->
-
         </v-card>
 </template>
 

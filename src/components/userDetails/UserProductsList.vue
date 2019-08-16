@@ -1,13 +1,19 @@
 <template>
     <v-container>
         <v-layout justify-center>
-            <v-flex xs12 sm12 md8 lg6 xl6>
-                <p v-if="!randomUserProducts">WAIT......</p>
-                
-                <product-item 
-                v-for="product in randomUserProducts"
-                :key="product._id"
-                :product="product">
+            <global-loader v-if="!randomUserProducts">
+            </global-loader>
+            <v-flex
+            v-else
+            xs12 sm12 md8 lg6 xl6>
+                <global-empty-message v-if="!randomUserProducts.length">
+                    There aren't any products for sale yet
+                </global-empty-message>
+                <product-item
+                    v-else 
+                    v-for="product in randomUserProducts"
+                    :key="product._id"
+                    :product="product">
                 </product-item>
             </v-flex>
         </v-layout>

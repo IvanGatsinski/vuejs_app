@@ -56,29 +56,18 @@
 </template>
 
 <script>
+import { user_register_validation_mixin } from '../../../mixins/validation_mixins'
 import { mapState, mapActions } from "vuex";
 import { mapFields } from 'vuex-map-fields'
 import store from '../../../store';
 
 export default {
   name: "EditUserInfo",
-  data() {
-    return {
-      valid: true,
-      phoneRules: [
-        v => !!v || 'Phone is required'
-        ],
-      emailRules: [
-        v => !!v || 'E-mail is required'
-        ],
-      genderRules: [v => !!v || "Gender is required"],
-      cityRules: [v => !!v || 'City is required!'],
-      cities: ['Pleven', 'Plovdiv', 'Sofia'],
-    }
-  },
+  mixins: [user_register_validation_mixin],
   computed: {
     ...mapState("user", ["userProfile"]),
     ...mapFields("user", [
+        'editUserInfo.valid',
         'editUserInfo.city',
         'editUserInfo.email',
         'editUserInfo.gender',

@@ -1,10 +1,11 @@
 <template>
    <v-container>
-       <v-layout row justify-center>
-           <v-flex xs12 sm10 md8 lg6 xl6>
-               <v-card
-    class="mx-auto"
-  >
+      <global-loader v-if="!productDetails"></global-loader>
+      <v-layout 
+      v-else
+      row justify-center>
+        <v-flex xs12 sm10 md8 lg6 xl6>
+           <v-card class="mx-auto">
     <v-img
       class="white--text"
       height="200px"
@@ -12,7 +13,7 @@
     >
       
     </v-img>
-  <v-card-title class="align-end fill-height">{{ productDetails.name }}</v-card-title>
+      <v-card-title class="align-end fill-height">{{ productDetails.name }}</v-card-title>
     <v-card-text>
     
       <span class="text--primary">
@@ -81,7 +82,7 @@
 
     </v-card-actions>
       </v-card>
-          </v-flex>
+        </v-flex>
       </v-layout>
    </v-container>
 </template>
@@ -102,6 +103,7 @@ export default {
         'addToCart',
         'removeFromCart'
       ]),
+      ...mapActions('products', ['getProductDetails', 'clearProductDetails']),
       addItemToCart() {
         this.addToCart(this.productDetails._id)
       },
@@ -136,15 +138,24 @@ export default {
         return !this.isAuthor(authorId)
       }
     },
-    beforeRouteEnter(to, from, next) {
-      fetchProduct(to.params.id)
-        .then(res => {
-          
-          store.commit('products/setProductDetails', res.data)
-          next()
-        })
-        .catch(err => console.log(err));
+    created() {
+            let productId = this.$route.params.id
+     //this.$store.dispatch('products/getProductDetails',productId )
+
+      this.getProductDetails(productId)
+    },
+    beforeDestroy() {
+      this.clearProductDetails()
     }
+    // beforeRouteEnter(to, from, next) {
+    //   fetchProduct(to.params.id)
+    //     .then(res => {
+          
+    //       store.commit('products/setProductDetails', res.data)
+    //       next()
+    //     })
+    //     .catch(err => console.log(err));
+    // }
 }
 </script>
 

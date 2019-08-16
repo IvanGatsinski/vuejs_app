@@ -114,47 +114,14 @@
 import { mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import { registerUser } from '../../api_calls/auth'
+import { user_register_validation_mixin } from '../../mixins/validation_mixins'
 
 export default {
   name: 'Register',
+  mixins: [user_register_validation_mixin],
   data() {
     return {
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => /^[a-zA-Z]{3,12}$/.test(v) || 'Username must contain letters only and be between 3 and 12 characters long'
-        ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/.test(v) || 'Password must be between 4 and 12 characters and contain at least one letter and one number',
-        ],
-      confirmPasswordRules: [
-        v => !!v || 'Confirm password is required',
-        v => (this.confirmPassword === this.password) || 'Passwords must match'
-        ],
-      emailRules: [
-        v => !!v || 'E-mail is required'
-        ],
-      cityRules: [v => !!v || 'City is required!'],
-      genderRules: [v => !!v || 'Gender is required!'],
-      birthdayRules: [v => !!v || 'Date of birth is required!'],
-      ageRules: [
-        v => !!v || 'Age is required'
-        ],
-      phoneRules: [
-        v => !!v || 'Phone is required'
-        ],
-      cities: ['Pleven', 'Plovdiv', 'Sofia'],
       menu: false,
-      // years: () => {
-      //   let date = new Date()
-      //   let getThisYear = date.getFullYear()
-      //   let maxAge = 105
-      //   let earliestYear = getThisYear - maxAge
-      //   let yearsCollection = []
-
-      //   for (let i = 1; i <= maxAge; i++) { yearsCollection.push(earliestYear + i) }
-      //   return yearsCollection
-      // },
     }
   },
   computed: {
