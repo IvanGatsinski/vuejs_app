@@ -7,12 +7,16 @@
                 <v-layout
                  v-else
                  wrap row justify-center>
-                    <v-flex xs12 v-show="!cartProducts.length">
+                    <v-flex xs12 sm10 md8 lg6 xl4
+                     v-if="!cartProducts.length"
+                     class="text-center">
                         <global-empty-message>
                         Your cart is empty. Your need to add products to your cart.
                         </global-empty-message>
                     </v-flex>
-                    <v-flex xs12 sm8 md6 lg5 xl4>
+                    <v-flex
+                    v-else
+                     xs12 sm8 md6 lg5 xl4>
                         <cart-product v-for="product in cartProducts" 
                         :product="product"
                         :key="product._id">
@@ -21,6 +25,7 @@
                     <cart-checkout v-show="cartProducts.length"></cart-checkout>
                 </v-layout>
             </v-container>
+
     </div>
 </template>
 
@@ -35,7 +40,7 @@ export default {
     name: 'Cart',
     components: {
         CartProduct,
-        CartCheckout
+        CartCheckout,
     },
     computed: {
     ...mapState('user', ['cartProducts']),

@@ -3,13 +3,11 @@ const product_validation_mixin = {
         return {
             productNameRules: [
                 v => !!v || 'Product must have a name',
-                v => /^.{3,15}$/.test(v) || 'Product name must be between 3 and 15 characters long',
-                v => v && /^(([a-zA-Z]{3,})(\s?))+[^\s]$/.test(v) || 'Product name must contain latin letters only separated by a single space.',
+                v => v && /^(([a-zA-Z]{2,})(\s?))+[^\s]$/.test(v) || 'Product name must be at least 3 characters long and contain latin letters only separated by a single space.',
               ],
               productPriceRules: [
                 v => !!v || 'Product must have price.',
-                v => /^[^0].+$/.test(v) || 'Product price cannot start with 0',
-                v => /^([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
+                v => /^(?!(0))([0-9]{1,5}[.])?[0-9]{1,5}$/.test(v) || 'Price must be a valid number between 1 and 99999'
               ],
               productDescriptionRules: [
                 v => !!v || 'Product must have description.',
@@ -48,9 +46,37 @@ const user_register_validation_mixin = {
       birthdayRules: [v => !!v || 'Date of birth is required!'],
       phoneRules: [
         v => !!v || 'Phone is required',
-        v => /^(0988|0888|0878)[1-9]{6}$/.test(v) || 'Must be a valid phone number'
+        v => /^(0988|0888|0878)[1-9]{6}$/.test(v) || 'Must start with (0878 | 0988 | 0888) and be a valid phone number'
         ],
-      cities: ['Pleven', 'Plovdiv', 'Sofia', 'Varna', 'Bourgas', 'Ruse', 'Sliven', 'Stara Zagora', 'Qmbol', 'Vidin'],
+      cities: [
+        "Blagoevgrad",
+        "Burgas",
+        "Varna",
+        "Veliko Tarnovo",
+        "Vidin",
+        "Vratsa",
+        "Gabrovo",
+        "Dobrich",
+        "Kardzhali",
+        "Kyustendil",
+        "Lovech",
+        "Montana",
+        "Pazardzhik",
+        "Pleven",
+        "Pernik",
+        "Plovdiv",
+        "Razgrad",
+        "Ruse",
+        "Silistra",
+        "Sliven",
+        "Smolyan",
+        "Sofia",
+        "Stara Zagora",
+        "Targovishte",
+        "Haskovo",
+        "Shumen",
+        "Yambol"
+      ],
     }
   },
 }

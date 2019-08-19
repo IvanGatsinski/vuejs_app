@@ -17,8 +17,30 @@
             </v-list-item-content>
             <v-list-item-content>
               <v-layout column>
-                <v-btn class="details__btn mb-2" :to="`/product/details/${id}`" color="primary">Details</v-btn>
-                <v-btn class="details__btn" @click="removeFromCart(id)" color="rgb(31, 107, 36)">Remove</v-btn>
+                <v-btn 
+                  class="mb-2" 
+                  :to="`/product/details/${id}`"
+                  color="#303f9f">
+                  Details
+                </v-btn>
+                <v-wait :for="vWaitArrayItem">
+                  <template slot="waiting">
+                    <v-btn 
+                      disabled
+                      loading
+                      width="100%">
+                      Remove
+                    </v-btn>
+                      
+                  </template>
+                    <v-btn 
+                      rounded
+                      width="100%"
+                      @click="removeItem()" 
+                      color="#303f9f">
+                      Remove
+                    </v-btn>
+                </v-wait>
               </v-layout>
             </v-list-item-content>
           </v-list-item>
@@ -27,7 +49,7 @@
 
 <script>
 import DialogProductImage from '../home/DialogProductImage'
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
     name: 'CartProduct',
     components: {
@@ -35,7 +57,6 @@ export default {
     },
     data() {
       return {
-          //show: false,
           id: this.product._id,
           name: this.product.name,
           price: this.product.price,
@@ -50,65 +71,22 @@ export default {
         type: Object
       }
     },
+    computed: {
+      vWaitArrayItem() {
+        return `remove cart item loading ${this.id}`
+      }
+    },
     methods: {
       ...mapActions('user', ['removeFromCart']),
+      removeItem() {
+        this.removeFromCart(this.id)
+      }
     }
 }
 </script>
 
 <style scoped>
-  .details__btn {
-    border-radius: 50px !important;
-  }
   .v-sheet.theme--dark {
     background: rgba(31, 77, 107, 0.5);
   }
-  /* .v-card {
-    position: relative;
-  }
-  .v-card > * {
-    z-index: 1 !important;
-  }
-  .slideEnter::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: '';
-    background: rgba(31, 77, 107, 0.75);
-    height: 100%;
-    animation-name: slider_enter;
-    animation-fill-mode: forwards;
-    animation-duration: 0.5s;
-  }
-  .slideLeave::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: '';
-    background: rgba(31, 77, 107, 0.75);
-    height: 100%;
-    animation-name: slider_leave;
-    animation-fill-mode: forwards;
-    animation-duration: 0.5s;
-  }
-    @keyframes slider_leave {
-    from {
-    width: 100%;
- 
-    }
-    to {
-    width: 0%;
-
-    }
-  }
-  @keyframes slider_enter {
-    from {
-    width: 0%;
-
-    }
-    to {
-    width: 100%;
-
-    }
-  } */
 </style>

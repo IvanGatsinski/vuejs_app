@@ -5,17 +5,28 @@
       v-else
       row justify-center>
         <v-flex xs12 sm10 md8 lg6 xl6>
-           <v-card class="mx-auto">
-    <v-img
-      class="white--text"
-      height="200px"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-    >
-      
-    </v-img>
-      <v-card-title class="align-end fill-height">{{ productDetails.name }}</v-card-title>
-    <v-card-text>
-    
+      <v-card class="mx-auto edit-product__card">
+        <v-img
+          class="white--text"
+          height="200px"
+          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        >
+          
+        </v-img>
+          <v-card-title 
+            class="align-end fill-height">
+            {{ productDetails.name }}
+            </v-card-title>
+      <v-card-text class="edit-product__card-text">
+      <v-btn 
+        v-if="isAuthor(productDetails._acl.creator)"
+        :to="{ name: 'editProduct', params: { id: productDetails._id } }"
+        icon large 
+        class="edit-product__card-btn mx-1 py-1">
+        <v-icon :title="'Edit Product'" color="secondary">
+          mdi-square-edit-outline
+        </v-icon>
+      </v-btn>
       <span class="text--primary">
         <span v-if="!isAuthor(productDetails._acl.creator)"
         >
@@ -139,27 +150,24 @@ export default {
       }
     },
     created() {
-            let productId = this.$route.params.id
-     //this.$store.dispatch('products/getProductDetails',productId )
-
+      let productId = this.$route.params.id
       this.getProductDetails(productId)
     },
     beforeDestroy() {
       this.clearProductDetails()
     }
-    // beforeRouteEnter(to, from, next) {
-    //   fetchProduct(to.params.id)
-    //     .then(res => {
-          
-    //       store.commit('products/setProductDetails', res.data)
-    //       next()
-    //     })
-    //     .catch(err => console.log(err));
-    // }
 }
 </script>
 
 <style scoped>
+  .edit-product__card-text {
+    position: relative; 
+  }
+  .edit-product__card-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
   .v-card.v-sheet.theme--light {
     background: rgba(255, 255, 255, 0.35);
   }

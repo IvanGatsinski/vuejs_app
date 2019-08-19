@@ -9,30 +9,38 @@
     <v-text-field
       v-model="username"
       :counter="10"
-      :rules="nameRules"
       label="Name"
       required
       prepend-inner-icon="mdi-account"
     ></v-text-field>
 
-    <v-text-field
-      
+    <v-text-field 
       v-model="password"
-      :rules="passwordRules"
       label="Password"
       required
       prepend-inner-icon="mdi-lock"
-      
+      :append-icon="hidePassword ? 'mdi-eye-off' : 'mdi-eye'"
+      @click:append="hidePassword = !hidePassword"
+      :type="hidePassword ? 'password' : 'text'"
     ></v-text-field>
     
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="submitLogin()"
-    >
-      Login
-    </v-btn>
+    <v-wait for="loading auth btn">
+      <template slot="waiting">
+        <v-btn
+          disabled
+          loading
+          class="mr-4">
+          Login
+        </v-btn>
+      </template>
+        <v-btn
+          color="success"
+          class="mr-4"
+          @click="submitLogin()">
+          Login
+        </v-btn>
+    </v-wait>
+
   </v-form>
             </v-flex>
         </v-layout>
@@ -40,23 +48,16 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { mapFields } from 'vuex-map-fields'
 
 export default {
   name: 'Login',
-    data() {
-      return {
-      nameRules: [
-        v => !!v || 'Username is required',
-        v => /^.{3,12}$/.test(v) || 'Username must be between 3 and 12 characters'
-      ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => /^.{5,12}$/.test(v) || 'Password must be between 5 and 12 characters'
-      ],
-      }
-    },
+  data() {
+    return {
+      hidePassword: true
+    }
+  },
   computed: {
     ...mapFields('auth', [
       'loginForm.valid',

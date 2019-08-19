@@ -1,7 +1,9 @@
 import router from '../../router'
+import * as userTypes from '../mutation-types/user'
 import { updateUserInfo, fetchUserInfo } from '../../api_calls/user'
 import { fetchCartProducts } from '../../api_calls/products'
 import { getField, updateField } from 'vuex-map-fields'
+import wait from '../../wait'
 
 const user = {
     namespaced: true,
@@ -17,6 +19,7 @@ const user = {
             phone: '',
         },
         authtoken: '',
+        cartProductDeleted: false,
     },
     getters: {
         getField,
@@ -54,34 +57,40 @@ const user = {
     },
     mutations: {
         updateField,
-        setUserDetails(state, payload) {
+        [userTypes.SET_USER_DETAILS] (state, payload) {
             state.userDetails = payload;
         },
-        clearUserDetails(state) {
+        [userTypes.CLEAR_USER_DETAILS] (state) {
             state.userDetails = null
         },
-        editUserInfo(state, updatedUserProfile) {
+        [userTypes.EDIT_USER_INFO] (state, updatedUserProfile) {
             state.userProfile = updatedUserProfile
         }, 
-        updateCartProducts(state, productId) {
+        [userTypes.UPDATE_CART_PRODUCTS] (state, productId) {
             state.cartProducts = state.cartProducts.filter(p => p._id !== productId)
         },
-        saveCartProducts(state, products) {
+        [userTypes.SAVE_PRODUCTS_TO_CART] (state, products) {
             state.cartProducts = products
         },
-        setEditUserInfoFields(state) {
+        [userTypes.OPEN_DELETED_CART_PRODUCT_DIALOG ] (state) {
+            state.cartProductDeleted = true
+        },
+        [userTypes.CLOSE_DELETED_CART_PRODUCT_DIALOG] (state) {
+            state.cartProductDeleted = false
+        },
+        [userTypes.SET_EDIT_USER_INFO_FORM_FIELDS] (state) {
             state.editUserInfo.email = state.userProfile.email
             state.editUserInfo.gender = state.userProfile.gender
             state.editUserInfo.city = state.userProfile.city
             state.editUserInfo.phone = state.userProfile.phone
         },
-        saveSession(state, response_data) {
+        [userTypes.SAVE_USER_SESSION](state, response_data) {
             state.userProfile = response_data
             state.authtoken = response_data._kmd.authtoken
 
             localStorage.setItem('userData', JSON.stringify(response_data))
         },
-        getSession(state) {
+        [userTypes.GET_USER_SESSION] (state) {
             const userData = JSON.parse(localStorage.getItem('userData'))
 
             if (userData) {
@@ -89,7 +98,7 @@ const user = {
                 state.authtoken = userData._kmd.authtoken
             }
         },
-        clearSession(state) {
+        [userTypes.CLEAR_USER_SESSION] (state) {
             localStorage.removeItem('userData')
             state.userProfile = {}
             state.authtoken = ''
@@ -97,104 +106,95 @@ const user = {
         },
     },
     actions: {
-        editUserInfo({ commit, state }, payload) {
+        async editUserInfo({ commit, state }, payload) {
             let userId = state.userProfile._id
             
-            updateUserInfo(userId, payload)
-                .then(res => {
-                    console.log(res);
-                    commit('saveSession', res.data)
-                    commit('editUserInfo', res.data)
-                    router.push('/myProfile')
-                })     
-                .catch(err => console.log(err))  
+            wait.start('edit user info loading')
+            let userInfo = await updateUserInfo(userId, payload)
+            wait.end('edit user info loading')
+
+            commit(userTypes.SAVE_USER_SESSION, userInfo.data)
+            commit(userTypes.EDIT_USER_INFO, userInfo.data)
+
+            router.push('/myProfile') 
         },
-        fetchCartProducts({ commit }, payload) {
-            commit('saveCartProducts', payload)
-        },
-        wasCartProductDeleted({ commit, state }) {
+        async wasCartProductDeleted({ commit, state }) {
             let newProfileObject = { ...state.userProfile }
             let userId = state.userProfile._id
             let cartIds = state.userProfile.cart
             let storeUpdatedIds;
-            console.log('await')
-            fetchCartProducts(cartIds)
-                .then(res => {
-                    // Check if some user has deleted his product by comparing both array lengths
-                    if (cartIds.length !== res.data.length) {
-                        storeUpdatedIds = res.data.map(item => item._id)
-                        newProfileObject.cart = storeUpdatedIds
 
-                        updateUserInfo(userId, newProfileObject)
-                            .then(res => {
-                                alert('Some product/s from your cart has been sold or removed')
-                                commit('saveSession', newProfileObject)
-                            })
-                            .catch(err => console.log(err))
-                    }
-                })
-                .catch(err => console.log(err))
+            let cartProducts = await fetchCartProducts(cartIds)
+                
+            // Check if some user has deleted his product by comparing both array lengths
+            if (cartIds.length !== cartProducts.data.length) {
+                storeUpdatedIds = cartProducts.data.map(item => item._id)
+                newProfileObject.cart = storeUpdatedIds
+
+                await updateUserInfo(userId, newProfileObject)
+                commit(userTypes.OPEN_DELETED_CART_PRODUCT_DIALOG)
+                commit(userTypes.SAVE_USER_SESSION, newProfileObject)
+            }
         },
-        addToCart({ commit, state }, productId) {
+        closeDeletedCartProductDialog({ commit }) {
+            commit(userTypes.CLOSE_DELETED_CART_PRODUCT_DIALOG)
+        },
+        async addToCart({ commit, state }, productId) {
             let newProfileObject = { ...state.userProfile }
             let userId = state.userProfile._id
-
             newProfileObject.cart.push(productId)
 
-            updateUserInfo(userId, newProfileObject)
-                .then(res => {
-                    commit('saveSession', newProfileObject)
-                })
-                .catch(err => console.log(err))
+            await updateUserInfo(userId, newProfileObject)
+            commit(userTypes.SAVE_USER_SESSION, newProfileObject)
         },
-        removeFromCart({ commit, state }, productId) {
+        async removeFromCart({ commit, state }, productId) {
             let newProfileObject = { ...state.userProfile }
             let userId = state.userProfile._id
             let newCart = newProfileObject.cart.filter(oldProductId => oldProductId !== productId)
-
             newProfileObject.cart = newCart
 
-            updateUserInfo(userId, newProfileObject)
-                .then(res => {
-                    commit('saveSession', newProfileObject)
-                    commit('updateCartProducts', productId)
-                })
-                .catch(err => console.log(err))
+            wait.start(`remove cart item loading ${productId}`)
+            await updateUserInfo(userId, newProfileObject)
+            wait.end(`remove cart item loading ${productId}`)
+
+            commit(userTypes.SAVE_USER_SESSION, newProfileObject)
+            commit(userTypes.UPDATE_CART_PRODUCTS, productId)
         },
-        checkoutCart({ commit, state }) {
+        async checkoutCart({ commit, state }) {
             let newProfileObject = { ...state.userProfile }
             let userId = state.userProfile._id
             newProfileObject.cart = []
 
-            updateUserInfo(userId, newProfileObject)
-            .then(res => {
-                commit('saveSession', newProfileObject)
-                router.push('/')
-            })
-            .catch(err => console.log(err))
+            wait.start('checkout loading btn');
+            await updateUserInfo(userId, newProfileObject)
+            wait.end('checkout loading btn')
+
+            commit(userTypes.SAVE_USER_SESSION, newProfileObject) 
+            router.push('/')
         },
-        getUserDetails({ commit }, userId) {
-            fetchUserInfo(userId)
-                .then(res => {
-                    commit('setUserDetails', res.data)
-                    console.log(res)
-                    
-                })
-                .catch(err => console.log(err))
+        async getUserDetails({ commit }, userId) {
+            let userInfo = await fetchUserInfo(userId)
+            commit(userTypes.SET_USER_DETAILS, userInfo.data)
         },
         clearUserDetails({ commit }) {
-            commit('clearUserDetails')
+            commit(userTypes.CLEAR_USER_DETAILS)
         },
         saveSession({ commit }, response_data) {
-            commit('saveSession', response_data)
+            commit(userTypes.SAVE_USER_SESSION, response_data)
             router.push("/");
         },
         getSession({ commit }) {
-            commit('getSession')
+            commit(userTypes.GET_USER_SESSION)
         },
         clearSession({ commit }) {
-            commit('clearSession')
+            commit(userTypes.CLEAR_USER_SESSION)
         },
+        fetchCartProducts({ commit }, payload) {
+            commit(userTypes.SAVE_PRODUCTS_TO_CART, payload)
+        },
+        setEditUserFormFields({ commit }) {
+            commit(userTypes.SET_EDIT_USER_INFO_FORM_FIELDS)
+        }
     }
 }
 

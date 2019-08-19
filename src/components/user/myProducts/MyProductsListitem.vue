@@ -13,16 +13,27 @@
                 </v-list-item-title>
                 <v-list-item-subtitle>{{ productPublishedDate(dateCreated) }}</v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn class="ml-5" outlined="" text :to="`/product/details/${product._id}`">Детайли</v-btn>
+            <v-btn class="ml-5" outlined text :to="`/product/details/${product._id}`">Details</v-btn>
+            <dialog-product-delete 
+                :productId="product._id"
+                :productName="name"
+                :collectionName="'myProductsList'"
+                >
+                <v-icon :title="'Delete Product'">mdi-delete</v-icon> 
+        </dialog-product-delete>
           </v-list-item>
         </v-card>
 </template>
 
 <script>
+import DialogProductDelete from '../../home/DialogProductDelete'
 import { product_data_mixin, product_props_mixin } from '../../../mixins/product_mixins'
 import { mapGetters } from 'vuex';
 export default {
     name: 'MyProductsListitem',
+    components: {
+      DialogProductDelete,
+    },
     mixins: [ 
       product_data_mixin, 
       product_props_mixin 

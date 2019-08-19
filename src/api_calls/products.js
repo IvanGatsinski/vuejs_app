@@ -1,5 +1,8 @@
-import { get, put, post, remove } from './helpers'
+import { getGuest, get, put, post, remove } from './helpers'
 
+function fetchallProductsGuest() {
+    return getGuest(`/appdata/${process.env.VUE_APP_KEY}/products?query={}&sort={"_kmd.ect": -1}`)
+}
 function fetchAllProducts() {
     return get(`/appdata/${process.env.VUE_APP_KEY}/products?query={}&sort={"_kmd.ect": -1}`)
 }
@@ -23,6 +26,7 @@ function fetchCartProducts(ids) {
 }
 
 export {
+    fetchallProductsGuest,
     fetchAllProducts,
     fetchProducts,
     fetchCartProducts,

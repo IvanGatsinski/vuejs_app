@@ -4,7 +4,7 @@
           <v-flex xs12 sm4 md4 lg4 xl4>
     <v-form
     v-model="valid"
-    ref="productForm"
+    ref="editProductForm"
   >
     <v-text-field
       v-model="productName"
@@ -51,17 +51,33 @@
       <v-radio label="Old" color="secondary" value="Old"></v-radio>
     </v-radio-group>
 
-    <v-btn
-      class="mr-4"
-      @click="submitEdit">
-      Save
-    </v-btn>
-    
-    <v-btn 
-      @click="$router.back(-1)"
-      class="mr-4">
-      Cancel
-    </v-btn>
+    <v-wait for="edit product loading btn">
+      <template slot="waiting">
+        <v-btn
+          loading
+          disabled
+          class="mr-4">
+          Save
+        </v-btn>
+        <v-btn 
+          disabled
+          class="mr-4">
+          Cancel
+        </v-btn>
+      </template>
+        <v-btn
+          color="success"
+          class="mr-4"
+          @click="submitEdit()">
+          Save
+        </v-btn>
+        <v-btn 
+          color="warning"
+          @click="$router.back(-1)"
+          class="mr-4">
+          Cancel
+        </v-btn>
+    </v-wait>
   </v-form>
           </v-flex>
         </v-layout>
@@ -71,7 +87,7 @@
 <script>
 import { product_validation_mixin } from '../../mixins/validation_mixins'
 import { mapFields } from 'vuex-map-fields'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import store from '../../store/index'
 
 export default {
@@ -96,7 +112,7 @@ export default {
              'editProduct',
         ]),
         submitEdit() {
-          if (this.$refs.editProduct.validate()) {
+          if (this.$refs.editProductForm.validate()) {
               this.editProduct(this.productId)
           }
         }

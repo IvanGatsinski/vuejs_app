@@ -1,5 +1,6 @@
 import { authenticateUser } from '../../api_calls/auth'
 import { getField, updateField } from 'vuex-map-fields'
+import wait from '../../wait'
 
 const auth = {
     namespaced: true,
@@ -28,14 +29,15 @@ const auth = {
         updateField,
     },
     actions: {
-        authenticate({ dispatch, commit }, user_data) {
-            authenticateUser({...user_data})
-                .then(res => {
-                    const RESPONSE_DATA = res.data
-                    console.log(user_data);
-                    
-                    dispatch('user/saveSession', RESPONSE_DATA, { root : true })
-                })
+        async authenticate({ dispatch }, user_data) {
+            try {
+                wait.start('loading auth btn')
+                let user = await authenticateUser({...user_data})
+                wait.end('loading auth btn')
+                dispatch('user/saveSession', user.data, { root : true })
+            } catch (error) {
+                wait.end('loading auth btn')
+            }
         },
         logout({ dispatch }) {
             dispatch('user/clearSession', null, { root : true })

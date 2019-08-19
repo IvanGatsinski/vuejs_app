@@ -19,6 +19,9 @@
     <v-text-field
       v-model="password"
       :rules="passwordRules"
+      :append-icon="hidePassword ? 'mdi-eye-off' : 'mdi-eye'"
+      @click:append="hidePassword = !hidePassword"
+      :type="hidePassword ? 'password' : 'text'"
       label="Password"
       required
       clearable
@@ -29,6 +32,9 @@
     <v-text-field
        v-model="confirmPassword"
       :rules="confirmPasswordRules"
+      :append-icon="hidePasswordConfirm ? 'mdi-eye-off' : 'mdi-eye'"
+      @click:append="hidePasswordConfirm = !hidePasswordConfirm"
+      :type="hidePasswordConfirm ? 'password' : 'text'"
       label="Confirm Password"
       required
       clearable
@@ -56,6 +62,7 @@
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="dateOfBirth"
+            :rules="birthdayRules"
             label="Birthday date"
             prepend-icon="mdi-calendar-range"
             readonly
@@ -92,18 +99,29 @@
     <v-text-field
       v-model="phone"
       :rules="phoneRules"
-      label="+359 "
+      label="Phone number"
       required
       clearable
-      prepend-inner-icon="mdi-cellphone-basic"
-    ></v-text-field>
-    <v-btn 
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="submitRegister()">
-      Register
-    </v-btn>
+      prepend-inner-icon="mdi-cellphone-basic">
+    </v-text-field>
+
+    <v-wait for="loading auth btn">
+      <template slot="waiting">
+        <v-btn 
+          disabled
+          loading
+          class="mt-3 mr-4">
+          Register
+        </v-btn>
+      </template>
+        <v-btn 
+          color="success"
+          class="mt-3 mr-4"
+          @click="submitRegister()">
+          Register
+        </v-btn>
+    </v-wait>
+
   </v-form>
             </v-flex>
         </v-layout>
@@ -111,7 +129,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import { registerUser } from '../../api_calls/auth'
 import { user_register_validation_mixin } from '../../mixins/validation_mixins'
@@ -122,6 +140,8 @@ export default {
   data() {
     return {
       menu: false,
+      hidePassword: true,
+      hidePasswordConfirm: true,
     }
   },
   computed: {
@@ -138,9 +158,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions('auth',[
-      'authenticate'
-    ]),
+    ...mapActions('auth',['authenticate']),
     save (date) {
       this.$refs.menu.save(date)
     },
@@ -149,7 +167,6 @@ export default {
        username: this.username,
        password: this.password,
        email: this.email,
-       age: null,
        dateOfBirth: this.dateOfBirth,
        gender: this.gender,
        city: this.city,

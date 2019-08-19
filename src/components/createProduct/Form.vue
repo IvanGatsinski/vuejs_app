@@ -53,63 +53,85 @@
       <v-radio label="Old" color="secondary" value="Old"></v-radio>
     </v-radio-group>
 
-    <v-btn
-      :color="isFormValid"
-      class="mr-4"
-      @click="submitProduct">
-      Create
-    </v-btn>
+    <v-wait for="create product loading btn">
+      <template slot="waiting">
         <v-btn
-      class="mr-4"
-      @click="$router.back(-1)">
-      Cancel
-    </v-btn>
+          disabled
+          loading
+          class="mr-4">
+          Create
+        </v-btn>
+        <v-btn
+          disabled
+          class="mr-4">
+          Cancel
+        </v-btn>
+      </template>
+        <v-btn
+          color="success"
+          class="mr-4"
+          @click="submitProduct()">
+          Create
+        </v-btn>
+        <v-btn
+          color="warning"
+          class="mr-4"
+          @click="$router.back(-1)">
+          Cancel
+        </v-btn>
+    </v-wait>
   </v-form>
 
   </v-flex>
     <v-flex xs12 sm7 md7 lg6 xl6>
-      <v-card class="gallery__card">
-      <v-img
-        class="white--text"
-        height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      >
-      <v-card-title class="align-end fill-height">{{ productPrice }}</v-card-title>
-      </v-img>
 
-      <v-card-text>   
-        <v-card-title>{{ productName }} </v-card-title>
-        <br/>
-        Condition: {{ productCondition }}
-      </v-card-text>
-
-        <v-card-text>
-            {{ productPublishedDate(Date.now()) }}
-        </v-card-text>
-
-      <v-card-actions class="cyan lighten-5">
-      <v-btn disabled
-        text
+    <v-card class="mx-auto">
+        <v-img
+          class="white--text"
+          height="200px"
+          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
         >
-        {{ show ? 'hide details' : 'show details' }}
+          
+        </v-img>
+          <v-card-title 
+            class="align-end fill-height">
+            {{ productName }}
+            </v-card-title>
+        <v-card-text>
+    
+      <span class="text--primary">
+        <span>Author: {{ userProfile.username }}</span><br>
+
+        <span>Price: {{ productPrice }}</span><br>
+        <span>Condition: {{ productCondition }}</span><br>
+       
+      </span>
+    <span>{{ productPublishedDate(Date.now()) }}</span><br>
+    <span>{{ productPublishedDate(Date.now()) }}</span><br>
+    </v-card-text>
+
+    <v-card-actions class="rgba(31, 77, 107, 0.5) py-0">
+      <v-btn
+        text>
+         Hide description
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn disabled icon>
+      <v-btn icon>
         <v-icon>
-            {{ show ? 'mdi-arrow-up-drop-circle-outline' : 'mdi-arrow-down-drop-circle-outline' }}
+            mdi-arrow-up-drop-circle-outline
         </v-icon>
       </v-btn>
     </v-card-actions>
 
     <v-expand-transition>
-      <div v-show="show">
-        <v-card-text class="cyan lighten-4">
-         Description: {{ productDescription }}
+      <v-card>
+        <v-card-text class="card-description__text">
+          {{ productDescription }}
         </v-card-text>
-      </div>
+      </v-card>
     </v-expand-transition>
 
-    </v-card>
+      </v-card>
             </v-flex>
         </v-layout>
     </v-container>
@@ -124,11 +146,6 @@ import { mapActions, mapState, mapGetters } from 'vuex';
 export default {
     name: 'CreateProduct',
     mixins: [ product_validation_mixin ],
-    data() {
-      return {
-        show: true,
-      }
-    },
     computed: {
         ...mapState('user', ['userProfile']),
         ...mapGetters('products', ['productPublishedDate']),
@@ -139,14 +156,9 @@ export default {
             'createProduct.productDescription', 
             'createProduct.productCondition'
         ]),
-        isFormValid() {
-          return this.valid ? 'success' : 'warning'
-        },
     },
     methods: {
-        ...mapActions('products', [
-            'createProduct',
-        ]),
+        ...mapActions('products', ['createProduct',]),
         submitProduct() {
             let product_data = {
                 name: this.productName,

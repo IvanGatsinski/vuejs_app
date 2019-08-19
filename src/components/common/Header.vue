@@ -35,7 +35,7 @@
           <v-icon left color="yellow lighten-2">mdi-account-circle</v-icon> Profile
       </v-btn>
   
-      <v-btn small class="ma-1" color="light-blue darken-4" @click="logoutUser">
+      <v-btn small class="ma-1" color="light-blue darken-4" @click="logoutUser()">
           <v-icon left color="yellow lighten-2">mdi-logout</v-icon> Logout
       </v-btn>
         

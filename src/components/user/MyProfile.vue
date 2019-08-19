@@ -26,9 +26,9 @@
                        </v-list-item-subtitle>
                   </v-list-item-content>
                 <v-layout column wrap justify-space-around align-content-end>
-                  <v-btn :to="{ name: 'editMyProfile' }" max-width="50%" class="ma-1" color="rgb(31, 107, 36)">Edit Info</v-btn>
-                  <v-btn :to="{ name: 'myProducts' }" max-width="50%" class="ma-1" color="rgb(31, 107, 36)">My products</v-btn>
-                  <v-btn @click="$router.back(-1)" max-width="50%" class="ma-1" color="rgb(31, 107, 36)">Back</v-btn>
+                  <v-btn :to="{ name: 'editMyProfile' }" max-width="50%" class="ma-1" color="indigo darken-2">Edit profile</v-btn>
+                  <v-btn :to="{ name: 'myProducts' }" max-width="50%" class="ma-1" color="indigo darken-2">My products</v-btn>
+                  <v-btn @click="$router.back(-1)" max-width="50%" class="ma-1" color="indigo darken-2">Back</v-btn>
                 </v-layout>
               </v-list-item>
             </v-card>

@@ -32,12 +32,12 @@
                   :to="{ name: 'userProducts', params: $route.params.id }" 
                   max-width="70%" 
                   class="ma-1" 
-                  color="rgb(31, 107, 36)">{{userDetails.username}}'s products</v-btn>
+                  color="indigo darken-2">{{userDetails.username}}'s products</v-btn>
                   <v-btn 
                   @click="$router.back(-1)" 
                   max-width="70%" 
                   class="ma-1" 
-                  color="rgb(31, 107, 36)">Back</v-btn>
+                  color="indigo darken-2">Back</v-btn>
                 </v-layout>
               </v-list-item>
             </v-card>

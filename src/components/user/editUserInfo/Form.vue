@@ -39,16 +39,33 @@
                         required
                         ></v-select>
 
-                        <v-btn
-                        class="mr-4"
-                        @click="submitEdit()">
-                        Save
-                        </v-btn>
-
-                        <v-btn @click="cancelEdit()"
-                        class="mr-4">
-                        Cancel
-                        </v-btn>
+                        <v-wait for="edit user info loading">
+                          <template slot="waiting">
+                            <v-btn
+                              loading
+                              disabled
+                              class="mr-4">
+                              Save
+                            </v-btn>
+                            <v-btn 
+                              disabled
+                              class="mr-4">
+                              Cancel
+                            </v-btn>
+                          </template>
+                          <v-btn
+                            color="success"
+                            class="mr-4"
+                            @click="submitEdit()">
+                            Save
+                          </v-btn>
+                          <v-btn 
+                            color="warning"
+                            @click="cancelEdit()"
+                            class="mr-4">
+                            Cancel
+                          </v-btn>
+                        </v-wait>
                     </v-form>
             </v-flex>
         </v-layout>
@@ -92,7 +109,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    store.commit('user/setEditUserInfoFields')
+    store.dispatch('user/setEditUserFormFields')
     next()
   }
 };

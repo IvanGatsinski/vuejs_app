@@ -6,8 +6,10 @@ import {
     addProduct,
     removeProduct
 } from '../../api_calls/products'
+import * as productTypes from '../mutation-types/products'
 import { getField, updateField } from 'vuex-map-fields'
 import router from '../../router'
+import wait from '../../wait'
 
 const products = {
     namespaced: true,
@@ -72,7 +74,7 @@ const products = {
     },
     mutations: {
         updateField,
-        updateProduct(state, payload) {
+        [productTypes.UPDATE_PRODUCT] (state, payload) {
             let newArr = []
             state.allProducts.forEach((val, i) => {
                 if (val._id === payload._id) {
@@ -86,114 +88,105 @@ const products = {
             
             state.allProducts = newArr
         },
-        fetchAllProducts(state, payload) {
+        [productTypes.FETCH_ALL_PRODUCTS] (state, payload) {
             state.allProducts = payload
         },
-        updateMyProducts(state, payload) {
+        [productTypes.UPDATE_MY_PRODUCTS] (state, payload) {
             state.myProducts = payload
         },
-        updateRandomUserProducts(state, payload) {
+        [productTypes.SET_RANDOM_USER_PRODUCTS] (state, payload) {
             state.randomUserProducts = payload
         },
-        setEditProductFields(state, payload) {
+        [productTypes.SET_EDIT_PRODUCT_FORM_FIELDS] (state, payload) {
             state.editProduct.productName = payload.name
             state.editProduct.productPrice = payload.price
             state.editProduct.productDescription = payload.description
             state.editProduct.productCondition = payload.condition
         },
-        setProductDetails(state, payload) {
+        [productTypes.SET_PRODUCT_DETAILS] (state, payload) {
             state.productDetails = payload
         },
-        clearRandomUserProducts(state) {
+        [productTypes.CLEAR_RANDOM_USER_PRODUCTS] (state) {
             state.randomUserProducts = null
         },
-        clearProductDetails(state) {
+        [productTypes.CLEAR_MY_PRODUCTS] (state) {
+            state.myProducts = null
+        },
+        [productTypes.CLEAR_PRODUCT_DETAILS] (state) {
             state.productDetails = null
         }
     },
     actions: {
-        fetchAllProducts({ commit }) {
-            fetchAllProducts()
-                .then(res => {
-                    commit('fetchAllProducts', res.data)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        },
-        getRandomUserProducts({ commit }, id) {
-            fetchProducts(id)
-                .then(res => {
-                    commit('updateRandomUserProducts', res.data)
-                })
-                .catch(err => {
-                    console.warn(err);
-                })
-        },
-        getMyProducts({ commit }, id) { 
-            fetchProducts(id)
-                .then(res => {
-                    console.log(res)
-                    commit('updateMyProducts', res.data)
-                }) // TODO => Refactor this func and getRandomUser...into one
-                .catch(err => {
-                    console.warn(err);
-                })
-        },
-        createProduct({ dispatch, commit }, productData) {
-            addProduct(productData)
-                .then(() => {
-                    dispatch('fetchAllProducts')
-                    router.push('/')
+        async fetchAllProducts({ commit }) {
+            let products = await fetchAllProducts()
 
-                    // commit('clearCreateProductFields')
-                })
-                .catch()
+            commit(productTypes.FETCH_ALL_PRODUCTS, products.data)
         },
-        editProduct({ commit, state }, productId) {
+        async getRandomUserProducts({ commit }, id) {
+            let products = await fetchProducts(id)
+
+            commit(productTypes.SET_RANDOM_USER_PRODUCTS, products.data)
+        },
+        async getMyProducts({ commit }, id) { 
+            let myProducts = await fetchProducts(id)
+
+            commit(productTypes.UPDATE_MY_PRODUCTS, myProducts.data)
+        },
+        async createProduct({ dispatch }, productData) {
+            wait.start('create product loading btn')
+            await addProduct(productData)
+            wait.end('create product loading btn')
+
+            dispatch('fetchAllProducts')
+            router.push('/')
+        },
+        async editProduct({ commit, state, rootState}, productId) {
             let productData = {
                 name: state.editProduct.productName,
                 price: state.editProduct.productPrice,
                 description: state.editProduct.productDescription,
-                condition: state.editProduct.productCondition
+                condition: state.editProduct.productCondition,
+                author: rootState.user.userProfile.username
             }
-            updateProduct(productId, productData)
-                .then(res => {
-                    commit('updateProduct', res.data)
-                    router.push('/')
-                })
-                .catch(err => {
-                    console.warn(err);
-                })
+            wait.start('edit product loading btn')
+            let product = await updateProduct(productId, productData)
+            wait.end('edit product loading btn')
+
+            commit(productTypes.UPDATE_PRODUCT, product.data)
+            router.push('/')
         },
-        setProductForEdit({ commit }, productId) {
-            fetchProduct(productId)
-                .then(res => {
-                    commit('setEditProductFields', res.data)
-                })
-                .catch(err => console.warn('EBASI'));
+        async setProductForEdit({ commit }, productId) {
+            let product = await fetchProduct(productId)
+                
+            commit(productTypes.SET_EDIT_PRODUCT_FORM_FIELDS, product.data)
         },
-        getProductDetails({ commit }, productId) {
-            fetchProduct(productId)
-                .then(res => {
-                    commit('setProductDetails', res.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        async getProductDetails({ commit }, productId) {
+            let product = await fetchProduct(productId)
+              
+            commit(productTypes.SET_PRODUCT_DETAILS, product.data)
         },
-        removeProduct({ dispatch }, id) {
-            removeProduct(id)
-                .then(res => {
-                    dispatch('fetchAllProducts')
-                })
-                .catch(err => console.log(err))
+        async removeProduct({ dispatch }, id) {
+            wait.start('delete progress loader')
+            await removeProduct(id)
+            wait.end('delete progress loader')
+            
+            dispatch('fetchAllProducts')
+        },
+        async removeMyProduct({ dispatch, rootState }, id) {
+            wait.start('delete progress loader')
+            await removeProduct(id)
+            wait.end('delete progress loader')
+            
+            dispatch('getMyProducts', rootState.user.userProfile._id)
         },
         clearRandomUserProducts({ commit }) {
-            commit('clearRandomUserProducts')
+            commit(productTypes.CLEAR_RANDOM_USER_PRODUCTS)
         },
         clearProductDetails({ commit }) {
-            commit('clearProductDetails')
+            commit(productTypes.CLEAR_PRODUCT_DETAILS)
+        },
+        clearMyProducts({ commit }) {
+            commit(productTypes.CLEAR_MY_PRODUCTS)
         }
     },
 }

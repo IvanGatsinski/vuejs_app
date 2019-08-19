@@ -3,6 +3,7 @@ import App from './App.vue'
 import NProgress from 'vue-nprogress'
 import router from './router'
 import store from './store/index'
+import wait from './wait'
 import axios from 'axios'
 import * as progress from 'nprogress'
 import vuetify from './plugins/vuetify';
@@ -48,5 +49,6 @@ new Vue({
   router,
   store,
   vuetify,
+  wait,
   render: h => h(App)
 }).$mount('#app')

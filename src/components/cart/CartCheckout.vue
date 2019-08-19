@@ -5,27 +5,44 @@
         <v-list-item-content>
             <div class="overline mb-4">CHECKOUT TO BUY THE PRODUCTS</div>
             <v-list-item-title class="headline mb-1">Total price: {{ cartTotalPrice }}</v-list-item-title>
-            <!-- <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle> -->
         </v-list-item-content>
-
         </v-list-item>
 
         <v-card-actions>
-        <v-btn @click="checkout()" width="100%" color="dark blue">Checkout</v-btn>
+            <v-wait for="checkout loading btn" class="checkout-btn-wrapper">
+                <template slot="waiting">
+                    <v-btn 
+                    loading
+                    disabled
+                    width="100%">
+                    Checkout
+                    </v-btn>
+                </template>
+                    <v-btn 
+                    @click="checkout()"
+                    width="100%" 
+                    color="dark blue">
+                    Checkout
+                    </v-btn>
+            </v-wait>
+
         </v-card-actions>
     </v-card>
 </v-flex>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
+
 export default {
     name: 'CartCheckout',
     computed: {
+        ...mapState(['isLoading']),
         ...mapGetters('user', ['cartTotalPrice'])
     },
     methods: {
         ...mapActions('user', ['checkoutCart']),
+        ...mapActions(['enableLoading']),
         checkout() {
             this.checkoutCart()
         }
@@ -37,6 +54,8 @@ export default {
     .v-card {
         position: sticky;
         top: 15vh;
-
+    }
+    .checkout-btn-wrapper {
+        width: 100%;
     }
 </style>

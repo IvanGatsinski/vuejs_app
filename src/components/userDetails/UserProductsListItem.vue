@@ -13,7 +13,7 @@
             </v-list-item-title>
             <v-list-item-subtitle>{{ productPublishedDate(dateCreated) }}</v-list-item-subtitle>
         </v-list-item-content>
-        <v-btn class="ml-5" outlined="" text :to="`/product/details/${product._id}`">Детайли</v-btn>
+        <v-btn class="ml-5" outlined="" text :to="`/product/details/${product._id}`">Details</v-btn>
         </v-list-item>
     </v-card>
 </template>

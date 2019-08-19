@@ -37,8 +37,6 @@
                     {{ author }}
                     </router-link>
                     <span class="gallery__card-content" v-else>{{ author }}</span>
-                    
-
             </v-flex>
         </v-layout>
         
@@ -53,13 +51,15 @@
         </v-icon>
 
         <div class="owner-rights" v-if="isOwner">
-        
           <v-btn :to="{ name: 'editProduct', params: { id: productId } }" icon large class="owner-rights__item mx-1 py-1">
              <v-hover v-slot:default="{ hover }">
                 <v-icon :title="'Edit Product'" :color="!hover ? 'cyan' : 'amber lighten-2'">mdi-square-edit-outline</v-icon>
              </v-hover>
           </v-btn>
-        <dialog-product-delete :productId="productId">
+        <dialog-product-delete 
+        :productId="productId"
+        :productName="name"
+        >
             <v-hover v-slot:default="{ hover }">
                 <v-icon :title="'Delete Product'" :color="!hover ? 'cyan' : 'red lighten-2'">mdi-delete</v-icon> 
             </v-hover>

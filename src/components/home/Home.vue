@@ -11,17 +11,20 @@
             </v-layout>
         </v-container>
       <Products></Products>
+     <dialog-removed-item-cart></dialog-removed-item-cart>
     </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import Products from './Products'
+import DialogRemovedItemCart from './DialogRemovedItemCart'
 
 export default {
     name: 'Home',
     components: {
-        Products
+        Products,
+        DialogRemovedItemCart,
     },
     methods: {
     ...mapActions('products',[

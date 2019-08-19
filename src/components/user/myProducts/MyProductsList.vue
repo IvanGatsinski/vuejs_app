@@ -39,11 +39,14 @@ export default {
         ...mapState('user', ['userProfile']),
     },
     methods: {
-        ...mapActions('products', ['getMyProducts'])
+        ...mapActions('products', ['getMyProducts', 'clearMyProducts'])
     },
     created() {
         this.getMyProducts(this.userProfile._id)
     },
+    beforeDestroy() {
+        this.clearMyProducts()
+    }
 }
 </script>
 

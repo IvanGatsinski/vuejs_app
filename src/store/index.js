@@ -12,6 +12,30 @@ const store = {
         products,
         user,
     },
+    state: {
+        isLoading: false,
+    },
+    getters: {
+        loading: state => isLoading => {
+            return isLoading
+        }
+    },
+    mutations: {
+        enableLoading(state) {
+            state.isLoading = true
+        },
+        disableLoading(state) {
+            state.isLoading = false
+        }
+    },
+    actions: {
+        enableLoading({ commit }) {
+            commit('enableLoading')
+        },
+        disableLoading({ commit }) {
+            commit('disableLoading')
+        }
+    }
 }
 
 export default new Vuex.Store(store)
