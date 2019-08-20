@@ -51,7 +51,7 @@ export default {
         fetchCartProducts(cartIds)
             .then(res => {
                 console.log(res.data)
-                store.dispatch('user/fetchCartProducts', res.data)
+                store.dispatch('user/getCartProducts', res.data)
                 next()
             })
             .catch(err => console.log(err))

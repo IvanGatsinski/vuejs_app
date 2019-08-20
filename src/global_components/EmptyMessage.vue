@@ -16,3 +16,9 @@ export default {
     name: 'global-empty-message'
 }
 </script>
+
+<style scoped>
+    .v-alert {
+        position: relative !important;
+    }
+</style>

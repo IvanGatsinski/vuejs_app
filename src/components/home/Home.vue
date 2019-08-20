@@ -28,7 +28,7 @@ export default {
     },
     methods: {
     ...mapActions('products',[
-        'fetchAllProducts'
+        'getAllProducts'
         ]),
     ...mapActions('user',[
         'wasCartProductDeleted'
@@ -39,7 +39,7 @@ export default {
     },
     created() {
         this.wasCartProductDeleted()
-        this.fetchAllProducts()
+        this.getAllProducts()
     },
 }
 </script>

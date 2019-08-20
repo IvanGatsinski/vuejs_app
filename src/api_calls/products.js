@@ -18,7 +18,7 @@ function updateProduct(productId, data) {
 function addProduct(data) {
     return post(`/appdata/${process.env.VUE_APP_KEY}/products`, data, '')
 }
-function removeProduct(id) {
+function deleteProduct(id) {
     return remove(`/appdata/${process.env.VUE_APP_KEY}/products/${id}`)
 }
 function fetchCartProducts(ids) {
@@ -33,5 +33,5 @@ export {
     fetchProduct,
     updateProduct,
     addProduct,
-    removeProduct,
+    deleteProduct,
 }

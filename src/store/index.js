@@ -1,7 +1,7 @@
-import auth from './modules/auth'
-import products from './modules/products'
-import user from './modules/user'
-import { SHOW_ERROR_MESSAGE, HIDE_ERROR_MESSAGE, SET_ERROR_MESSAGE } from './mutation-types/root'
+import auth from './modules/auth/index'
+import products from './modules/products/index'
+import user from './modules/user/index'
+import { SHOW_ERROR_MESSAGE, HIDE_ERROR_MESSAGE, SET_ERROR_MESSAGE } from './modules/rootTypes'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
