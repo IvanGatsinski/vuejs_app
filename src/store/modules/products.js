@@ -172,13 +172,13 @@ const products = {
             
             dispatch('fetchAllProducts')
         },
-        async removeMyProduct({ dispatch, rootState }, id) {
-            wait.start('delete progress loader')
-            await removeProduct(id)
-            wait.end('delete progress loader')
+        // async removeMyProduct({ dispatch, rootState }, id) {
+        //     wait.start('delete progress loader')
+        //     await removeProduct(id)
+        //     wait.end('delete progress loader')
             
-            dispatch('getMyProducts', rootState.user.userProfile._id)
-        },
+        //     dispatch('getMyProducts', rootState.user.userProfile._id)
+        // },
         clearRandomUserProducts({ commit }) {
             commit(productTypes.CLEAR_RANDOM_USER_PRODUCTS)
         },

@@ -1,6 +1,7 @@
 import auth from './modules/auth'
 import products from './modules/products'
 import user from './modules/user'
+import { SHOW_ERROR_MESSAGE, HIDE_ERROR_MESSAGE, SET_ERROR_MESSAGE } from './mutation-types/root'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
@@ -13,27 +14,30 @@ const store = {
         user,
     },
     state: {
-        isLoading: false,
-    },
-    getters: {
-        loading: state => isLoading => {
-            return isLoading
-        }
+        hasError: false,
+        errorMessage: '',
     },
     mutations: {
-        enableLoading(state) {
-            state.isLoading = true
+        [SHOW_ERROR_MESSAGE] (state) {
+            state.hasError = true
         },
-        disableLoading(state) {
-            state.isLoading = false
+        [HIDE_ERROR_MESSAGE] (state) {
+            state.hasError = false
+        },
+        [SET_ERROR_MESSAGE] (state, message) {
+            state.errorMessage = message
         }
     },
     actions: {
-        enableLoading({ commit }) {
-            commit('enableLoading')
+        showError({ commit }) {
+            commit(SHOW_ERROR_MESSAGE)
+            setTimeout(() => commit(HIDE_ERROR_MESSAGE) ,3000)
         },
-        disableLoading({ commit }) {
-            commit('disableLoading')
+        hideError({ commit }) {
+            commit(HIDE_ERROR_MESSAGE)
+        },
+        setErrorMessage({ commit }, message) {
+            commit(SET_ERROR_MESSAGE, message)
         }
     }
 }

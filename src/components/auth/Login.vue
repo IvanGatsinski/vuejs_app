@@ -10,6 +10,7 @@
       v-model="username"
       :counter="10"
       label="Name"
+      :rules="[v => !!v || 'Username is required']"
       required
       prepend-inner-icon="mdi-account"
     ></v-text-field>
@@ -17,6 +18,7 @@
     <v-text-field 
       v-model="password"
       label="Password"
+      :rules="[v => !!v || 'Password is required']"
       required
       prepend-inner-icon="mdi-lock"
       :append-icon="hidePassword ? 'mdi-eye-off' : 'mdi-eye'"
