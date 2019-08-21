@@ -40,6 +40,7 @@ const CLEAR_PRODUCT_DETAILS = (state) => {
     state.productDetails = null
 }
 
+
 export default {
     updateField,
     UPDATE_PRODUCT,

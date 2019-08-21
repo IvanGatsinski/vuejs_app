@@ -27,11 +27,11 @@
           </span>
       </v-btn>
     
-      <v-btn :to="{ name: 'home' }" small class="ma-1" color="light-blue darken-4">
+      <v-btn :to="{ name: 'home' }" exact small class="ma-1" color="light-blue darken-4">
           <v-icon left color="yellow lighten-2">mdi-home</v-icon> Home
       </v-btn>
 
-      <v-btn :to="{ name: 'myProfile' }" small class="ma-1" color="light-blue darken-4">
+      <v-btn :to="{ name: 'userDetails', params: { id : userProfile._id } }" small class="ma-1" color="light-blue darken-4">
           <v-icon left color="yellow lighten-2">mdi-account-circle</v-icon> Profile
       </v-btn>
   
@@ -91,19 +91,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .v-btn:not(.v-btn--text):not(.v-btn--outlined).v-btn--active:before {
-      opacity: 0;
-    }
+
     .v-application .light-blue {
           background-color: #03a8f4ab !important;
     }
   
-    .fav__items-btn:hover {
+    /* .fav__items-btn:hover {
         background: transparent;
     }
     .fav__items-icon--color {
         color: #EF5350 !important;
-    }
+    } */
     span.fav__items-count {
         position: relative;
         transform: translate(0px, 5px);

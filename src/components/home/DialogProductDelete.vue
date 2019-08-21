@@ -1,5 +1,4 @@
 <template>
-
       <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon large class="owner-rights__item mx-1 py-1">
@@ -74,12 +73,15 @@ export default {
         type: String,
         required: true
       },
+      collection: {
+        type: String
+      }
     },
     methods: {
       ...mapActions('products', ['removeProduct']),
-      deleteProduct(productId) {
+      deleteProduct(productId, collection) {
           this.isHidden = true
-          this.removeProduct(productId)
+          this.removeProduct({ id : productId, collection : this.collection})
       },
     },
 }

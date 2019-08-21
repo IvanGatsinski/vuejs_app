@@ -13,7 +13,7 @@ const editUserInfo = async ({ commit, state }, payload) => {
     commit('SAVE_USER_SESSION', userInfo.data)
     commit('EDIT_USER_INFO', userInfo.data)
 
-    router.push('/myProfile') 
+    router.push({ name : 'userDetails' }) 
 }
 const wasCartProductDeleted = async ({ commit, state }) => {
     let newProfileObject = { ...state.userProfile }
@@ -89,9 +89,6 @@ const clearSession = ({ commit }) => {
 const getCartProducts = ({ commit }, payload) => {
     commit('SAVE_PRODUCTS_TO_CART', payload)
 }
-const setEditUserFormFields = ({ commit }) => {
-    commit('SET_EDIT_USER_INFO_FORM_FIELDS')
-}
 
 export default {
     editUserInfo,
@@ -106,5 +103,4 @@ export default {
     getSession,
     saveSession,
     getCartProducts,
-    setEditUserFormFields,
 }

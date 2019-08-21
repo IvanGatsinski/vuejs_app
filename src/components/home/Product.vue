@@ -59,6 +59,7 @@
         <dialog-product-delete 
         :productId="productId"
         :productName="name"
+        :collection="'allProducts'"
         >
             <v-hover v-slot:default="{ hover }">
                 <v-icon :title="'Delete Product'" :color="!hover ? 'cyan' : 'red lighten-2'">mdi-delete</v-icon> 

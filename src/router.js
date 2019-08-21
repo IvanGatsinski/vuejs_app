@@ -8,9 +8,7 @@ import EditProduct from './components/editProduct/Form'
 import ProductDetails from './components/details/productDetails'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
-import MyProfile from './components/user/MyProfile'
 import EditUserInfo from './components/user/editUserInfo/Form'
-import MyProductsList from "./components/user/myProducts/MyProductsList"
 import UserDetails from './components/userDetails/UserDetails'
 import UserProductsList from './components/userDetails/UserProductsList'
 import Cart from './components/cart/Cart'
@@ -23,13 +21,9 @@ const routes = [
     { path: '/register', name: 'register', component: Register },
     { path: '/login', name: 'login', component: Login },
     { path: '/cart', name: 'cart', component: Cart},
-    { path: '/myprofile', name: 'myProfile', component: MyProfile, 
-      children: [
-      { path: 'edit', name: 'editMyProfile', component: EditUserInfo },
-      { path: 'products', name: 'myProducts', component: MyProductsList },
-    ]},
     { path: '/user/details/:id', name: 'userDetails', component: UserDetails, 
       children: [
+      { path: 'edit', name: 'editMyProfile', component: EditUserInfo },
       { path: 'products', name: 'userProducts', component: UserProductsList },
     ]},
     { path: '/product/create', name: 'createProduct', component: CreateProduct },

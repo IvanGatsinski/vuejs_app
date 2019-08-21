@@ -34,15 +34,15 @@ export default {
     },
     methods: {
         ...mapActions('products', [
-            'getRandomUserProducts',
-            'clearRandomUserProducts'
+            'getUserProducts',
+            'clearUserProducts'
         ])
     },
     created() {
-        this.getRandomUserProducts(this.$route.params.id)
+        this.getUserProducts(this.$route.params.id)
     },
     beforeDestroy() {
-        this.clearRandomUserProducts()
+        this.clearUserProducts()
     }
 }
 </script>

@@ -13,7 +13,7 @@ const getAllProducts = async ({ commit }) => {
 
     commit('FETCH_ALL_PRODUCTS', products.data)
 }
-const getRandomUserProducts  = async ({ commit }, id) => {
+const getUserProducts  = async ({ commit }, id) => {
     let products = await fetchProducts(id)
 
     commit('SET_RANDOM_USER_PRODUCTS', products.data)
@@ -56,21 +56,23 @@ const getProductDetails = async ({ commit }, productId) => {
       
     commit('SET_PRODUCT_DETAILS', product.data)
 }
-const removeProduct = async ({ dispatch }, id) => {
+const removeProduct = async ({ dispatch, rootState }, { id, collection }) => {
     wait.start('delete progress loader')
     await deleteProduct(id)
     wait.end('delete progress loader')
     
-    dispatch('getAllProducts')
+    switch (collection) {
+        case 'allProducts' : 
+            dispatch('getAllProducts')
+            return;
+        case 'myProducts' :
+            dispatch('getAllProducts')
+            dispatch('getUserProducts', rootState.user.userProfile._id)
+            return;
+        default: return;
+    }
 }
-// const = async removeMyProduct({ dispatch, rootState }, id) {
-//     wait.start('delete progress loader')
-//     await removeProduct(id)
-//     wait.end('delete progress loader')
-    
-//     dispatch('getMyProducts', rootState.user.userProfile._id)
-// },
-const clearRandomUserProducts = ({ commit }) => {
+const clearUserProducts = ({ commit }) => {
     commit('CLEAR_RANDOM_USER_PRODUCTS')
 }
 const clearProductDetails = ({ commit }) => {
@@ -82,14 +84,14 @@ const clearMyProducts = ({ commit }) => {
 
 export default {
     getAllProducts,
-    getRandomUserProducts,
+    getUserProducts,
     getMyProducts,
     createProduct,
     editProduct,
     setProductForEdit,
     getProductDetails,
     removeProduct,
-    clearRandomUserProducts,
+    clearUserProducts,
     clearProductDetails,
     clearMyProducts,
 }

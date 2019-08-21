@@ -32,8 +32,11 @@ export default {
 
 <style>
     /* Remove the leftover opacity on click */
-.v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
-  opacity: 0;
+/* .v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before {
+  
+} */
+.v-btn--active:before {
+  background: rgb(255, 0, 0);
 }
 .v-text-field .v-label {
   top: 0 !important;

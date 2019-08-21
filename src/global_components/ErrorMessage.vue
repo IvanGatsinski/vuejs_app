@@ -7,6 +7,7 @@
       class="pa-0"
       type="error"
       tile
+      height="10vh"
       color="orange darken-3"
       transition="scale-transition">
       {{ errorMessage }}

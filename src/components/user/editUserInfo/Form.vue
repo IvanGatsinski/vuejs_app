@@ -109,7 +109,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    store.dispatch('user/setEditUserFormFields')
+    store.commit('user/SET_EDIT_USER_INFO_FORM_FIELDS')
     next()
   }
 };

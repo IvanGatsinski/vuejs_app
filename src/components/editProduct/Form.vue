@@ -88,6 +88,7 @@
 import { product_validation_mixin } from '../../mixins/validation_mixins'
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
+import { fetchProduct } from '@/api_calls/products'
 import store from '../../store/index'
 
 export default {
@@ -117,9 +118,10 @@ export default {
           }
         }
     },
-    beforeRouteEnter(to, from, next) {
-        store.dispatch('products/setProductForEdit', to.params.id)
-        next()
+    async beforeRouteEnter(to, from, next) {
+      let product = await fetchProduct(to.params.id)
+      store.commit('products/SET_EDIT_PRODUCT_FORM_FIELDS', product.data)
+      next()
     },
 }
 </script>

@@ -28,7 +28,8 @@ export default {
     },
     methods: {
     ...mapActions('products',[
-        'getAllProducts'
+        'getAllProducts',
+        'clearAllProducts'
         ]),
     ...mapActions('user',[
         'wasCartProductDeleted'
