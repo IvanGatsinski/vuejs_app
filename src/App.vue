@@ -65,8 +65,5 @@ export default {
 .fade-leave-active {
   opacity: 0
 }
-/* body {
-  font-family: sans-serif;
-  margin: 42px;
-} */
+
 </style>

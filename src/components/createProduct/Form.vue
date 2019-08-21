@@ -106,8 +106,8 @@
         <span>Condition: {{ productCondition }}</span><br>
        
       </span>
-    <span>{{ productPublishedDate(Date.now()) }}</span><br>
-    <span>{{ productPublishedDate(Date.now()) }}</span><br>
+    <span>{{ productDate(Date.now(), 'published') }}</span><br>
+    <span>{{ productDate(Date.now(), 'modified') }}</span><br>
     </v-card-text>
 
     <v-card-actions class="rgba(31, 77, 107, 0.5) py-0">
@@ -148,7 +148,7 @@ export default {
     mixins: [ product_validation_mixin ],
     computed: {
         ...mapState('user', ['userProfile']),
-        ...mapGetters('products', ['productPublishedDate']),
+        ...mapGetters('products', ['productDate']),
         ...mapFields('products', [
             'createProduct.valid',
             'createProduct.productName', 

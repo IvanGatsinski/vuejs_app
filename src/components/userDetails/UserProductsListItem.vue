@@ -11,7 +11,7 @@
             <v-list-item-title class="headline mb-2">
                 {{ name }}
             </v-list-item-title>
-            <v-list-item-subtitle>{{ productPublishedDate(dateCreated) }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ productDate(dateCreated, 'published') }}</v-list-item-subtitle>
         </v-list-item-content>
         <v-btn class="ml-5" outlined="" text :to="`/product/details/${product._id}`">Details</v-btn>
         </v-list-item>
@@ -28,7 +28,7 @@ export default {
         product_props_mixin,
     ],
     computed: {
-        ...mapGetters('products', ['productPublishedDate'])
+        ...mapGetters('products', ['productDate'])
     },
 }
 </script>

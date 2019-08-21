@@ -132,14 +132,14 @@ export default {
         'isAuthor'
         ]),
       ...mapGetters('products', [
-        'productPublishedDate', 
-        'productLastEdittedDate'
+        'productDate', 
+        
         ]),
       publishedDate() {
-        return this.productPublishedDate(this.productDetails._kmd.ect)
+        return this.productDate(this.productDetails._kmd.ect, 'published')
       },
       lastEdittedDate() {
-        return this.productLastEdittedDate(this.productDetails._kmd.lmt)
+        return this.productDate(this.productDetails._kmd.lmt, 'modified')
       },
       itemIsInCart() {
         return this.isItemInCart(this.productDetails._id)

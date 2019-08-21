@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '../store/index'
 
+axios.defaults.baseURL = 'https://baas.kinvey.com';
 const APP_KEY = process.env.VUE_APP_KEY
 const APP_SECRET = process.env.VUE_APP_SECRET
 
