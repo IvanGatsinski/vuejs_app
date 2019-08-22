@@ -3,7 +3,7 @@ import router from '@/router'
 import { updateUserInfo, fetchUserInfo } from '@/api_calls/user'
 import { fetchCartProducts } from '@/api_calls/products'
 
-const editUserInfo = async ({ commit, state }, payload) => {
+const editUserInfo = async ({ commit, state, dispatch }, payload) => {
     let userId = state.userProfile._id
     
     wait.start('edit user info loading')
@@ -13,6 +13,8 @@ const editUserInfo = async ({ commit, state }, payload) => {
     commit('SAVE_USER_SESSION', userInfo.data)
     commit('EDIT_USER_INFO', userInfo.data)
 
+    dispatch('setSuccessMessage', 'You have successfully updated your profile information.', { root : true })
+    dispatch('showSuccess', null, { root : true })
     router.push({ name : 'userDetails' }) 
 }
 const wasCartProductDeleted = async ({ commit, state }) => {
@@ -57,16 +59,24 @@ const removeFromCart = async ({ commit, state }, productId) => {
     commit('SAVE_USER_SESSION', newProfileObject)
     commit('UPDATE_CART_PRODUCTS', productId)
 }
-const checkoutCart = async ({ commit, state }) => {
+const checkoutCart = async ({ commit, state, dispatch }) => {
+    let oldCart = { ...state.userProfile }
+    let soldCartItemsMessage;
     let newProfileObject = { ...state.userProfile }
     let userId = state.userProfile._id
     newProfileObject.cart = []
-
+    
     wait.start('checkout loading btn');
     await updateUserInfo(userId, newProfileObject)
     wait.end('checkout loading btn')
 
+    state.userProfile.cart.length > 1 ? 
+    soldCartItemsMessage = 'items' :
+    soldCartItemsMessage = 'item'
+
     commit('SAVE_USER_SESSION', newProfileObject) 
+    dispatch('setSuccessMessage', `You successfully bought ${oldCart.cart.length} ${soldCartItemsMessage}`, { root : true })
+    dispatch('showSuccess', null, { root : true })
     router.push('/')
 }
 const getUserDetails = async ({ commit }, userId) => {

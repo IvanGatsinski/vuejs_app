@@ -29,9 +29,11 @@ const createProduct = async ({ dispatch }, productData) => {
     wait.end('create product loading btn')
 
     dispatch('getAllProducts')
+    dispatch('setSuccessMessage', 'You successfully created product for sale', { root : true })
+    dispatch('showSuccess', null, { root : true })
     router.push('/')
 }
-const editProduct = async ({ commit, state, rootState}, productId) => {
+const editProduct = async ({ commit, state, rootState, dispatch}, productId) => {
     let productData = {
         name: state.editProduct.productName,
         price: state.editProduct.productPrice,
@@ -44,6 +46,9 @@ const editProduct = async ({ commit, state, rootState}, productId) => {
     wait.end('edit product loading btn')
 
     commit('UPDATE_PRODUCT', product.data)
+
+    dispatch('setSuccessMessage', `You successfully editted ${productData.name}`, { root : true })
+    dispatch('showSuccess', null, { root : true })
     router.push('/')
 }
 const setProductForEdit = async ({ commit }, productId) => {

@@ -1,21 +1,21 @@
 <template>
   <div>
     <v-alert
-      :value="hasError"
+      :value="hasSuccess"
       prominent
       dark
       class="pa-0"
-      type="error"
+      type="success"
       tile
       height="10vh"
       border="bottom"
-      color="orange darken-3"
+      color="success"
       transition="scale-transition">
-      {{ errorMessage }}
+      {{ successMessage }}
     <v-btn 
-      icon 
-      name="close"
-      @click="hideError()">
+        icon 
+        name="close"
+        @click="hideSuccess()">
     <v-icon>mdi-close-circle</v-icon>
     </v-btn>
     </v-alert>
@@ -25,12 +25,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 export default {
-    name: 'global-error-message',
+    name: 'global-success-message',
     computed: {
-        ...mapState(['hasError', 'errorMessage'])
+        ...mapState(['hasSuccess', 'successMessage'])
     },
     methods: {
-        ...mapActions(['hideError'])
+        ...mapActions(['hideSuccess'])
     }
 }
 </script>

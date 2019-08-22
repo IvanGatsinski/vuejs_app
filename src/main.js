@@ -7,7 +7,6 @@ import wait from './wait'
 import vuetify from './plugins/vuetify';
 import GlobalComponents from './global_components'
 
-
 GlobalComponents.forEach(component => {
   Vue.component(component.name, component)
 })

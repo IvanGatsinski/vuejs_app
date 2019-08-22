@@ -1,5 +1,6 @@
 import router from '@/router'
 import { updateField } from 'vuex-map-fields'
+import store from '@/store'
 
 const SET_USER_DETAILS = (state, payload) => {
     state.userDetails = payload;
@@ -46,7 +47,10 @@ const CLEAR_USER_SESSION = (state) => {
     localStorage.removeItem('userData')
     state.userProfile = {}
     state.authtoken = ''
+
     router.push('/login')
+    store.dispatch('setSuccessMessage', 'You have successfully logged out!')
+    store.dispatch('showSuccess')
 }
 
 export default {

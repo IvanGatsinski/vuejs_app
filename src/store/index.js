@@ -1,7 +1,7 @@
 import auth from './modules/auth/index'
 import products from './modules/products/index'
 import user from './modules/user/index'
-import { SHOW_ERROR_MESSAGE, HIDE_ERROR_MESSAGE, SET_ERROR_MESSAGE } from './modules/rootTypes'
+import * as rootTypes from './modules/rootTypes'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
@@ -15,29 +15,50 @@ const store = {
     },
     state: {
         hasError: false,
+        hasSuccess: false,
         errorMessage: '',
+        successMessage: '',
     },
     mutations: {
-        [SHOW_ERROR_MESSAGE] (state) {
+        [rootTypes.SHOW_ERROR_MESSAGE] (state) {
             state.hasError = true
         },
-        [HIDE_ERROR_MESSAGE] (state) {
+        [rootTypes.HIDE_ERROR_MESSAGE] (state) {
             state.hasError = false
         },
-        [SET_ERROR_MESSAGE] (state, message) {
+        [rootTypes.SET_ERROR_MESSAGE] (state, message) {
             state.errorMessage = message
+        },
+        [rootTypes.SHOW_SUCCESS_MESSAGE] (state) {
+            state.hasSuccess = true
+        },
+        [rootTypes.HIDE_SUCCESS_MESSAGE] (state) {
+            state.hasSuccess = false
+        },
+        [rootTypes.SET_SUCCESS_MESSAGE] (state, message) {
+            state.successMessage = message
         }
     },
     actions: {
         showError({ commit }) {
-            commit(SHOW_ERROR_MESSAGE)
-            setTimeout(() => commit(HIDE_ERROR_MESSAGE) ,3000)
+            commit(rootTypes.SHOW_ERROR_MESSAGE)
+            setTimeout(() => commit(rootTypes.HIDE_ERROR_MESSAGE) ,3000)
         },
         hideError({ commit }) {
-            commit(HIDE_ERROR_MESSAGE)
+            commit(rootTypes.HIDE_ERROR_MESSAGE)
         },
         setErrorMessage({ commit }, message) {
-            commit(SET_ERROR_MESSAGE, message)
+            commit(rootTypes.SET_ERROR_MESSAGE, message)
+        },
+        showSuccess({ commit }) {
+            commit(rootTypes.SHOW_SUCCESS_MESSAGE)
+            setTimeout(() => commit(rootTypes.HIDE_SUCCESS_MESSAGE) ,3000)
+        },
+        hideSuccess({ commit }) {
+            commit(rootTypes.HIDE_SUCCESS_MESSAGE)
+        },
+        setSuccessMessage({ commit }, message) {
+            commit(rootTypes.SET_SUCCESS_MESSAGE, message)
         }
     }
 }
