@@ -1,7 +1,9 @@
 <template>
-    <v-container>
-       <v-layout>
-           <v-flex xs12>####### TODO ######</v-flex>
+    <v-container fluid>
+       <v-layout justify-center wrap>
+           <v-flex xs12 class="text-center caption">&copy; Copyright 2019 
+               <span class="project__creator body-2">Ivan Gatsinski</span>
+           </v-flex>
        </v-layout>
     </v-container>
 </template>
@@ -15,5 +17,11 @@ export default {
 </script>
 
 <style scoped>
-
+    .container {
+        background: rgba(0, 132, 255, 0.521);
+    }
+    .project__creator {
+       font-weight: 400;
+       font-style: italic;
+    }
 </style>

@@ -1,4 +1,6 @@
 <template>
+    <div>
+       <div class="section__heading">Edit product</div>
        <v-container grid-list-xl>
         <v-layout row justify-space-around align-center class="mt-5">
           <v-flex xs12 sm4 md4 lg4 xl4>
@@ -8,13 +10,13 @@
   >
     <v-text-field
       v-model="productName"
-      :counter="15"
+      :counter="20"
       :rules="productNameRules"
-      label="Name"
+      label="Product name"
       required
       validate-on-blur=""
       clearable
-      prepend-inner-icon="mdi-account"
+      prepend-inner-icon="mdi-shopify"
     ></v-text-field>
 
     <v-text-field
@@ -24,7 +26,7 @@
       required
       validate-on-blur
       clearable
-      prepend-inner-icon="mdi-lock"
+      prepend-inner-icon="mdi-currency-eur"
       
     ></v-text-field>
 
@@ -57,7 +59,7 @@
           loading
           disabled
           class="mr-4">
-          Save
+          Edit
         </v-btn>
         <v-btn 
           disabled
@@ -69,7 +71,7 @@
           color="success"
           class="mr-4"
           @click="submitEdit()">
-          Save
+          Edit
         </v-btn>
         <v-btn 
           color="warning"
@@ -82,6 +84,7 @@
           </v-flex>
         </v-layout>
     </v-container>
+    </div>
 </template>
 
 <script>
@@ -113,7 +116,7 @@ export default {
              'editProduct',
         ]),
         submitEdit() {
-          if (this.$refs.editProductForm.validate()) {
+          if (this.$refs.editProductForm.validate() && this.productName.length <= 20) {
               this.editProduct(this.productId)
           }
         }

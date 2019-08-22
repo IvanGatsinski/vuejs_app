@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Cart List</h2>
+        <div class="section__heading mb-4">My cart</div>
             <v-container grid-list-xl>
                 <global-loader v-if="!cartProducts">
                 </global-loader>

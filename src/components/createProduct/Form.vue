@@ -1,7 +1,7 @@
 <template>
     <div>
-    <h3>Create your product!</h3>
-    <v-container grid-list-xl>
+      <div class="section__heading">Add your product for sale</div>
+        <v-container grid-list-xl>
         <v-layout row justify-space-around align-center class="mt-5">
           <v-flex xs12 sm4 md4 lg4 xl6>
     <v-form
@@ -10,13 +10,13 @@
   >
     <v-text-field
       v-model="productName"
-      :counter="15"
+      :counter="20"
       :rules="productNameRules"
-      label="Name"
+      label="Product name"
       required
       validate-on-blur
       clearable
-      prepend-inner-icon="mdi-account"
+      prepend-inner-icon="mdi-shopify"
     ></v-text-field>
 
     <v-text-field
@@ -26,8 +26,7 @@
       required
       validate-on-blur
       clearable
-      prepend-inner-icon="mdi-lock"
-      
+      prepend-inner-icon="mdi-currency-eur"
     ></v-text-field>
 
     <v-textarea
@@ -102,7 +101,7 @@
       <span class="text--primary">
         <span>Author: {{ userProfile.username }}</span><br>
 
-        <span>Price: {{ productPrice }}</span><br>
+        <span>Price: <span v-html="validTemplatePrice"></span></span><br>
         <span>Condition: {{ productCondition }}</span><br>
        
       </span>
@@ -148,7 +147,7 @@ export default {
     mixins: [ product_validation_mixin ],
     computed: {
         ...mapState('user', ['userProfile']),
-        ...mapGetters('products', ['productDate']),
+        ...mapGetters('products', ['productDate', 'formatPrice']),
         ...mapFields('products', [
             'createProduct.valid',
             'createProduct.productName', 
@@ -156,6 +155,9 @@ export default {
             'createProduct.productDescription', 
             'createProduct.productCondition'
         ]),
+        validTemplatePrice() {
+          return this.productPrice > 0 ? this.formatPrice(this.productPrice) : ''
+        }
     },
     methods: {
         ...mapActions('products', ['createProduct',]),
@@ -167,7 +169,7 @@ export default {
                 description: this.productDescription,
                 condition: this.productCondition,
             }
-            if (this.$refs.productForm.validate()) {
+            if (this.$refs.productForm.validate() && this.productName.length <= 20) {
               this.createProduct(product_data)
             }
         }

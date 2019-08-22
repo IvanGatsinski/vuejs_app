@@ -1,11 +1,17 @@
 <template>
   <div>
+
     <global-loader v-if="!userDetails">
     </global-loader>
-    
     <v-container grid-list-xl v-else>
       <v-layout row wrap justify-space-around>
-
+          <v-flex xs12>
+            <div class="section__heading">
+              Information about 
+              <span v-if="isAuthor(userId)">me</span>
+              <span v-else>{{ userDetails.username }}</span>
+            </div>
+          </v-flex>
           <v-flex xs12 sm12 md8 lg6 xl6>
             <v-card 
               class="mb-3"
@@ -123,6 +129,7 @@ export default {
     .user-details__layout {
         width: 75px;
         margin: auto -10px;
+        margin-top: 0 !important;
     }
     .user-details__layout > .v-btn {
         width: 100% !important;

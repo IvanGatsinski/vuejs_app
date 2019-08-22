@@ -10,7 +10,7 @@
       
      </dialog-product-image>
 
-      <v-card-text class="py-0">
+      <v-card-text class="card__text-area py-0">
         <p class="mb-2 product__name">{{ name }}</p> 
 
         <v-btn 
@@ -24,7 +24,7 @@
         <v-layout column>
             <v-flex>
                     Price: 
-                    <span class="gallery__card-content">&euro; {{ price }}</span>
+                    <span class="gallery__card-content" v-html="formatPrice(price)"></span>
                     <br>
                     Condition: 
                     <span class="gallery__card-content">{{ condition }}</span>
@@ -88,14 +88,12 @@ export default {
     computed: {
         ...mapState('user', ['userProfile']),
         ...mapGetters('user', ['isAuthor']),
+        ...mapGetters('products', ['formatPrice']),
         isOwner() {
             return this.isAuthor(this.productCreator)
         },
         isItemInCart() {
             return this.userProfile.cart.find(id => id === this.productId)
-        },
-        formattedPrice() {
-            return `${Number(this.price).toFixed(2)} лв.`
         },
     },
 }
@@ -109,7 +107,7 @@ export default {
     }
     .gallery__card {
         position: relative;
-        background-color: rgba(255, 255, 255, 0.45) !important;
+        background-color: rgba(255, 255, 255, 0.25) !important;
     }
     .gallery__card-content {
         font-size: 17px;

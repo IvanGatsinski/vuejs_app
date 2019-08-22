@@ -24,8 +24,12 @@ const productDate = state  => (date_kmd, operation) => {
 
     return `${publishedOrModified} ${day}-${month}-${year} at ${hours}:${minutes}:${seconds} ${dayOrNight}.`
 }
+const formatPrice = state => price => {
+    return `${Number(price).toFixed(2)} &euro;`
+}
 
 export default {
     getField,
     productDate,
+    formatPrice,
 }

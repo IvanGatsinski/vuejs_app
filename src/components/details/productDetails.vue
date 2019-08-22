@@ -37,7 +37,7 @@
         </span>
 
         <span v-else>Author: {{ productDetails.author }}</span><br>
-        <span>Price: {{ productDetails.price }}</span><br>
+        <span>Price: <span v-html="formatPrice(productDetails.price)"></span></span><br>
         <span>Condition: {{ productDetails.condition }}</span><br>
        
       </span>
@@ -133,7 +133,7 @@ export default {
         ]),
       ...mapGetters('products', [
         'productDate', 
-        
+        'formatPrice'
         ]),
       publishedDate() {
         return this.productDate(this.productDetails._kmd.ect, 'published')

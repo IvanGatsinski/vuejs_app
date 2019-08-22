@@ -1,4 +1,6 @@
 <template>
+     <div>
+       <div class="section__heading">Sign up</div>
       <v-container grid-list-xl>
         <v-layout row justify-center align-center>
           <v-flex xs11 sm4 md4 lg4 xl8>
@@ -126,6 +128,7 @@
             </v-flex>
         </v-layout>
     </v-container>
+     </div>
 </template>
 
 <script>

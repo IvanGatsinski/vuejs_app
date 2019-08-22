@@ -45,7 +45,7 @@
                               loading
                               disabled
                               class="mr-4">
-                              Save
+                              Edit
                             </v-btn>
                             <v-btn 
                               disabled
@@ -57,7 +57,7 @@
                             color="success"
                             class="mr-4"
                             @click="submitEdit()">
-                            Save
+                            Edit
                           </v-btn>
                           <v-btn 
                             color="warning"
