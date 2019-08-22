@@ -48,13 +48,9 @@
 </template>
 
 <script>
-import DialogProductImage from '../home/DialogProductImage'
 import { mapState, mapActions } from 'vuex';
 export default {
     name: 'CartProduct',
-    components: {
-        DialogProductImage
-    },
     data() {
       return {
           id: this.product._id,

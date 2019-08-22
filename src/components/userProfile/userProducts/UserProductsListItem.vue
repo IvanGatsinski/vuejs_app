@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { product_data_mixin, product_props_mixin } from '../../mixins/product_mixins'
+import { product_data_mixin, product_props_mixin } from '@/mixins/product_mixins'
 import { mapGetters, mapActions } from 'vuex';
-import DialogProductDelete from '../home/DialogProductDelete'
+import DialogProductDelete from '@/dialogs/DialogProductDelete'
 export default {
     name: 'UserProductsList',
     components: {

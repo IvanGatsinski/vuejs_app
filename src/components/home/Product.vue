@@ -2,10 +2,11 @@
     <v-card class="gallery__card">
 
      <dialog-product-image
+        class="product__img"
         :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
 
        <v-card>
-          <v-img class="product__img" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
       </v-card>
       
      </dialog-product-image>
@@ -31,7 +32,7 @@
                     <br>
                     Author: 
                     <router-link  class="gallery__card-content"
-                    :to="{ name: 'userDetails', params: { id: productCreator } }"
+                    :to="{ name: 'userProfile', params: { id: productCreator } }"
                     v-if="!isOwner"
                     >
                     {{ author }}
@@ -72,8 +73,8 @@
 <script>
 import { product_data_mixin, product_props_mixin } from '../../mixins/product_mixins'
 import { mapState, mapActions, mapGetters } from 'vuex'
-import DialogProductDelete from './DialogProductDelete'
-import DialogProductImage from './DialogProductImage'
+import DialogProductDelete from '@/dialogs/DialogProductDelete'
+import DialogProductImage from '@/dialogs/DialogProductImage'
 
 export default {
     name: 'Product',

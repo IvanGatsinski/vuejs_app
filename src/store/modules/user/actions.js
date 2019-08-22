@@ -15,7 +15,7 @@ const editUserInfo = async ({ commit, state, dispatch }, payload) => {
 
     dispatch('setSuccessMessage', 'You have successfully updated your profile information.', { root : true })
     dispatch('showSuccess', null, { root : true })
-    router.push({ name : 'userDetails' }) 
+    router.push({ name : 'userProfile' }) 
 }
 const wasCartProductDeleted = async ({ commit, state }) => {
     let newProfileObject = { ...state.userProfile }

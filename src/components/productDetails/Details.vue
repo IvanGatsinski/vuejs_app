@@ -6,13 +6,22 @@
       row justify-center>
         <v-flex xs12 sm10 md8 lg6 xl6>
       <v-card class="mx-auto edit-product__card">
-        <v-img
+        <dialog-product-image
+        class="product__img"
+        :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
+
+       <v-card>
+          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+      </v-card>
+      
+     </dialog-product-image>
+        <!-- <v-img
           class="white--text"
           height="200px"
           src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
         >
           
-        </v-img>
+        </v-img> -->
           <v-card-title 
             class="align-end fill-height">
             {{ productDetails.name }}
@@ -31,7 +40,7 @@
         <span v-if="!isAuthor(productDetails._acl.creator)"
         >
         Author: <router-link 
-        :to="{ name: 'userDetails', params: { id:productDetails._acl.creator } }"
+        :to="{ name: 'userProfile', params: { id:productDetails._acl.creator } }"
         >{{ productDetails.author }}
         </router-link>
         </span>
@@ -99,11 +108,15 @@
 </template>
 
 <script>
+import DialogProductImage from '@/dialogs/DialogProductImage'
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { fetchProduct } from '../../api_calls/products'
 import store from '../../store/index'
 export default {
     name: 'ProductDetails',
+    components: {
+      DialogProductImage
+    },
     data() {
       return {
         show: false
@@ -160,6 +173,7 @@ export default {
 </script>
 
 <style scoped>
+
   .edit-product__card-text {
     position: relative; 
   }

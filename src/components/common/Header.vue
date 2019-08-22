@@ -33,7 +33,7 @@
                           <v-btn :to="{ name: 'createProduct' }" small class="ma-1" color="white--text light-blue darken-4">
                     <v-icon left color="yellow lighten-2">mdi-plus-circle-outline</v-icon>product
                     </v-btn>
-      <v-btn :to="{ name: 'userDetails', params: { id : userProfile._id } }" small class="ma-1" color="light-blue darken-4">
+      <v-btn :to="{ name: 'userProfile', params: { id : userProfile._id } }" small class="ma-1" color="light-blue darken-4">
           <v-icon left color="yellow lighten-2">mdi-account-circle</v-icon> {{ userProfile.username }}
       </v-btn>
   

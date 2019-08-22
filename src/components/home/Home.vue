@@ -21,7 +21,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Products from './Products'
-import DialogRemovedItemCart from './DialogRemovedItemCart'
+import DialogRemovedItemCart from '@/dialogs/DialogRemovedItemCart'
 
 export default {
     name: 'Home',

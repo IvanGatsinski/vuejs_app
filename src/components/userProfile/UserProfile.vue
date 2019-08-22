@@ -102,7 +102,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import { setTimeout } from 'timers';
 
 export default {
-    name: 'UserDetails',
+    name: 'UserProfile',
     computed: {
         ...mapState('user', ['userProfile','userDetails']),
         ...mapGetters('user', ['getAge', 'isAuthor']),

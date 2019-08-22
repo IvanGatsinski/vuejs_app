@@ -2,11 +2,11 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      width="600px"
+      max-width="800px"
     >
       <template v-slot:activator="{ on }">
         <v-card>
-          <v-img v-on="on" :src="productImgUrl"></v-img>
+          <v-img height="220px" v-on="on" :src="productImgUrl"></v-img>
       </v-card>
       </template>
 
