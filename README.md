@@ -18,8 +18,8 @@ The next step is to copy your APP_KEY and APP_SECRET which are shown on the pict
 
 Open the *.env* file and inside of it just type the following key-value-pair attributes:
 
-VUE_APP_KEY=**Your App Key**
-VUE_APP_SECRET=**Your App Secret**
+..*VUE_APP_KEY=**Your App Key**
+..*VUE_APP_SECRET=**Your App Secret**
 
 Save the file, open the terminal again and type **npm run serve** . Your local server should be started at *localhost:8080* :wink:
 
