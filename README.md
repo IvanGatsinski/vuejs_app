@@ -23,7 +23,7 @@ VUE_APP_SECRET=**Your App Secret**
 
 Save the file, open the terminal again and type **npm run serve** . Your local server should be started at *localhost:8080* :wink:
 
-![App Localhost](https://i.ibb.co/kSNmrst/app-port.png)
+![App Localhost](https://i.ibb.co/L5nhm1z/app-port.png)
 
 ### Usage: 
 Simply you need to Sign-Up for an account or Sign-In to an existing one. Once this is done you will be automatically redirected to the home page. There you can find various of products which all users have set for sale. By clicking the +product button from the header menu you can create your own product. Once the product is created you will be redirected to the home page. On that page you may notice that your products have an *edit* and a *delete* icons at the top-right corner of the product card. This is because only you, as a creator of this product, have permission to manipulate the product data the way you like (*Change the imageURL, name, price, description, condition or delete it*).
