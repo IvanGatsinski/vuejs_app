@@ -1,4 +1,4 @@
-import { getGuest, get, put, post, remove } from './helpers'
+import { get, put, post, remove } from './helpers'
 
 function fetchallProductsGuest() {
     return getGuest(`/appdata/${process.env.VUE_APP_KEY}/products?query={}&sort={"_kmd.ect": -1}`)

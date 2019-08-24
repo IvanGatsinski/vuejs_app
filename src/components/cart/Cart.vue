@@ -45,16 +45,12 @@ export default {
     computed: {
     ...mapState('user', ['cartProducts']),
     },
-    beforeRouteEnter(to, from, next) {
+    async beforeRouteEnter(to, from, next) {
         let cartIds = store.state.user.userProfile.cart
+        let products = await fetchCartProducts(cartIds)
 
-        fetchCartProducts(cartIds)
-            .then(res => {
-                console.log(res.data)
-                store.dispatch('user/getCartProducts', res.data)
-                next()
-            })
-            .catch(err => console.log(err))
+        store.dispatch('user/getCartProducts', products.data)
+        next()
     }
 }
 </script>

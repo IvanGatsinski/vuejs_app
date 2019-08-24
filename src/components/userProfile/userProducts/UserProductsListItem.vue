@@ -53,9 +53,6 @@ export default {
     methods: {
         ...mapActions('products', ['removeProduct'])
     },
-    created() {
-        console.log(this.isAuthor(this.productCreator))
-    }
 }
 </script>
 
