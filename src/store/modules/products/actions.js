@@ -35,6 +35,7 @@ const createProduct = async ({ dispatch }, productData) => {
 }
 const editProduct = async ({ commit, state, rootState, dispatch}, productId) => {
     let productData = {
+        imageUrl: state.editProduct.imageUrl,
         name: state.editProduct.productName,
         price: state.editProduct.productPrice,
         description: state.editProduct.productDescription,

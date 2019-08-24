@@ -2,6 +2,7 @@ const product_data_mixin = {
     data() {
         return {
             productId: this.product._id,
+            productImageUrl: this.product.imageUrl,
             name: this.product.name,
             price: this.product.price,
             author: this.product.author,

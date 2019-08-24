@@ -25,7 +25,6 @@ const CLOSE_DELETED_CART_PRODUCT_DIALOG = (state) => {
 }
 const SET_EDIT_USER_INFO_FORM_FIELDS = (state) => {
     state.editUserInfo.email = state.userProfile.email
-    state.editUserInfo.gender = state.userProfile.gender
     state.editUserInfo.city = state.userProfile.city
     state.editUserInfo.phone = state.userProfile.phone
 }

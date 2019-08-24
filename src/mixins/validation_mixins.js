@@ -1,7 +1,10 @@
 const product_validation_mixin = {
     data() {
         return {
-            productNameRules: [
+              imageUrlRules: [
+                v => !!v || 'Product Image-URL is required'
+              ],
+              productNameRules: [
                 v => !!v || 'Product must have a name',
                 v => v && /^(([a-zA-Z]{2,})(\s?))+[^\s]$/.test(v) || 'Product name must be at least 3 characters long and contain latin letters only separated by a single space.',
               ],

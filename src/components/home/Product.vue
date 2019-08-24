@@ -3,10 +3,10 @@
 
      <dialog-product-image
         class="product__img"
-        :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
+        :productImgUrl="productImageUrl">
 
        <v-card>
-          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+          <v-img :src="productImageUrl"></v-img>
       </v-card>
       
      </dialog-product-image>
@@ -127,8 +127,9 @@ export default {
         width: auto;
         height: 44px;
     }
-    .product__img {
+    img {
         cursor: zoom-in;
+        max-width: 100%;
     }
     .product__name {
         font-size: 18px;

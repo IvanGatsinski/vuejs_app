@@ -8,20 +8,14 @@
       <v-card class="mx-auto edit-product__card">
         <dialog-product-image
         class="product__img"
-        :productImgUrl="'https://cdn.vuetifyjs.com/images/cards/docks.jpg'">
+        :productImgUrl="productDetails.imageUrl">
 
        <v-card>
-          <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+          <v-img :src="productDetails.imageUrl"></v-img>
       </v-card>
       
      </dialog-product-image>
-        <!-- <v-img
-          class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        >
-          
-        </v-img> -->
+
           <v-card-title 
             class="align-end fill-height">
             {{ productDetails.name }}
@@ -173,7 +167,7 @@ export default {
 </script>
 
 <style scoped>
-
+  
   .edit-product__card-text {
     position: relative; 
   }

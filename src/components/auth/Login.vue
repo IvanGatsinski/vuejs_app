@@ -1,6 +1,6 @@
 <template>
   <div>
-     <div class="section__heading">Sign in</div>
+     <div class="section__heading">Sign in to explore our shop</div>
     <v-container grid-list-xl>
         <v-layout row justify-center align-center>
             <v-flex xs11 sm4 md4 lg4 xl8>

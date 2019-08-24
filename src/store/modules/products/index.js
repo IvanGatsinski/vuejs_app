@@ -11,6 +11,7 @@ const products = {
         productDetails: null,
         createProduct: {
             valid: false,
+            imageUrl: '',
             productName: '',
             productPrice: null,
             productDescription: '',
@@ -18,6 +19,7 @@ const products = {
         },
         editProduct: {
             valid: false,
+            imageUrl: '',
             productName: '',
             productPrice: null,
             productDescription: '',

@@ -9,6 +9,16 @@
     ref="productForm"
   >
     <v-text-field
+      v-model="imageUrl"
+      :rules="imageUrlRules"
+      label="Image URL"
+      required
+      validate-on-blur
+      clearable
+      prepend-inner-icon="mdi-image"
+    ></v-text-field>
+
+    <v-text-field
       v-model="productName"
       :counter="20"
       :rules="productNameRules"
@@ -85,14 +95,13 @@
     <v-flex xs12 sm7 md7 lg6 xl6>
 
     <v-card class="mx-auto">
-        <v-img
-          class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        >
-          
-        </v-img>
-          <v-card-title 
+      <div class="create-product__image-container">
+        <img
+          :src="imageUrl"
+          alt="product image will be placed here"
+        />
+      </div>
+        <v-card-title 
             class="align-end fill-height">
             {{ productName }}
             </v-card-title>
@@ -149,6 +158,7 @@ export default {
         ...mapState('user', ['userProfile']),
         ...mapGetters('products', ['productDate', 'formatPrice']),
         ...mapFields('products', [
+            'createProduct.imageUrl',
             'createProduct.valid',
             'createProduct.productName', 
             'createProduct.productPrice', 
@@ -164,6 +174,7 @@ export default {
         submitProduct() {
             let product_data = {
                 name: this.productName,
+                imageUrl: this.imageUrl,
                 author: this.userProfile.username,
                 price: this.productPrice,
                 description: this.productDescription,
@@ -181,6 +192,14 @@ export default {
 </script>
 
 <style scoped>
+  img {
+    width: 60%;
+    cursor: auto;
+  }
+  .create-product__image-container {
+    width: 100%;
+    text-align: center;
+  }
   .v-card__text {
     word-wrap: break-word;
   }

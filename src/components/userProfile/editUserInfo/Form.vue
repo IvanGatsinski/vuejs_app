@@ -26,11 +26,6 @@
                         prepend-inner-icon="mdi-phone"
                         ></v-text-field>
 
-                        <v-radio-group v-model="gender" :rules="genderRules" row>
-                        <v-radio label="Female" color="pink" value="Female"></v-radio>
-                        <v-radio label="Male" color="primary" value="Male"></v-radio>
-                        </v-radio-group>
-
                         <v-select
                         v-model="city"
                         :items="cities"
@@ -87,7 +82,6 @@ export default {
         'editUserInfo.valid',
         'editUserInfo.city',
         'editUserInfo.email',
-        'editUserInfo.gender',
         'editUserInfo.phone',
     ])
   },
@@ -97,7 +91,6 @@ export default {
       let user_data = {...this.userProfile}
       user_data.city = this.city
       user_data.email = this.email
-      user_data.gender = this.gender
       user_data.phone = this.phone
 
       if (this.$refs.userInfoForm.validate()) {

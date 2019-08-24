@@ -11,7 +11,6 @@ const user = {
         editUserInfo: {
             valid: false,
             email: '',
-            gender: '',
             city: '',
             phone: '',
         },

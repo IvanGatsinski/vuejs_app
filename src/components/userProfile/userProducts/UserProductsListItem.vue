@@ -5,7 +5,7 @@
       >
         <v-list-item>
         <v-list-item-avatar size="50">
-        <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+        <v-img :src="product.imageUrl"></v-img>
         </v-list-item-avatar>
             <v-list-item-content class="align-self-start">
             <v-list-item-title class="headline mb-2">

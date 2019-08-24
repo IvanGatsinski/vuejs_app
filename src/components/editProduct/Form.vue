@@ -8,6 +8,16 @@
     v-model="valid"
     ref="editProductForm"
   >
+      <v-text-field
+      v-model="imageUrl"
+      :rules="imageUrlRules"
+      label="Image URL"
+      required
+      validate-on-blur
+      clearable
+      prepend-inner-icon="mdi-image"
+    ></v-text-field>
+
     <v-text-field
       v-model="productName"
       :counter="20"
@@ -105,6 +115,7 @@ export default {
     computed: {
         ...mapFields('products', [
             'editProduct.valid',
+            'editProduct.imageUrl',
             'editProduct.productName', 
             'editProduct.productPrice', 
             'editProduct.productDescription', 

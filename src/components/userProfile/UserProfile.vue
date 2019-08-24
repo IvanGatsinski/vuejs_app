@@ -17,9 +17,12 @@
               class="mb-3"
               color="rgba(31, 77, 107, .2)" dark >
               <v-list-item three-line>
-                <v-list-item-avatar size="125">
-                  <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
-                    </v-list-item-avatar>
+                <v-list-item-avatar 
+                :title="'Avatar'" 
+                size="135">
+                  <v-img v-if="isAuthor(userId)" :src="userProfile.avatar"></v-img>
+                  <v-img v-else :src="userDetails.avatar"></v-img>
+                </v-list-item-avatar>
 
                       <v-list-item-content v-if="isAuthor(userId)" class="align-self-start">
                         <v-list-item-title class="headline mb-1">

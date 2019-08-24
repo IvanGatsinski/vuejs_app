@@ -47,7 +47,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.v-alert {
+    position: relative;
+    top: 5rem !important;
+}
 .list-products-enter-active, .list-products-leave-active {
   transition: all 1s;
 }

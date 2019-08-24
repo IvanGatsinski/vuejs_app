@@ -22,6 +22,7 @@ const SET_RANDOM_USER_PRODUCTS = (state, payload) => {
     state.randomUserProducts = payload
 }
 const SET_EDIT_PRODUCT_FORM_FIELDS = (state, payload) => {
+    state.editProduct.imageUrl = payload.imageUrl
     state.editProduct.productName = payload.name
     state.editProduct.productPrice = payload.price
     state.editProduct.productDescription = payload.description
