@@ -7,7 +7,7 @@
       <template v-slot:activator="{ on }">
         <v-card>
          <div class="img-wrapper">
-            <img v-on="on" height="auto" class="inner-img" :src="productImgUrl" alt="product image"/>
+            <img v-on="on" class="inner-img" :src="productImgUrl" alt="product image"/>
          </div>
           <!-- <v-img height="100%" ></v-img> -->
       </v-card>
@@ -42,5 +42,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .img-wrapper > img {
+    max-height: 250px;
   }
 </style>

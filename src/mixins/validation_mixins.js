@@ -14,8 +14,7 @@ const product_validation_mixin = {
               ],
               productDescriptionRules: [
                 v => !!v || 'Product must have description.',
-                v => /^.{7,250}$/.test(v) || 'Product description must be between 7 and 250 characters long',
-                v => /^(([a-zA-Z0-9]+)(\s?))+[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
+                v => /^(.){1,250}[^\s]$/.test(v) || 'Product description must start and finish without space,also must contain latin letters and digits separated by a single space',
               ],
               productConditionRules: [
                 v => !!v || 'Product must have condition.'
